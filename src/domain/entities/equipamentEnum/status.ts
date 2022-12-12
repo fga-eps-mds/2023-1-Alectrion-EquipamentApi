@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 export enum Status {
-  ACTIVE = 'ACTIVE',
-  ACTIVE_BY_DEMISE = 'ACTIVE_BY_DEMISE',
-  INACTIVE = 'INACTIVE',
-  MAINTENANCE = 'MAINTENANCE',
-  DOWNGRADED = 'DOWNGRADED',
-  TECHNICAL_RESERVE = 'TECHNICAL_RESERVE'
+  ACTIVE = 'Ativo',
+  ACTIVE_LOAN = 'Ativo Empréstimo',
+  DOWNGRADED = 'Baixo',
+  // INACTIVE = 'INACTIVE', // Retirado - São apenas 5 status dos equipamentos conforme critéiros do usuário
+  MAINTENANCE = 'Manutenção',
+  TECHNICAL_RESERVE = 'Reserva Técnica'
 }
