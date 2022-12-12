@@ -7,7 +7,7 @@
 Alectrion é um sistema de gerenciamento de inventário, ordens de serviços e movimentações de equipamentos de informática,
 feito para atender às demandas da DSTI (Divisão de Suporte Técnico Interno) da Polícia Civil do estado de Goiás.
 
-Aplicação disponível em: TO-DO
+Aplicação disponível em: https://alectrion-equipament-2022.herokuapp.com
 
 ## Requisitos
 
@@ -32,7 +32,7 @@ Aplicação disponível em: TO-DO
 
 A aplicação sera iniciada na porta 4002
 
-OBS: Caso for necessario a conexão uma conexão que utilize o SSL, descomentar a linha 9: ssl: { rejectUnauthorized: false }, do arquivo src/db/config.ts
+OBS: Caso for necessario a conexão uma conexão que utilize o SSL, adicione a variável ```DB_SSL=true``` no .env.
 
 ## Contribuir
 Para contribuir com esse projeto é importante seguir nosso [Guia de Contribuição](https://fga-eps-mds.github.io/2022-2-Alectrion-DOC/#/./Documentos/guia-contribuicao.md) do repositório e seguir nossa [Política de Branches](https://fga-eps-mds.github.io/2022-2-Alectrion-DOC/#/./Documentos/Documentos/politicas-branch.md).
