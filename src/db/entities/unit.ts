@@ -8,6 +8,8 @@ import {
 } from 'typeorm'
 import { Equipment } from './equipment'
 import { OrderService } from './order-service'
+import { Borrow } from './borrow'
+import { Ownership } from './ownership'
 
 @Entity()
 export class Unit {
@@ -33,4 +35,13 @@ export class Unit {
 
   @OneToMany(() => Equipment, (equipment) => equipment.unit)
   equipments?: Equipment[]
+
+  @OneToMany(() => Borrow, (borrow) => borrow.destination)
+  borrows: Borrow[]
+
+  @OneToMany(() => Ownership, (ownership) => ownership.source)
+  ownershipSources: Ownership[]
+
+  @OneToMany(() => Ownership, (ownership) => ownership.destination)
+  ownershipDestinations: Ownership[]
 }

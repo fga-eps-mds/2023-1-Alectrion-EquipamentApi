@@ -12,7 +12,6 @@ import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
-import { Dismissed } from './dismissed'
 import { EquipmentAcquisition } from './equipment-acquisition'
 import { EquipmentBrand } from './equipment-brand'
 import { OrderService } from './order-service'
@@ -135,9 +134,6 @@ export class Equipment {
 
   @OneToMany(() => OrderService, (orderService) => orderService.equipment)
   orderServices?: OrderService[]
-
-  @OneToMany(() => Dismissed, (dismissed) => dismissed.equipment)
-  dismisseds?: Dismissed[]
 
   @ManyToOne(() => EquipmentBrand, (equipmentBrand) => equipmentBrand.equipment)
   brand?: EquipmentBrand
