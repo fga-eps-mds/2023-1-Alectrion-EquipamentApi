@@ -6,7 +6,6 @@ import {
     JoinTable
   } from 'typeorm'
 import { Equipment } from './equipment'
-import { Unit } from './unit'
   
   @Entity()
   export class Movement {

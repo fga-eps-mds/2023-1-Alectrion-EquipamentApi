@@ -14,9 +14,6 @@ import { Unit } from './unit'
     @PrimaryColumn('uuid')
     id: string
   
-    @Column()
-    description: string
-  
     @OneToOne(() => Movement)
     @JoinColumn({ name: 'id'})
     movement: Movement

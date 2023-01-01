@@ -1,0 +1,202 @@
+import { Unit } from '../../domain/entities/unit'
+import { Equipment } from '../../domain/entities/equipment'
+import { Movement } from '../../domain/entities/movement'
+import { Borrow } from '../../domain/entities/borrow'
+import { Dismiss } from '../../domain/entities/dismiss'
+import { Ownership } from '../../domain/entities/ownership'
+
+import { UseCase } from './../protocol/useCase'
+
+import { EquipmentRepository } from '../../repository/equipamentRepository'
+import { UnitRepository } from '../../repository/unitRepository'
+
+export enum Types {
+    Borrow = 0,
+    Dismiss,
+    Ownership
+}
+
+export type CreateMovementUseCaseData = {
+    userId: string
+    equipments: string[]
+    type: Number
+    description?: string
+    source?: string
+    destination?: string
+}
+
+export class NullFieldsError extends Error {
+    constructor() {
+        super('Um ou mais campos obrigatórios possuem valores nulos.')
+        this.name = 'NullFieldsError'
+    }
+}
+
+export class InvalidTypeError extends Error {
+    constructor() {
+        super('Tipo de movimento inválido.')
+        this.name = 'InvalidTypeError'
+    }
+}
+
+export class InvalidUserError extends Error {
+    constructor() {
+        super('Usuário inválido.')
+        this.name = 'InvalidUserError'
+    }
+}
+
+export class InvalidDestinationError extends Error {
+    constructor() {
+        super('Unidade de destino inválida.')
+        this.name = 'InvalidDestinationError'
+    }
+}
+
+export class InvalidSourceError extends Error {
+    constructor() {
+        super('Unidade de origem inválida.')
+        this.name = 'InvalidSourceError'
+    }
+}
+
+export class InvalidEquipmentError extends Error {
+    constructor() {
+        super('Um ou mais equipamentos inválidos.')
+        this.name = 'InvalidEquipmentError'
+    }
+}
+
+export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData, Movement> {
+    constructor(
+        private readonly equipmentRepository: EquipmentRepository,
+        private readonly unitRepository: UnitRepository,
+        private readonly movementRepository: MovementRepository
+    ) {}
+
+    private areFieldsNull(data: CreateMovementUseCaseData): boolean {
+        if(data.userId == '' || !data.equipments.length)
+            return true
+        return false
+    }
+
+    private isTypeInvalid(data: CreateMovementUseCaseData): boolean {
+        if(data.type < Types.Borrow || data.type > Types.Ownership)
+            return true
+        return false
+    }
+
+    private isUserInvalid(data: CreateMovementUseCaseData): boolean {
+        return false
+    }
+
+    private isUnitValid(unit: any): boolean {
+        if(!unit)
+            return true
+        return false
+    }
+
+    private areEquipmentsInvalid(equipments: Equipment[]): boolean {
+        if(equipments.includes(null))
+            return true
+        return false
+    }
+
+    async execute(data: CreateMovementUseCaseData) {
+        if(this.areFieldsNull(data))
+            return {
+                isSuccess: false,
+                error: new NullFieldsError()
+            }
+        
+        if(this.isTypeInvalid(data))
+            return {
+                isSuccess: false,
+                error: new InvalidTypeError()
+            }
+
+        if(this.isUserInvalid(data))
+            return {
+                isSuccess: false,
+                error: new InvalidUserError()
+            }
+
+        const equipments = []
+        for(let equipment of data.equipments)
+            equipments.push(await this.equipmentRepository.findOne(equipment))
+
+        if(this.areEquipmentsInvalid(equipments))
+            return {
+                isSuccess: false,
+                error: new InvalidEquipmentError()
+            }
+
+        const movement = {
+            id: '-1',
+            date: Date.now(),
+            userId: data.userId,
+            equipments: data.equipments,
+            type: data.type
+        };
+
+        let result;
+
+        switch(data.type) {
+            case Types.Borrow: {
+                const destination = await this.unitRepository.findOne(data.destination)
+
+                if(this.isUnitValid(destination))
+                    return {
+                        isSuccess: false,
+                        error: new InvalidDestinationError()
+                    }
+
+                result = await this.movementRepository.create(movement, {
+                    id: '-1',
+                    movement,
+                    destination
+                })
+                break
+            }
+
+            case Types.Dismiss: {
+                result = await this.movementRepository.create(movement, {
+                    id: '-1',
+                    movement,
+                    description: data.description
+                })
+                break
+            }
+
+            default: {
+                const source = await this.unitRepository.findOne(data.source)
+                const destination = await this.unitRepository.findOne(data.destination)
+
+                if(this.isUnitValid(source))
+                    return {
+                        isSuccess: false,
+                        error: new InvalidSourceError()
+                    }
+
+                if(this.isUnitValid(destination))
+                    return {
+                        isSuccess: false,
+                        error: new InvalidDestinationError()
+                    }
+
+                result = await this.movementRepository.create(movement, {
+                    id: '-1',
+                    movement,
+                    source,
+                    destination
+                })
+                break
+            }
+        }
+
+        return {
+            isSuccess: true,
+            data: result
+        }
+    }
+}

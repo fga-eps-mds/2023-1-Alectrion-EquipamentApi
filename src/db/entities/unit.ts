@@ -37,11 +37,11 @@ export class Unit {
   equipments?: Equipment[]
 
   @OneToMany(() => Borrow, (borrow) => borrow.destination)
-  borrows: Borrow[]
+  borrows?: Borrow[]
 
   @OneToMany(() => Ownership, (ownership) => ownership.source)
-  ownershipSources: Ownership[]
+  ownershipSources?: Ownership[]
 
   @OneToMany(() => Ownership, (ownership) => ownership.destination)
-  ownershipDestinations: Ownership[]
+  ownershipDestinations?: Ownership[]
 }

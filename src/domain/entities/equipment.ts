@@ -1,5 +1,4 @@
 import { EquipmentBrand } from './brand'
-import { Dismissed } from './dismissed'
 import { ScreenType } from './equipamentEnum/screenType'
 import { Status } from './equipamentEnum/status'
 import { StorageType } from './equipamentEnum/storageType'
@@ -50,8 +49,6 @@ export type Equipment = {
   updatedAt: Date
 
   orderServices?: OrderService[]
-
-  dismisseds?: Dismissed[]
 
   brand?: EquipmentBrand
 
