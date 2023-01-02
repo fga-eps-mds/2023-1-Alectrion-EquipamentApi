@@ -5,7 +5,7 @@ import { Borrow } from '../../domain/entities/borrow'
 import { Dismiss } from '../../domain/entities/dismiss'
 import { Ownership } from '../../domain/entities/ownership'
 
-import { UseCase } from './../protocol/useCase'
+import { UseCase, UseCaseReponse } from './../protocol/useCase'
 
 import { EquipmentRepository } from '../../repository/equipamentRepository'
 import { UnitRepository } from '../../repository/unitRepository'
@@ -97,7 +97,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
         return false
     }
 
-    async execute(data: CreateMovementUseCaseData) {
+    async execute(data: CreateMovementUseCaseData): Promise<UseCaseReponse<Movement>>  {
         if(this.areFieldsNull(data))
             return {
                 isSuccess: false,
