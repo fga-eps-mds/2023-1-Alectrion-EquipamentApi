@@ -1,6 +1,6 @@
 import { Unit } from '../../domain/entities/unit'
 import { Equipment } from '../../domain/entities/equipment'
-import { Movement } from '../../domain/entities/movement'
+import { Movement, Types } from '../../domain/entities/movement'
 import { Borrow } from '../../domain/entities/borrow'
 import { Dismiss } from '../../domain/entities/dismiss'
 import { Ownership } from '../../domain/entities/ownership'
@@ -9,12 +9,7 @@ import { UseCase } from './../protocol/useCase'
 
 import { EquipmentRepository } from '../../repository/equipamentRepository'
 import { UnitRepository } from '../../repository/unitRepository'
-
-export enum Types {
-    Borrow = 0,
-    Dismiss,
-    Ownership
-}
+import { MovementRepository } from '../../repository/movementRepository'
 
 export type CreateMovementUseCaseData = {
     userId: string
@@ -133,9 +128,9 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
 
         const movement = {
             id: '-1',
-            date: Date.now(),
+            date: new Date(),
             userId: data.userId,
-            equipments: data.equipments,
+            equipments: equipments,
             type: data.type
         };
 
