@@ -1,5 +1,5 @@
 import {
-    PrimaryColumn,
+    PrimaryGeneratedColumn,
     Column,
     Entity,
     ManyToMany,
@@ -9,7 +9,7 @@ import { Equipment } from './equipment'
   
   @Entity()
   export class Movement {
-    @PrimaryColumn('uuid')
+    @PrimaryGeneratedColumn('uuid')
     id: string
   
     @Column('timestamptz')
@@ -18,7 +18,9 @@ import { Equipment } from './equipment'
     @Column('uuid')
     userId: string
 
-    @ManyToMany(() => Equipment)
+    @ManyToMany(() => Equipment, {
+      cascade: true
+    })
     @JoinTable()
     equipments: Equipment[]
   }

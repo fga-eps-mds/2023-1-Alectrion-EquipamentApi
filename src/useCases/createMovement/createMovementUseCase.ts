@@ -12,7 +12,7 @@ import { UnitRepository } from '../../repository/unitRepository'
 import { MovementRepository } from '../../repository/movementRepository'
 
 export type CreateMovementUseCaseData = {
-    userId: string
+    userid: string
     equipments: string[]
     type: Number
     description?: string
@@ -70,7 +70,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
     ) {}
 
     private areFieldsNull(data: CreateMovementUseCaseData): boolean {
-        if(data.userId == '' || !data.equipments.length)
+        if(data.userid == '' || !data.equipments.length)
             return true
         return false
     }
@@ -97,7 +97,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
         return false
     }
 
-    async execute(data: CreateMovementUseCaseData): Promise<UseCaseReponse<Movement>>  {
+    async execute(data: CreateMovementUseCaseData): Promise<UseCaseReponse<Movement>> {
         if(this.areFieldsNull(data))
             return {
                 isSuccess: false,
@@ -129,7 +129,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
         const movement = {
             id: '-1',
             date: new Date(),
-            userId: data.userId,
+            userId: data.userid,
             equipments: equipments,
             type: data.type
         };

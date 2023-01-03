@@ -4,7 +4,6 @@ import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationErr
 import { Controller } from '../protocols/controller'
 import { badRequest, HttpResponse, ok, serverError, notFound } from '../helpers'
 
-
 type Model = Error | Movement
 
 export class CreateMovementController extends Controller {

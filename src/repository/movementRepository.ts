@@ -31,11 +31,13 @@ export class MovementRepository implements MovementRepositoryProtocol {
     }
 
     async create(movement: Movement, specializedMovementData: Borrow | Dismiss | Ownership): Promise<Movement> {
-        const equipments = movement.equipments.map(async (equipment) => {
-            return await this.equipmentRepository.findOneBy({
+        const equipments = []
+        for(let equipment of movement.equipments) {
+            const equipmentEntity = await this.equipmentRepository.findOneBy({
                 id: equipment.id
             })
-        })
+            equipments.push(equipmentEntity)
+        }
 
         const movementEntity = this.movementRepository.create({
             date: movement.date,
