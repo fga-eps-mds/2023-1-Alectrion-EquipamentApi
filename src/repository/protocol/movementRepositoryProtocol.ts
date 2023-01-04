@@ -10,8 +10,8 @@ export type Query = {
   type?: Number
   lowerDate?: Date
   higherDate?: Date
-  page?: Number
-  resultQuantity?: Number
+  page: Number
+  resultQuantity: Number
 }
 
 export interface MovementRepositoryProtocol {

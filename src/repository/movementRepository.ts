@@ -105,7 +105,6 @@ export class MovementRepository implements MovementRepositoryProtocol {
             relations: {
                 equipments: true
             },
-
             where: {
                 id: query.id,
                 userId: query.userId,
@@ -114,7 +113,9 @@ export class MovementRepository implements MovementRepositoryProtocol {
                     id: query.equipmentId
                 } : undefined,
                 date: query.lowerDate ? And(MoreThanOrEqual(query.lowerDate), LessThanOrEqual(query.higherDate)) : undefined
-            }
+            },
+            take: query.resultQuantity,
+            skip: query.page * query.resultQuantity
         })
 
         return queryResult
