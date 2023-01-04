@@ -1,3 +1,4 @@
+import { MoreThanOrEqual, LessThanOrEqual, And } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Movement as MovementEntity } from '../db/entities/movement'
 import { Borrow as BorrowEntity } from '../db/entities/borrow'
@@ -11,7 +12,7 @@ import { Borrow } from '../domain/entities/borrow'
 import { Dismiss } from '../domain/entities/dismiss'
 import { Ownership } from '../domain/entities/ownership'
 
-import { MovementRepositoryProtocol } from './protocol/movementRepositoryProtocol'
+import { MovementRepositoryProtocol, Query } from './protocol/movementRepositoryProtocol'
 
 export class MovementRepository implements MovementRepositoryProtocol {
     private readonly movementRepository
@@ -42,6 +43,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
         const movementEntity = this.movementRepository.create({
             date: movement.date,
             userId: movement.userId,
+            type: movement.type,
             equipments
         })
 
@@ -96,5 +98,25 @@ export class MovementRepository implements MovementRepositoryProtocol {
         }
 
         return {...movement, id: savedMovementEntity.id}
+    }
+
+    async genericFind(query: Query): Promise<Movement[]> {
+        const queryResult = await this.movementRepository.find({
+            relations: {
+                equipments: true
+            },
+
+            where: {
+                id: query.id,
+                userId: query.userId,
+                type: query.type,
+                equipments: query.equipmentId ? {
+                    id: query.equipmentId
+                } : undefined,
+                date: query.lowerDate ? And(MoreThanOrEqual(query.lowerDate), LessThanOrEqual(query.higherDate)) : undefined
+            }
+        })
+
+        return queryResult
     }
 }

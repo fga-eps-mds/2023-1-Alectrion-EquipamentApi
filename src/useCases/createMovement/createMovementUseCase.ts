@@ -1,15 +1,11 @@
-import { Unit } from '../../domain/entities/unit'
 import { Equipment } from '../../domain/entities/equipment'
 import { Movement, Types } from '../../domain/entities/movement'
-import { Borrow } from '../../domain/entities/borrow'
-import { Dismiss } from '../../domain/entities/dismiss'
-import { Ownership } from '../../domain/entities/ownership'
 
 import { UseCase, UseCaseReponse } from './../protocol/useCase'
 
-import { EquipmentRepository } from '../../repository/equipamentRepository'
-import { UnitRepository } from '../../repository/unitRepository'
-import { MovementRepository } from '../../repository/movementRepository'
+import { EquipmentRepositoryProtocol } from '../../repository/protocol/equipmentRepositoryProtocol'
+import { UnitRepositoryProcol as UnitRepositoryProtocol } from '../../repository/protocol/unitRepositoryProtocol'
+import { MovementRepositoryProtocol } from '../../repository/protocol/movementRepositoryProtocol'
 
 export type CreateMovementUseCaseData = {
     userid: string
@@ -64,9 +60,9 @@ export class InvalidEquipmentError extends Error {
 
 export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData, Movement> {
     constructor(
-        private readonly equipmentRepository: EquipmentRepository,
-        private readonly unitRepository: UnitRepository,
-        private readonly movementRepository: MovementRepository
+        private readonly equipmentRepository: EquipmentRepositoryProtocol,
+        private readonly unitRepository: UnitRepositoryProtocol,
+        private readonly movementRepository: MovementRepositoryProtocol
     ) {}
 
     private areFieldsNull(data: CreateMovementUseCaseData): boolean {
