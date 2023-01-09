@@ -1,7 +1,6 @@
 import { Equipment } from './equipment'
 import { OrderService } from './order-service'
-import { Borrow } from './borrow'
-import { Ownership } from './ownership'
+import { Movement } from './movement'
 
 export type Unit = {
   id?: string
@@ -18,9 +17,9 @@ export type Unit = {
 
   equipments?: Equipment[]
 
-  borrows?: Borrow[]
+  borrows?: Movement[]
 
-  ownershipSources?: Ownership[]
+  ownershipSources?: Movement[]
 
-  ownershipDestinations?: Ownership[]
+  ownershipDestinations?: Movement[]
 }

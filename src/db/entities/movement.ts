@@ -3,9 +3,11 @@ import {
     Column,
     Entity,
     ManyToMany,
-    JoinTable
+    JoinTable,
+    ManyToOne
   } from 'typeorm'
 import { Equipment } from './equipment'
+import { Unit } from './unit'
 
 export enum Types {
   Borrow = 0,
@@ -30,10 +32,21 @@ export class Movement {
   })
   type: Types
 
+  @Column({
+    nullable: true
+  })
+  description?: string
+
   @ManyToMany(() => Equipment, {
     cascade: true
   })
   @JoinTable()
   equipments: Equipment[]
+
+  @ManyToOne(() => Unit, (unit) => unit.borrows)
+  destination?: Unit
+
+  @ManyToOne(() => Unit, (unit) => unit.ownershipSources)
+  source?: Unit
 }
   

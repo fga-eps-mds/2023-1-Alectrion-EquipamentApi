@@ -1,4 +1,5 @@
 import { Equipment } from './equipment'
+import { Unit } from './unit'
 
 export enum Types {
     Borrow = 0,
@@ -16,4 +17,10 @@ export type Movement = {
     equipments: Equipment[]
 
     type: Number
+
+    description?: string
+
+    destination?: Unit
+
+    source?: Unit
 }

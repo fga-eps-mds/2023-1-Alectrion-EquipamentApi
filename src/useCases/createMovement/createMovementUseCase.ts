@@ -135,7 +135,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
                 error: new InvalidEquipmentError()
             }
 
-        const movement = {
+        const movement : Movement = {
             id: '-1',
             date: new Date(),
             userId: data.userid,
@@ -155,11 +155,9 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
                         error: new InvalidDestinationError()
                     }
 
-                result = await this.movementRepository.create(movement, {
-                    id: '-1',
-                    movement,
-                    destination
-                })
+                movement.destination = destination
+
+                result = await this.movementRepository.create(movement)
                 break
             }
 
@@ -170,14 +168,9 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
                         error: new InvalidStatus()
                     }
                 
-                result = await this.movementRepository.create(movement, {
-                    dismiss: {
-                        id: '-1',
-                        movement,
-                        description: data.description
-                    },
-                    status: data.status
-                })
+                movement.description = data.description
+                
+                result = await this.movementRepository.create(movement, data.status)
                 break
             }
 
@@ -197,12 +190,10 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
                         error: new InvalidDestinationError()
                     }
 
-                result = await this.movementRepository.create(movement, {
-                    id: '-1',
-                    movement,
-                    source,
-                    destination
-                })
+                movement.source = source
+                movement.destination = destination
+
+                result = await this.movementRepository.create(movement)
                 break
             }
         }
