@@ -89,7 +89,9 @@ export class MovementRepository implements MovementRepositoryProtocol {
     async genericFind(query: Query): Promise<Movement[]> {
         const queryResult = await this.movementRepository.find({
             relations: {
-                equipments: true
+                equipments: true,
+                destination: true,
+                source: true
             },
             where: {
                 id: query.id,
