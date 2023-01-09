@@ -1,5 +1,6 @@
 import { Equipment } from '../../domain/entities/equipment'
 import { Movement, Types } from '../../domain/entities/movement'
+import { Status as EquipmentStatus } from '../../domain/entities/equipamentEnum/status'
 
 import { UseCase, UseCaseReponse } from './../protocol/useCase'
 
@@ -14,6 +15,7 @@ export type CreateMovementUseCaseData = {
     description?: string
     source?: string
     destination?: string
+    status?: EquipmentStatus
 }
 
 export class NullFieldsError extends Error {
@@ -58,6 +60,13 @@ export class InvalidEquipmentError extends Error {
     }
 }
 
+export class InvalidStatus extends Error {
+    constructor() {
+        super('Status para baixa inválido.')
+        this.name = 'InvalidStatus'
+    }
+}
+
 export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData, Movement> {
     constructor(
         private readonly equipmentRepository: EquipmentRepositoryProtocol,
@@ -91,6 +100,10 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
         if(equipments.includes(null))
             return true
         return false
+    }
+
+    private isStatusInvalid(data: CreateMovementUseCaseData): boolean {
+        return ![EquipmentStatus.DOWNGRADED, EquipmentStatus.TECHNICAL_RESERVE].includes(data.status)
     }
 
     async execute(data: CreateMovementUseCaseData): Promise<UseCaseReponse<Movement>> {
@@ -151,10 +164,19 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
             }
 
             case Types.Dismiss: {
+                if(this.isStatusInvalid(data))
+                    return {
+                        isSuccess: false,
+                        error: new InvalidStatus()
+                    }
+                
                 result = await this.movementRepository.create(movement, {
-                    id: '-1',
-                    movement,
-                    description: data.description
+                    dismiss: {
+                        id: '-1',
+                        movement,
+                        description: data.description
+                    },
+                    status: data.status
                 })
                 break
             }

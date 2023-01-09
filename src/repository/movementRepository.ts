@@ -11,8 +11,9 @@ import { Types as MovementTypes, Movement } from '../domain/entities/movement'
 import { Borrow } from '../domain/entities/borrow'
 import { Dismiss } from '../domain/entities/dismiss'
 import { Ownership } from '../domain/entities/ownership'
+import { Status as EquipmentStatus } from '../domain/entities/equipamentEnum/status'
 
-import { MovementRepositoryProtocol, Query } from './protocol/movementRepositoryProtocol'
+import { MovementRepositoryProtocol, Query, DismissParameters } from './protocol/movementRepositoryProtocol'
 
 export class MovementRepository implements MovementRepositoryProtocol {
     private readonly movementRepository
@@ -31,7 +32,14 @@ export class MovementRepository implements MovementRepositoryProtocol {
         this.unitRepository = dataSource.getRepository(UnitEntity)
     }
 
-    async create(movement: Movement, specializedMovementData: Borrow | Dismiss | Ownership): Promise<Movement> {
+    async updateEquipments(equipments: any[], status: EquipmentStatus): Promise<void> {
+        for(let equipment of equipments) {
+            equipment.status = status
+            await this.equipmentRepository.save(equipment)
+        }
+    }
+
+    async create(movement: Movement, specializedMovementData: Borrow | DismissParameters | Ownership): Promise<Movement> {
         const equipments = []
         for(let equipment of movement.equipments) {
             const equipmentEntity = await this.equipmentRepository.findOneBy({
@@ -61,6 +69,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
                     destination
                 })
 
+                await this.updateEquipments(equipments, EquipmentStatus.ACTIVE_LOAN)
                 await this.borrowRepository.save(borrowEntity)
                 break
             }
@@ -69,9 +78,10 @@ export class MovementRepository implements MovementRepositoryProtocol {
                 const dismissEntity = this.dismissRepository.create({
                     id: savedMovementEntity.id,
                     movement: savedMovementEntity,
-                    description: (specializedMovementData as Dismiss).description
+                    description: (specializedMovementData as DismissParameters).dismiss.description
                 })
 
+                await this.updateEquipments(equipments, (specializedMovementData as DismissParameters).status)
                 await this.dismissRepository.save(dismissEntity)
                 break
             }
@@ -92,6 +102,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
                     source
                 })
 
+                await this.updateEquipments(equipments, EquipmentStatus.ACTIVE)
                 await this.ownershipRepository.save(ownershipEntity)
                 break
             }
