@@ -60,10 +60,10 @@ export class InvalidEquipmentError extends Error {
     }
 }
 
-export class InvalidStatus extends Error {
+export class InvalidStatusError extends Error {
     constructor() {
         super('Status para baixa inválido.')
-        this.name = 'InvalidStatus'
+        this.name = 'InvalidStatusError'
     }
 }
 
@@ -165,7 +165,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
                 if(this.isStatusInvalid(data))
                     return {
                         isSuccess: false,
-                        error: new InvalidStatus()
+                        error: new InvalidStatusError()
                     }
                 
                 movement.description = data.description

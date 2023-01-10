@@ -1,0 +1,404 @@
+import { MockProxy, mock } from 'jest-mock-extended'
+
+import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
+import { UnitRepositoryProcol as UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
+import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
+
+import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationError, InvalidEquipmentError, InvalidSourceError, InvalidStatusError, InvalidTypeError, NullFieldsError } from '../src/useCases/createMovement/createMovementUseCase'
+
+import { Equipment } from '../src/domain/entities/equipment'
+import { Type } from '../src/domain/entities/equipamentEnum/type'
+import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Unit } from '../src/domain/entities/unit'
+import { Movement } from '../src/domain/entities/movement'
+
+describe('Create movement use case', () => {
+    let equipmentRepository : MockProxy<EquipmentRepositoryProtocol>
+    let unitRepository : MockProxy<UnitRepositoryProtocol>
+    let movementRepository : MockProxy<MovementRepositoryProtocol>
+
+    let createMovementUseCase : CreateMovementUseCase
+
+    let mockedEquipment // Should have : Equipment, but the Equipment repository is badly implemented and typed :)
+
+    const mockedUnitOne : Unit = {
+		"id": "f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2",
+		"name": "Conselho Superior da Polícia Civil",
+		"localization": "Goiânia"
+	}
+
+    const mockedUnitTwo : Unit = {
+		"id": "3be628fa-d55b-4b12-b975-816542e75b48",
+		"name": "Delegacia-Geral Adjunta",
+		"localization": "Goiânia"
+	}
+
+    beforeEach(() => {
+        mockedEquipment = {
+            id: "c266c9d5-4e91-4c2e-9c38-fb8710d7e896",
+            tippingNumber: "123123",
+            serialNumber: "123",
+            type: Type.NOBREAK,
+            status: Status.ACTIVE,
+            model: "Xiaomi XT",
+            description: "",
+            initialUseDate: "2022-12-12",
+            acquisitionDate: new Date("2022-12-12"),
+            invoiceNumber: "123",
+            power: "220",
+            createdAt: new Date("2023-01-09T21:31:56.015Z"),
+            updatedAt: new Date("2023-01-09T21:49:26.057Z")
+        }
+
+        equipmentRepository = mock()
+        unitRepository = mock()
+        movementRepository = mock()
+
+        createMovementUseCase = new CreateMovementUseCase(equipmentRepository, unitRepository, movementRepository)
+    })
+
+    test('should create a borrow movement', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            type: 0,
+            destination: mockedUnitOne
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 0,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitOne)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', true)
+        expect(result).toHaveProperty('data')
+        expect(result.data).toHaveProperty('id')
+        expect(result.data).toHaveProperty('type', 0)
+        expect(result.data).toHaveProperty('equipments')
+        expect(result.data.equipments).toBeInstanceOf(Array)
+        expect(result.data.equipments).toHaveLength(1)
+        expect(result.data.equipments[0]).toHaveProperty('status', Status.ACTIVE_LOAN)
+        expect(result.data).toHaveProperty('destination')
+    })
+
+    test('should create a dismiss movement with no description and technical reserve status', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.TECHNICAL_RESERVE}],
+            type: 1
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 1,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
+            status: Status.TECHNICAL_RESERVE
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', true)
+        expect(result).toHaveProperty('data')
+        expect(result.data).toHaveProperty('id')
+        expect(result.data).toHaveProperty('type', 1)
+        expect(result.data).toHaveProperty('equipments')
+        expect(result.data.equipments).toBeInstanceOf(Array)
+        expect(result.data.equipments).toHaveLength(1)
+        expect(result.data.equipments[0]).toHaveProperty('status', Status.TECHNICAL_RESERVE)
+        expect(result.data).not.toHaveProperty('description')
+    })
+
+    test('should create a dismiss movement with a description and downgraded status', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.DOWNGRADED}],
+            type: 1,
+            description: 'Caiu no chão e ficou só o caco.'
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 1,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
+            status: Status.DOWNGRADED,
+            description: 'Caiu no chão e ficou só o caco.'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', true)
+        expect(result).toHaveProperty('data')
+        expect(result.data).toHaveProperty('id')
+        expect(result.data).toHaveProperty('type', 1)
+        expect(result.data).toHaveProperty('equipments')
+        expect(result.data.equipments).toBeInstanceOf(Array)
+        expect(result.data.equipments).toHaveLength(1)
+        expect(result.data.equipments[0]).toHaveProperty('status', Status.DOWNGRADED)
+        expect(result.data).toHaveProperty('description', 'Caiu no chão e ficou só o caco.')
+    })
+
+    test('should create an ownership movement', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE}],
+            type: 2,
+            destination: mockedUnitOne,
+            source: mockedUnitTwo
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 2,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
+            source: '3be628fa-d55b-4b12-b975-816542e75b48'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitTwo).mockResolvedValueOnce(mockedUnitOne)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', true)
+        expect(result).toHaveProperty('data')
+        expect(result.data).toHaveProperty('id')
+        expect(result.data).toHaveProperty('type', 2)
+        expect(result.data).toHaveProperty('equipments')
+        expect(result.data.equipments).toBeInstanceOf(Array)
+        expect(result.data.equipments).toHaveLength(1)
+        expect(result.data.equipments[0]).toHaveProperty('status', Status.ACTIVE)
+        expect(result.data).toHaveProperty('destination')
+        expect(result.data).toHaveProperty('source')
+    })
+
+    test('should not create a movement with missing obligatory fields', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            type: 0,
+            destination: mockedUnitOne
+        }
+
+        const data : CreateMovementUseCaseData = {
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 0,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
+            userid: ''
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitOne)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', false)
+        expect(result).not.toHaveProperty('data')
+        expect(result).toHaveProperty('error')
+        expect(result.error).toBeInstanceOf(NullFieldsError)
+    })
+
+    test('should not create a movement with an invalid type', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            type: 0,
+            destination: mockedUnitOne
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 4,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitOne)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', false)
+        expect(result).not.toHaveProperty('data')
+        expect(result).toHaveProperty('error')
+        expect(result.error).toBeInstanceOf(InvalidTypeError)
+    })
+
+    test('should not create a movement with invalid equipments', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            type: 0,
+            destination: mockedUnitOne
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['heeheehoohoo'],
+            type: 0,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(null)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitOne)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', false)
+        expect(result).not.toHaveProperty('data')
+        expect(result).toHaveProperty('error')
+        expect(result.error).toBeInstanceOf(InvalidEquipmentError)
+    })
+
+    test('should not create a borrow movement with an invalid destination', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            type: 0,
+            destination: mockedUnitOne
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 0,
+            destination: 'piparaparapo'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(null)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', false)
+        expect(result).not.toHaveProperty('data')
+        expect(result).toHaveProperty('error')
+        expect(result.error).toBeInstanceOf(InvalidDestinationError)
+    })
+
+    test('should not create a dismiss movement with an invalid status', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.TECHNICAL_RESERVE}],
+            type: 1
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 1,
+            status: Status.MAINTENANCE
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitOne)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', false)
+        expect(result).not.toHaveProperty('data')
+        expect(result).toHaveProperty('error')
+        expect(result.error).toBeInstanceOf(InvalidStatusError)
+    })
+
+    test('should not create an ownership movement with an invalid destination', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE}],
+            type: 2,
+            destination: mockedUnitOne,
+            source: mockedUnitTwo
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 2,
+            destination: 'piparaparapo',
+            source: '3be628fa-d55b-4b12-b975-816542e75b48'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitTwo).mockResolvedValueOnce(null)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', false)
+        expect(result).not.toHaveProperty('data')
+        expect(result).toHaveProperty('error')
+        expect(result.error).toBeInstanceOf(InvalidDestinationError)
+    })
+
+    test('should not create an ownership movement with an invalid source', async () => {
+        const mockedMovement : Movement = {
+            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            date: new Date(),
+            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: [{...mockedEquipment, status: Status.ACTIVE}],
+            type: 2,
+            destination: mockedUnitOne,
+            source: mockedUnitTwo
+        }
+
+        const data : CreateMovementUseCaseData = {
+            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+            type: 2,
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
+            source: 'piparaparapo'
+        }
+
+        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
+        unitRepository.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce(mockedUnitOne)
+        movementRepository.create.mockResolvedValueOnce(mockedMovement)
+
+        const result = await createMovementUseCase.execute(data)
+
+        expect(result).toHaveProperty('isSuccess', false)
+        expect(result).not.toHaveProperty('data')
+        expect(result).toHaveProperty('error')
+        expect(result.error).toBeInstanceOf(InvalidSourceError)
+    })
+})
