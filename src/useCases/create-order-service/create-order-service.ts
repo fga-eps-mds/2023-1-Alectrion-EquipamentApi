@@ -1,4 +1,5 @@
 import { Status } from '../../domain/entities/equipamentEnum/status'
+import { Status as OStatus } from '../../domain/entities/serviceOrderEnum/status'
 import { History } from '../../domain/entities/history'
 import { OrderService } from '../../domain/entities/order-service'
 import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
@@ -27,6 +28,7 @@ export type CreateOrderServiceUseCaseData = {
   senderName: string
   senderFunctionalNumber: string
   date: string
+  reciverFunctionalNumber: string
 }
 
 export class CreateOrderServiceUseCase
@@ -108,7 +110,10 @@ export class CreateOrderServiceUseCase
         equipmentSnapshot: equipment,
         senderName: data.senderName,
         senderFunctionalNumber: data.senderFunctionalNumber,
-        date: new Date(data.date)
+        date: new Date(data.date),
+        receiverFunctionalNumber: data.reciverFunctionalNumber,
+        status: OStatus.MAINTENANCE,
+        technicians: []
       })
 
       await this.updateEquipmentRepository.updateEquipment(equipment.id, {

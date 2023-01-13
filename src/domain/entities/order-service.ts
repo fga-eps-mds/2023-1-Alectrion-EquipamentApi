@@ -1,6 +1,7 @@
 import { History } from './history'
 import { Equipment } from './equipment'
 import { Unit } from './unit'
+import { Status } from './serviceOrderEnum/status'
 
 export type OrderService = {
   id: string
@@ -28,4 +29,10 @@ export type OrderService = {
   history: History
 
   destination: Unit
+
+  receiverFunctionalNumber: string
+
+  technicians?: string[]
+
+  status: Status
 }

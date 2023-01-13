@@ -1,5 +1,5 @@
-import { OrderService } from "../../domain/entities/order-service"
+import { OrderService } from '../../domain/entities/order-service'
 
-export interface OrderServiceRepositoryProtocol{
-    findOrderServiceGeneric(query: any): Promise<OrderService[] | undefined>
+export interface OrderServiceRepositoryProtocol {
+  findOrderServiceGeneric(query: any): Promise<OrderService[] | undefined>
 }

@@ -20,6 +20,7 @@ export type CreateOrderServiceHttpRequest = {
   senderFunctionalNumber: string
   description: string
   date: string
+  recieverFunctionalNumber: string
 }
 
 export class CreateOrderServiceController extends Controller {
@@ -37,7 +38,8 @@ export class CreateOrderServiceController extends Controller {
       senderFunctionalNumber: params.senderFunctionalNumber,
       date: params.date,
       description: params.description,
-      receiverName: params.receiverName
+      receiverName: params.receiverName,
+      reciverFunctionalNumber: params.recieverFunctionalNumber
     })
 
     if (
