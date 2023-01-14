@@ -17,10 +17,13 @@ export class default1664153249772 implements MigrationInterface {
       `CREATE TABLE "unit" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "localization" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_4252c4be609041e559f0c80f58a" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "order_service" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "date" date NOT NULL, "description" character varying, "author_id" uuid NOT NULL, "receiver_name" character varying NOT NULL, "sender" character varying NOT NULL, "equipment_snapshot" jsonb NOT NULL, "sender_functional_number" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "equipmentId" uuid, "historyId" uuid, "destinationId" uuid, "recieverFunctionalNumber" character varying, "status" "public"."order_service_type_enum" NOT NULL, "technicians" character varying [],  CONSTRAINT "PK_d33d62cc4f08f6bd10dd7a68f65" PRIMARY KEY ("id"))`
+      `CREATE TYPE "public"."equipment_type_enum" AS ENUM('CPU', 'NOBREAK', 'SCANNER', 'WEBCAM', 'MONITOR', 'STABILIZER')`
     )
     await queryRunner.query(
-      `CREATE TYPE "public"."equipment_type_enum" AS ENUM('CPU', 'NOBREAK', 'SCANNER', 'WEBCAM', 'MONITOR', 'STABILIZER')`
+      `CREATE TYPE "public"."order_service_type_enum" AS ENUM('MAINTENANCE', 'WARRANTY', 'CONCLUDED', 'CANCELED')`
+    )
+    await queryRunner.query(
+      `CREATE TABLE "order_service" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "date" date NOT NULL, "description" character varying, "author_id" uuid, "receiver_name" character varying NOT NULL, "sender" character varying NOT NULL, "equipment_snapshot" jsonb NOT NULL, "sender_functional_number" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "equipmentId" uuid, "historyId" uuid, "destinationId" uuid, "recieverName" character varying, "recieverFunctionalNumber" character varying, "status" "public"."order_service_type_enum", "technicians" character varying [],  CONSTRAINT "PK_d33d62cc4f08f6bd10dd7a68f65" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TYPE "public"."equipment_status_enum" AS ENUM('ACTIVE', 'ACTIVE_LOAN', 'DOWNGRADED', 'MAINTENANCE', 'TECHNICAL_RESERVE')`
@@ -30,9 +33,6 @@ export class default1664153249772 implements MigrationInterface {
     )
     await queryRunner.query(
       `CREATE TYPE "public"."equipment_storage_type_enum" AS ENUM('HD', 'SSD')`
-    )
-    await queryRunner.query(
-      `CREATE TYPE "public"."order_service_type_enum" AS ENUM('MAINTENANCE', 'WARRANTY', 'CONCLUDED', 'CANCELED')`
     )
     await queryRunner.query(
       `CREATE TABLE "equipment" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "tipping_number" character varying NOT NULL, "serial_number" character varying NOT NULL, "type" "public"."equipment_type_enum" NOT NULL, "status" "public"."equipment_status_enum" NOT NULL, "model" character varying NOT NULL, "description" character varying NOT NULL, "initial_use_date" character varying NOT NULL, "acquisition_date" date NOT NULL, "screen_size" character varying, "invoice_number" character varying NOT NULL, "power" character varying, "screen_type" "public"."equipment_screen_type_enum", "processor" character varying, "storage_type" "public"."equipment_storage_type_enum", "storage_amount" character varying, "ram_size" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "brandId" uuid, "acquisitionId" uuid, "unitId" uuid, CONSTRAINT "UQ_fbc3cbdf5d7779c6aa431183ba2" UNIQUE ("tipping_number"), CONSTRAINT "PK_0722e1b9d6eb19f5874c1678740" PRIMARY KEY ("id"))`

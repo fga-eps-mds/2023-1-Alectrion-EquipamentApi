@@ -19,7 +19,10 @@ export class CreateOrderServiceTypeOrmRepository {
       equipment: data.equipment,
       equipmentSnapshot: data.equipmentSnapshot,
       receiverName: data.receiverName,
-      senderFunctionalNumber: data.senderFunctionalNumber
+      senderFunctionalNumber: data.senderFunctionalNumber,
+      receiverFunctionalNumber: data.receiverFunctionalNumber,
+      status: data.status,
+      technicians: data.technicians
     })
 
     await this.historyRepository.save(result)
