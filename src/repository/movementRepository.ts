@@ -41,6 +41,10 @@ export class MovementRepository implements MovementRepositoryProtocol {
             userId: movement.userId,
             type: movement.type,
             description: movement.description,
+            inChargeName: movement.inChargeName,
+            inChargeRole: movement.inChargeRole,
+            chiefName: movement.chiefName,
+            chiefRole: movement.chiefRole,
             equipments
         })
 

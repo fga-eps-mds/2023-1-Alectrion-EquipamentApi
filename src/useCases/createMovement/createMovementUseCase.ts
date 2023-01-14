@@ -161,7 +161,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
             case Types.Borrow: {
                 const destination = await this.unitRepository.findOne(data.destination)
                 
-                if(this.isPersonInChargeInvalid || this.isChiefInvalid)
+                if(this.isPersonInChargeInvalid(data) || this.isChiefInvalid(data))
                     return {
                         isSuccess: false,
                         error: new NullFieldsError()
@@ -196,7 +196,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
                 const source = await this.unitRepository.findOne(data.source)
                 const destination = await this.unitRepository.findOne(data.destination)
 
-                if(this.isPersonInChargeInvalid || this.isChiefInvalid)
+                if(this.isPersonInChargeInvalid(data) || this.isChiefInvalid(data))
                     return {
                         isSuccess: false,
                         error: new NullFieldsError()
