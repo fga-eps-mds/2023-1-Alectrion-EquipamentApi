@@ -23,4 +23,12 @@ export type Movement = {
     destination?: Unit
 
     source?: Unit
+
+    inChargeName?: string
+
+    inChargeRole?: string
+
+    chiefName?: string
+
+    chiefRole?: string
 }

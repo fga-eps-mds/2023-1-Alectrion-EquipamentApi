@@ -16,6 +16,10 @@ export type CreateMovementUseCaseData = {
     source?: string
     destination?: string
     status?: EquipmentStatus
+    inchargename?: string
+    inchargerole?: string
+    chiefname?: string
+    chiefrole?: string
 }
 
 export class NullFieldsError extends Error {
@@ -106,6 +110,14 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
         return ![EquipmentStatus.DOWNGRADED, EquipmentStatus.TECHNICAL_RESERVE].includes(data.status)
     }
 
+    private isPersonInChargeInvalid(data: CreateMovementUseCaseData): boolean {
+        return !(data.inchargename && data.inchargerole && data.inchargename.length && data.inchargerole.length)
+    }
+
+    private isChiefInvalid(data: CreateMovementUseCaseData): boolean {
+        return !(data.chiefname && data.chiefrole && data.chiefname.length && data.chiefrole.length)
+    }
+
     async execute(data: CreateMovementUseCaseData): Promise<UseCaseReponse<Movement>> {
         if(this.areFieldsNull(data))
             return {
@@ -148,6 +160,12 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
         switch(data.type) {
             case Types.Borrow: {
                 const destination = await this.unitRepository.findOne(data.destination)
+                
+                if(this.isPersonInChargeInvalid || this.isChiefInvalid)
+                    return {
+                        isSuccess: false,
+                        error: new NullFieldsError()
+                    }
 
                 if(this.isUnitValid(destination))
                     return {
@@ -177,6 +195,12 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
             default: {
                 const source = await this.unitRepository.findOne(data.source)
                 const destination = await this.unitRepository.findOne(data.destination)
+
+                if(this.isPersonInChargeInvalid || this.isChiefInvalid)
+                    return {
+                        isSuccess: false,
+                        error: new NullFieldsError()
+                    }
 
                 if(this.isUnitValid(source))
                     return {
