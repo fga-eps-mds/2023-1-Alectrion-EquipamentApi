@@ -24,5 +24,6 @@ routes.get('/getAllBrands', adapt(makeFindAllBrandsController()))
 routes.get('/getAllAcquisitions', adapt(makeFindAllAcquisitionsController()))
 routes.get('/listOrderSerice', adapt(makeFindOrderServiceController()))
 routes.get('/listOne', adapt(makeFindOneEquipmentController()))
+routes.put('/updateOrderSerice', adapt())
 
 export default routes
