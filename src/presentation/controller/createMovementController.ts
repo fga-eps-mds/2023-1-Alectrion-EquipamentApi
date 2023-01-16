@@ -1,5 +1,5 @@
 import { Movement } from '../../domain/entities/movement'
-import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationError, InvalidEquipmentError, InvalidSourceError, InvalidTypeError, InvalidUserError, NullFieldsError, InvalidStatus } from '../../useCases/createMovement/createMovementUseCase'
+import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationError, InvalidEquipmentError, InvalidSourceError, InvalidTypeError, InvalidUserError, NullFieldsError, InvalidStatusError } from '../../useCases/createMovement/createMovementUseCase'
 
 import { Controller } from '../protocols/controller'
 import { badRequest, HttpResponse, ok, serverError, notFound } from '../helpers'
@@ -16,7 +16,7 @@ export class CreateMovementController extends Controller {
 
         if(response.isSuccess && response.data)
             return ok(response.data)
-        if(response.error instanceof NullFieldsError || response.error instanceof InvalidTypeError || response.error instanceof InvalidEquipmentError || response.error instanceof InvalidStatus)
+        if(response.error instanceof NullFieldsError || response.error instanceof InvalidTypeError || response.error instanceof InvalidEquipmentError || response.error instanceof InvalidStatusError)
             return badRequest(response.error)
         if(response.error instanceof InvalidDestinationError || response.error instanceof InvalidSourceError || response.error instanceof InvalidUserError)
             return notFound(response.error)
