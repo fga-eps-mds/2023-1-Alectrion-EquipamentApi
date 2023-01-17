@@ -48,7 +48,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             },
             {
                 id: "8253fbbd-eb19-42a6-86e6-f45126921e37",
@@ -58,7 +62,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             }
         ]
 
@@ -88,7 +96,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             },
             {
                 id: "8253fbbd-eb19-42a6-86e6-f45126921e37",
@@ -98,7 +110,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             }
         ]
 
@@ -138,7 +154,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             },
             {
                 id: "8253fbbd-eb19-42a6-86e6-f45126921e37",
@@ -148,7 +168,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             }
         ]
 
@@ -178,7 +202,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             },
             {
                 id: "8253fbbd-eb19-42a6-86e6-f45126921e37",
@@ -188,7 +216,11 @@ describe('Find movements use case', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             }
         ]
 

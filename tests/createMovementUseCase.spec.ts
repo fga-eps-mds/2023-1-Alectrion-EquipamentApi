@@ -109,7 +109,11 @@ describe('Create movement use case', () => {
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: [{...mockedEquipment, status: Status.TECHNICAL_RESERVE}],
-            type: 1
+            type: 1,
+            inChargeName: 'José Matheus',
+            inChargeRole: 'Sargento',
+            chiefName: 'Matheus Texeira',
+            chiefRole: 'Delegado'
         }
 
         const data : CreateMovementUseCaseData = {
@@ -117,7 +121,11 @@ describe('Create movement use case', () => {
             equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
             type: 1,
             destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
-            status: Status.TECHNICAL_RESERVE
+            status: Status.TECHNICAL_RESERVE,
+            inchargename: 'José Matheus',
+            inchargerole: 'Sargento',
+            chiefname: 'Matheus Texeira',
+            chiefrole: 'Delegado'
         }
 
         equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
@@ -134,6 +142,10 @@ describe('Create movement use case', () => {
         expect(result.data.equipments).toHaveLength(1)
         expect(result.data.equipments[0]).toHaveProperty('status', Status.TECHNICAL_RESERVE)
         expect(result.data).not.toHaveProperty('description')
+        expect(result.data).toHaveProperty('inChargeName', 'José Matheus')
+        expect(result.data).toHaveProperty('inChargeRole', 'Sargento')
+        expect(result.data).toHaveProperty('chiefName', 'Matheus Texeira')
+        expect(result.data).toHaveProperty('chiefRole', 'Delegado')
     })
 
     test('should create a dismiss movement with a description and downgraded status', async () => {
@@ -143,7 +155,11 @@ describe('Create movement use case', () => {
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: [{...mockedEquipment, status: Status.DOWNGRADED}],
             type: 1,
-            description: 'Caiu no chão e ficou só o caco.'
+            description: 'Caiu no chão e ficou só o caco.',
+            inChargeName: 'José Matheus',
+            inChargeRole: 'Sargento',
+            chiefName: 'Matheus Texeira',
+            chiefRole: 'Delegado'
         }
 
         const data : CreateMovementUseCaseData = {
@@ -152,7 +168,11 @@ describe('Create movement use case', () => {
             type: 1,
             destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
             status: Status.DOWNGRADED,
-            description: 'Caiu no chão e ficou só o caco.'
+            description: 'Caiu no chão e ficou só o caco.',
+            inchargename: 'José Matheus',
+            inchargerole: 'Sargento',
+            chiefname: 'Matheus Texeira',
+            chiefrole: 'Delegado'
         }
 
         equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
@@ -169,6 +189,10 @@ describe('Create movement use case', () => {
         expect(result.data.equipments).toHaveLength(1)
         expect(result.data.equipments[0]).toHaveProperty('status', Status.DOWNGRADED)
         expect(result.data).toHaveProperty('description', 'Caiu no chão e ficou só o caco.')
+        expect(result.data).toHaveProperty('inChargeName', 'José Matheus')
+        expect(result.data).toHaveProperty('inChargeRole', 'Sargento')
+        expect(result.data).toHaveProperty('chiefName', 'Matheus Texeira')
+        expect(result.data).toHaveProperty('chiefRole', 'Delegado')
     })
 
     test('should create an ownership movement', async () => {
@@ -227,14 +251,22 @@ describe('Create movement use case', () => {
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
             type: 0,
-            destination: mockedUnitOne
+            destination: mockedUnitOne,
+            inChargeName: 'José Matheus',
+            inChargeRole: 'Sargento',
+            chiefName: 'Matheus Texeira',
+            chiefRole: 'Delegado'
         }
 
         const data : CreateMovementUseCaseData = {
             equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
             type: 0,
             destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
-            userid: ''
+            userid: '',
+            inchargename: 'José Matheus',
+            inchargerole: 'Sargento',
+            chiefname: 'Matheus Texeira',
+            chiefrole: 'Delegado'
         }
 
         equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
@@ -256,14 +288,22 @@ describe('Create movement use case', () => {
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
             type: 0,
-            destination: mockedUnitOne
+            destination: mockedUnitOne,
+            inChargeName: 'José Matheus',
+            inChargeRole: 'Sargento',
+            chiefName: 'Matheus Texeira',
+            chiefRole: 'Delegado'
         }
 
         const data : CreateMovementUseCaseData = {
             userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
             type: 4,
-            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2'
+            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
+            inchargename: 'José Matheus',
+            inchargerole: 'Sargento',
+            chiefname: 'Matheus Texeira',
+            chiefrole: 'Delegado'
         }
 
         equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
@@ -358,14 +398,22 @@ describe('Create movement use case', () => {
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: [{...mockedEquipment, status: Status.TECHNICAL_RESERVE}],
-            type: 1
+            type: 1,
+            inChargeName: 'José Matheus',
+            inChargeRole: 'Sargento',
+            chiefName: 'Matheus Texeira',
+            chiefRole: 'Delegado'
         }
 
         const data : CreateMovementUseCaseData = {
             userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
             type: 1,
-            status: Status.MAINTENANCE
+            status: Status.MAINTENANCE,
+            inchargename: 'José Matheus',
+            inchargerole: 'Sargento',
+            chiefname: 'Matheus Texeira',
+            chiefrole: 'Delegado'
         }
 
         equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)

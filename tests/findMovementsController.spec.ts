@@ -46,7 +46,11 @@ describe('Create movement controller', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             },
             {
                 id: "8253fbbd-eb19-42a6-86e6-f45126921e37",
@@ -56,7 +60,11 @@ describe('Create movement controller', () => {
                 description: "broke it lmao",
                 equipments: [mockedEquipment],
                 destination: null,
-                source: null
+                source: null,
+                inChargeName: 'José Matheus',
+                inChargeRole: 'Sargento',
+                chiefName: 'Matheus Texeira',
+                chiefRole: 'Delegado'
             }
         ]
 

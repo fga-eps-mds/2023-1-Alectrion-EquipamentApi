@@ -84,7 +84,11 @@ describe('Create movement controller', () => {
             userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
             type: 1,
-            status: Status.MAINTENANCE
+            status: Status.MAINTENANCE,
+            inchargename: 'José Matheus',
+            inchargerole: 'Sargento',
+            chiefname: 'Matheus Texeira',
+            chiefrole: 'Delegado'
         }
 
         createMovementUseCase.execute.mockResolvedValue({

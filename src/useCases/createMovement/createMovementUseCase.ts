@@ -13,13 +13,13 @@ export type CreateMovementUseCaseData = {
     equipments: string[]
     type: Number
     description?: string
+    inchargename: string
+    inchargerole: string
+    chiefname: string
+    chiefrole: string
     source?: string
     destination?: string
     status?: EquipmentStatus
-    inchargename?: string
-    inchargerole?: string
-    chiefname?: string
-    chiefrole?: string
 }
 
 export class NullFieldsError extends Error {
@@ -79,7 +79,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
     ) {}
 
     private areFieldsNull(data: CreateMovementUseCaseData): boolean {
-        if(data.userid == '' || !data.equipments.length)
+        if(data.userid == '' || !data.equipments.length || !(data.inchargename && data.inchargerole && data.inchargename.length && data.inchargerole.length))
             return true
         return false
     }
@@ -108,14 +108,6 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
 
     private isStatusInvalid(data: CreateMovementUseCaseData): boolean {
         return ![EquipmentStatus.DOWNGRADED, EquipmentStatus.TECHNICAL_RESERVE].includes(data.status)
-    }
-
-    private isPersonInChargeInvalid(data: CreateMovementUseCaseData): boolean {
-        return !(data.inchargename && data.inchargerole && data.inchargename.length && data.inchargerole.length)
-    }
-
-    private isChiefInvalid(data: CreateMovementUseCaseData): boolean {
-        return !(data.chiefname && data.chiefrole && data.chiefname.length && data.chiefrole.length)
     }
 
     async execute(data: CreateMovementUseCaseData): Promise<UseCaseReponse<Movement>> {
@@ -152,7 +144,11 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
             date: new Date(),
             userId: data.userid,
             equipments: equipments,
-            type: data.type
+            type: data.type,
+            inChargeName: data.inchargename,
+            inChargeRole: data.inchargerole,
+            chiefName: data.chiefname,
+            chiefRole: data.chiefrole
         };
 
         let result;
@@ -160,12 +156,6 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
         switch(data.type) {
             case Types.Borrow: {
                 const destination = await this.unitRepository.findOne(data.destination)
-                
-                if(this.isPersonInChargeInvalid(data) || this.isChiefInvalid(data))
-                    return {
-                        isSuccess: false,
-                        error: new NullFieldsError()
-                    }
 
                 if(this.isUnitValid(destination))
                     return {
@@ -195,12 +185,6 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
             default: {
                 const source = await this.unitRepository.findOne(data.source)
                 const destination = await this.unitRepository.findOne(data.destination)
-
-                if(this.isPersonInChargeInvalid(data) || this.isChiefInvalid(data))
-                    return {
-                        isSuccess: false,
-                        error: new NullFieldsError()
-                    }
 
                 if(this.isUnitValid(source))
                     return {

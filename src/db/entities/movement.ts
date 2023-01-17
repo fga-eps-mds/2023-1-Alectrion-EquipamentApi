@@ -37,25 +37,17 @@ export class Movement {
   })
   description?: string
   
-  @Column({
-    nullable: true
-  })
-  inChargeName?: string
+  @Column()
+  inChargeName: string
 
-  @Column({
-    nullable: true
-  })
-  inChargeRole?: string
+  @Column()
+  inChargeRole: string
 
-  @Column({
-    nullable: true
-  })
-  chiefName?: string
+  @Column()
+  chiefName: string
 
-  @Column({
-    nullable: true
-  })
-  chiefRole?: string
+  @Column()
+  chiefRole: string
 
   @ManyToMany(() => Equipment, {
     cascade: true

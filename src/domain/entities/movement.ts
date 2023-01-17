@@ -18,17 +18,17 @@ export type Movement = {
 
     type: Number
 
+    inChargeName: string
+
+    inChargeRole: string
+
+    chiefName: string
+
+    chiefRole: string
+
     description?: string
 
     destination?: Unit
 
     source?: Unit
-
-    inChargeName?: string
-
-    inChargeRole?: string
-
-    chiefName?: string
-
-    chiefRole?: string
 }
