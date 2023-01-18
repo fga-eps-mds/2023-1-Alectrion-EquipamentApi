@@ -15,6 +15,6 @@ export type Query = {
 export interface MovementRepositoryProtocol {
   create(movement: Movement, equipmentStatus?: EquipmentStatus): Promise<Movement>
   genericFind(query: Query): Promise<Movement[]>
+  deleteOne(id: string): Promise<boolean>
 //  updateOne(equipmentData: any): Promise<boolean>
-//  deleteOne(movementId: string): Promise<boolean>
 }

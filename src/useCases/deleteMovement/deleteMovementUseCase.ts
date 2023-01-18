@@ -15,6 +15,13 @@ export class NullFieldsError extends Error {
     }
 }
 
+export class InvalidMovementError extends Error {
+    constructor() {
+        super('ID fornecido inválido.')
+        this.name = 'InvalidMovementError'
+    }
+}
+
 export class TimeLimitError extends Error {
     constructor() {
         super('Tempo limite para operação excedido.')
@@ -40,11 +47,19 @@ export class DeleteMovementUseCase implements UseCase<DeleteMovementUseCaseData,
 
         const timeLimit = 5 * 60 * 1000
 
-        const movement : Movement = await this.movementRepository.genericFind({
+        const result : Movement[] = await this.movementRepository.genericFind({
             id: data.id,
             page: 1,
             resultQuantity: 1
-        })[0]
+        })
+
+        if(result.length < 1)
+            return {
+                isSuccess: false,
+                error: new InvalidMovementError()
+            }
+
+        const movement : Movement = result[0]
 
         const now = new Date()
 
