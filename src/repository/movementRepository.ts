@@ -115,8 +115,9 @@ export class MovementRepository implements MovementRepositoryProtocol {
 
     async deleteOne(id: string): Promise<boolean> {
         const result = await this.movementRepository.delete(id)
-        console.log(result)
-
-        return true
+        
+        if(result.affect == 1)
+            return true
+        return false
     }
 }

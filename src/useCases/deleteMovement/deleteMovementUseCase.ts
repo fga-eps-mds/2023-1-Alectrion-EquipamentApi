@@ -49,7 +49,7 @@ export class DeleteMovementUseCase implements UseCase<DeleteMovementUseCaseData,
 
         const result : Movement[] = await this.movementRepository.genericFind({
             id: data.id,
-            page: 1,
+            page: 0,
             resultQuantity: 1
         })
 
@@ -69,6 +69,14 @@ export class DeleteMovementUseCase implements UseCase<DeleteMovementUseCaseData,
                 error: new TimeLimitError()
             }
 
+        const wasDeleteSuccessful = this.movementRepository.deleteOne(data.id)
+
+        if(wasDeleteSuccessful)
+            return {
+                isSuccess: false,
+                error: new Error()
+            }
+        
         return {
             isSuccess: true
         }

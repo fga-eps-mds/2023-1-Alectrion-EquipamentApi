@@ -11,6 +11,7 @@ import { makeFindOrderServiceController } from './factories/controllers/find-ord
 import { makeFindOneEquipmentController } from './factories/controllers/find-one-equipment-controller'
 import { makeCreateMovementController } from './factories/controllers/createMovement'
 import { makeFindMovementsController } from './factories/controllers/findMovements'
+import { makeDeleteMovementController } from './factories/controllers/deleteMovement'
 
 const routes = Router()
 
@@ -28,5 +29,6 @@ routes.get('/listOrderSerice', adapt(makeFindOrderServiceController()))
 routes.get('/listOne', adapt(makeFindOneEquipmentController()))
 routes.post('/createMovement', adapt(makeCreateMovementController()))
 routes.get('/findMovements', adapt(makeFindMovementsController()))
+routes.delete('/deleteMovement', adapt(makeDeleteMovementController()))
 
 export default routes
