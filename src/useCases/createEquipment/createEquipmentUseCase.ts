@@ -2,7 +2,7 @@ import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
 import { EquipmentBrand } from '../../db/entities/equipment-brand'
 
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-import { Status } from '../../domain/entities/equipamentEnum/status'
+import { Situação } from '../../domain/entities/equipamentEnum/status'
 import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
@@ -21,7 +21,7 @@ export interface CreateEquipmentInterface {
 
   type: string
 
-  status: string
+  situação: string
 
   estado: string
 
@@ -201,8 +201,8 @@ export class CreateEquipmentUseCase
     }
     equipment.tippingNumber = equipmentData.tippingNumber
     equipment.serialNumber = equipmentData.serialNumber
-    equipment.status =
-      (equipmentData.status as Status) ?? ('TECHNICAL_RESERVE' as Status)
+    equipment.situação =
+      (equipmentData.situação as Situação) ?? ('Reserva Técnica' as Situação)
     equipment.estado = equipmentData.estado as Estado
     equipment.model = equipmentData.model
     equipment.description = equipmentData.description ?? ''
@@ -224,7 +224,7 @@ export class CreateEquipmentUseCase
         equipment.storageType = equipmentData.storageType as StorageType
         equipment.ram_size = equipmentData.ram_size ?? ''
         break
-      case Type.MONITOR:
+      case Type.Monitor:
         if (!this.validMonitorFields(equipmentData)) {
           return {
             isSuccess: false,
@@ -235,9 +235,9 @@ export class CreateEquipmentUseCase
         equipment.screenSize = equipmentData.screenSize ?? ''
         break
 
-      case Type.WEBCAM:
+      case Type.Webcam:
         break
-      case Type.NOBREAK:
+      case Type.Nobreak:
         if (!this.validOthersFields(equipmentData)) {
           return {
             isSuccess: false,
@@ -252,7 +252,7 @@ export class CreateEquipmentUseCase
         }
         equipment.power = equipmentData.power ?? ''
         break
-      case Type.SCANNER:
+      case Type.Escaneador:
         if (!equipmentData.power) {
           return {
             isSuccess: false,
@@ -261,7 +261,7 @@ export class CreateEquipmentUseCase
         }
         equipment.power = equipmentData.power ?? ''
         break
-      case Type.STABILIZER:
+      case Type.Estabilizador:
         if (!equipmentData.power) {
           return {
             isSuccess: false,

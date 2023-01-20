@@ -1,11 +1,11 @@
 import { EquipmentBrand } from '../../domain/entities/brand'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-import { Status } from '../../domain/entities/equipamentEnum/status'
+import { Situação } from '../../domain/entities/equipamentEnum/status'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Unit } from '../../domain/entities/unit'
 
 export type EditPayload = {
-  status?: Status
+  situação?: Situação
 
   model?: string
 
