@@ -1,24 +1,26 @@
 import { Status } from '../../domain/entities/equipamentEnum/status'
-import { Status as OStatus } from '../../domain/entities/serviceOrderEnum/status'
+import { Status as OSStatus } from '../../domain/entities/serviceOrderEnum/status'
 import { History } from '../../domain/entities/history'
 import { OrderService } from '../../domain/entities/order-service'
-import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
+import { EditPayload, UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
 import { CreateHistoryRepository } from '../../repository/history/create-history-repository'
-import { CreateOrderServiceRepository } from '../../repository/order-service/create-order-service'
 import { ListOneUnitRepository } from '../../repository/unit/list-one-unit'
 import { ListOneEquipmentRepository } from './../../repository/equipment/list-one-equipment'
-import { UseCase } from './../protocol/useCase'
+import { UseCase, UseCaseReponse } from './../protocol/useCase'
+import { UpdateOrderServiceRepository } from '../../repository/order-service/update-order-service-repository'
+import { ListOrderServiceRepository } from '../../repository/order-service/list-order-service'
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
   InvalidUnitError,
   InvalidSenderError,
   UnitNotFoundError,
-  CreateOrderServiceError,
+  UpdateOrderServiceError,
   InvalidDateError
-} from './errors'
+} from '../create-order-service/errors'
 
 export type UpdateOrderServiceUseCaseData = {
+  id: string 
   equipmentId: string
   description: string
   authorId: string
@@ -31,6 +33,7 @@ export type UpdateOrderServiceUseCaseData = {
   reciverFunctionalNumber: string
   status: string
   techinicias: string[]
+  receiverDate: string
 }
 
 export class UpdateOrderServiceUseCase
@@ -42,10 +45,12 @@ export class UpdateOrderServiceUseCase
     private readonly equipmentRepository: ListOneEquipmentRepository,
     private readonly updateEquipmentRepository: UpdateEquipmentRepository,
     private readonly unitRepository: ListOneUnitRepository,
-    private readonly historyRepository: CreateHistoryRepository /* private readonly createOrderServiceRepository: CreateOrderServiceRepository */
+    private readonly historyRepository: CreateHistoryRepository,
+    private readonly updateOrderServiceRepository: UpdateOrderServiceRepository,
+    private readonly listOrderServiceRepository: ListOrderServiceRepository
   ) {}
 
-  async execute(data: UpdateOrderServiceUseCaseData) {
+  async execute(data: UpdateOrderServiceUseCaseData): Promise<UseCaseReponse<EditPayload>> {
     if (!data.authorFunctionalNumber || !data.receiverName) {
       return {
         isSuccess: false,
@@ -85,6 +90,8 @@ export class UpdateOrderServiceUseCase
 
     const unit = await this.unitRepository.listOne(data.destination)
 
+    /* consulta one order service */
+
     if (unit === undefined) {
       return {
         isSuccess: false,
@@ -98,37 +105,60 @@ export class UpdateOrderServiceUseCase
         equipmentSnapshot: equipment
       })
     } else this.history = equipment.history
-
+  
     if (this.history !== null) {
-      const orderService = await this.updateOrderServiceRepository.create({
-        authorId: data.authorId,
-        receiverName: data.receiverName,
-        authorFunctionalNumber: data.authorFunctionalNumber,
-        description: data.description,
-        destination: unit,
-        equipment,
-        history: this.history,
-        equipmentSnapshot: equipment,
-        senderName: data.senderName,
-        senderFunctionalNumber: data.senderFunctionalNumber,
-        date: new Date(data.date),
-        receiverFunctionalNumber: data.reciverFunctionalNumber,
-        status: OStatus.MAINTENANCE,
-        technicians: []
-      })
+        await this.updateOrderServiceRepository.updateOrderSevice(
+          data.id,
+          {
+            authorId: data.authorId,
+            receiverName: data.receiverName,
+            authorFunctionalNumber: data.authorFunctionalNumber,
+            description: data.description,
+            destination: unit,
+            equipment,
+            history: this.history,
+            equipmentSnapshot: equipment,
+            senderName: data.senderName,
+            senderFunctionalNumber: data.senderFunctionalNumber,
+            date: new Date(data.date),
+            receiverFunctionalNumber: data.reciverFunctionalNumber,
+            status: (data.status.toUpperCase() as OSStatus),
+            technicians: [],
+            receiverDate: new Date(data.receiverDate)
+          }
+        )
 
-      await this.updateEquipmentRepository.updateEquipment(equipment.id, {
-        status: Status.MAINTENANCE
-      })
+      if (this.handleOSStatus(data.status) == OSStatus.CONCLUDED || this.handleOSStatus(data.status) == OSStatus.CANCELED ) {
+        await this.updateEquipmentRepository.updateEquipment(equipment.id, {
+          status: ('ACTIVE' as Status)
+        })
+      }
 
       return {
-        isSuccess: true,
-        data: orderService
+        isSuccess: true
       }
+      
     } else
       return {
         isSuccess: false,
-        error: new CreateOrderServiceError()
+        error: new UpdateOrderServiceError()
       }
+  }
+
+  public handleOSStatus(status: string): OSStatus{
+    switch(status.toUpperCase()){
+      case 'MAINTENANCE':{
+        return OSStatus.MAINTENANCE
+      }
+      case 'WARRANTY': {
+        return OSStatus.WARRANTY
+      }
+      case 'CONCLUDED':{
+        return OSStatus.CONCLUDED
+      }
+      case 'CANCELED': {
+        return OSStatus.CANCELED
+      }
+    }
   }
 }

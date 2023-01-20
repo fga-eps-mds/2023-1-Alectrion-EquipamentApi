@@ -46,3 +46,10 @@ export class CreateOrderServiceError extends Error {
     this.name = 'CreateOrderServiceError'
   }
 }
+
+export class UpdateOrderServiceError extends Error {
+  constructor() {
+    super('Update Order Service Error')
+    this.name = 'UpdateOrderServiceError'
+  }
+}
