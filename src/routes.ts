@@ -9,6 +9,7 @@ import { makeFindAllUnitsController } from './factories/controllers/findAllUnits
 import { makeGetEquipmentController } from './factories/controllers/getEquipment'
 import { makeFindOrderServiceController } from './factories/controllers/find-order-service'
 import { makeFindOneEquipmentController } from './factories/controllers/find-one-equipment-controller'
+import { makeUpdateOrderController } from './factories/controllers/update-order-service'
 
 const routes = Router()
 
@@ -24,6 +25,6 @@ routes.get('/getAllBrands', adapt(makeFindAllBrandsController()))
 routes.get('/getAllAcquisitions', adapt(makeFindAllAcquisitionsController()))
 routes.get('/listOrderSerice', adapt(makeFindOrderServiceController()))
 routes.get('/listOne', adapt(makeFindOneEquipmentController()))
-routes.put('/updateOrderSerice', adapt())
+routes.put('/updateOrderService', adapt(makeUpdateOrderController()))
 
 export default routes

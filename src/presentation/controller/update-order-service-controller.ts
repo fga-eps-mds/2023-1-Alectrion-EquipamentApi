@@ -1,4 +1,4 @@
-import { UpdateOrderServiceUseCase } from '../../useCases/update-order-service/updateOrderServiceUseCase'
+import { UpdateOrderServiceUseCase } from '../../useCases/update-order-service/update-order-service'
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
@@ -11,6 +11,7 @@ import { notFound, ok, badRequest, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
 
 export type UpdateOrderServiceHttpRequest = {
+  id: string
   equipmentId: string
   userId: string
   receiverName: string
@@ -23,6 +24,7 @@ export type UpdateOrderServiceHttpRequest = {
   recieverFunctionalNumber: string
   status: string
   techinicias: string[]
+  recieverDate: string
 }
 
 export class UpdateOrderServiceController extends Controller {
@@ -31,7 +33,8 @@ export class UpdateOrderServiceController extends Controller {
   }
 
   async perform(params: UpdateOrderServiceHttpRequest) {
-    const response = await this.uptadeOrderServiceUseCase.execute({
+    const response = await this.updateOrderServiceUseCase.execute({
+      id: params.id,
       equipmentId: params.equipmentId,
       authorId: params.userId,
       authorFunctionalNumber: params.authorFunctionalNumber,
@@ -43,7 +46,8 @@ export class UpdateOrderServiceController extends Controller {
       receiverName: params.receiverName,
       reciverFunctionalNumber: params.recieverFunctionalNumber,
       status: params.status,
-      techinicias: params.techinicias
+      techinicias: params.techinicias,
+      receiverDate: params.recieverDate
     })
 
     if (
@@ -73,8 +77,8 @@ export class UpdateOrderServiceController extends Controller {
       return badRequest(response.error)
     }
 
-    if (response.isSuccess && response.data) {
-      return ok(response.data)
+    if (response.isSuccess) {
+      return ok(response)
     } else return serverError()
   }
 }
