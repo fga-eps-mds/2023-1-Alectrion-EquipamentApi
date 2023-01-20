@@ -35,4 +35,6 @@ export type OrderService = {
   technicians?: string[]
 
   status: Status
+
+  receiverDate?: Date
 }
