@@ -2,6 +2,7 @@ import { EquipmentBrand } from './brand'
 import { Dismissed } from './dismissed'
 import { ScreenType } from './equipamentEnum/screenType'
 import { Status } from './equipamentEnum/status'
+import { Estado } from './equipamentEnum/estado'
 import { StorageType } from './equipamentEnum/storageType'
 import { Type } from './equipamentEnum/type'
 import { History } from './history'
@@ -16,6 +17,8 @@ export type Equipment = {
   serialNumber: string
 
   type: Type
+
+  estado: Estado
 
   status: Status
 
