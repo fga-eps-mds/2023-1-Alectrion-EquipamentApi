@@ -1,5 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { OrderService } from '../src/domain/entities/order-service'
@@ -13,7 +14,10 @@ import {
   badRequest,
   serverError
 } from '../src/presentation/helpers'
-import { CreateOrderServiceUseCase } from '../src/useCases/create-order-service/create-order-service'
+import { 
+  CreateOrderServiceUseCaseData,
+  CreateOrderServiceUseCase 
+} from '../src/useCases/create-order-service/create-order-service'
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
@@ -48,6 +52,8 @@ const orderService: OrderService = {
   updatedAt: new Date(),
   date: new Date(),
   id: 'any_id',
+  receiverFunctionalNumber: 'any',
+  status: ('MAINTENANCE' as OSStatus),
   equipment,
   authorId: 'any_author',
   destination: {
@@ -78,10 +84,11 @@ const request: CreateOrderServiceHttpRequest = {
   receiverName: '',
   senderFunctionalNumber: '',
   senderName: '',
-  userId: ''
+  userId: '',
+  recieverFunctionalNumber: ''
 }
 
-const useCaseParam = {
+const useCaseParam: CreateOrderServiceUseCaseData = {
   equipmentId: request.equipmentId,
   authorId: request.userId,
   authorFunctionalNumber: request.authorFunctionalNumber,
@@ -90,7 +97,8 @@ const useCaseParam = {
   senderFunctionalNumber: request.senderFunctionalNumber,
   date: request.date,
   description: request.description,
-  receiverName: request.receiverName
+  receiverName: request.receiverName,
+  reciverFunctionalNumber: request.recieverFunctionalNumber
 }
 
 describe('Should test CreateOrderServiceController', () => {

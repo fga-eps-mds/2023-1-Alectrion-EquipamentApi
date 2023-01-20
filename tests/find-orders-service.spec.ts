@@ -1,5 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { OrderService } from '../src/domain/entities/order-service'
@@ -35,6 +36,8 @@ const orderService: OrderService = {
   receiverName: '',
   equipment: mockedEquipment,
   authorId: 'any_author',
+  receiverFunctionalNumber: '123456789',
+  status: OSStatus.MAINTENANCE,
   destination: {
     createdAt: new Date(),
     id: 'any_id',

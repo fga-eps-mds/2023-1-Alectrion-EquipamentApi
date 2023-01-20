@@ -1,5 +1,6 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { History } from '../src/domain/entities/history'
@@ -54,7 +55,9 @@ describe('Test create order use case', () => {
     equipmentId: 'equipment_id',
     receiverName: 'any_receiver',
     senderFunctionalNumber: 'functional_number',
-    senderName: 'any_sender'
+    senderName: 'any_sender',
+    reciverFunctionalNumber: 'any-number'
+
   }
 
   const orderService: OrderService = {
@@ -81,7 +84,10 @@ describe('Test create order use case', () => {
       createdAt: new Date(),
       id: 'any_id',
       updatedAt: new Date()
-    }
+    },
+    receiverFunctionalNumber: 'any_number',
+    status: ('MAINTENANCE' as OSStatus)
+
   }
 
   beforeEach(() => {
@@ -202,7 +208,7 @@ describe('Test create order use case', () => {
     expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(
       equipment.id,
       {
-        status: Status.MAINTENANCE
+        status: ('MAINTENANCE' as Status)
       }
     )
 
