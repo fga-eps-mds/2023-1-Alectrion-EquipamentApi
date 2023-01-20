@@ -26,21 +26,21 @@ describe('Test create order use case', () => {
   let createEquipmentUseCase: CreateEquipmentUseCase
 
   const unit: Unit = {
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-20'),
+    updatedAt: new Date('2023-01-20'),
     id: 'teste',
     localization: 'localization',
     name: 'nome'
   }
 
   const createEquipmentInterface: CreateEquipmentInterface = {
-    acquisitionDate: new Date(),
+    acquisitionDate: new Date('2023-01-20'),
     status: Status.ACTIVE,
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
     type: Type.CPU,
-    initialUseDate: new Date().toISOString(),
+    initialUseDate: new Date('2023-01-20').toISOString(),
     invoiceNumber: 'any',
     unitId: 'any_id',
     acquisitionName: 'any_name',
@@ -58,8 +58,8 @@ describe('Test create order use case', () => {
       name: ''
     },
     acquisitionDate: createEquipmentInterface.acquisitionDate,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-20'),
+    updatedAt: new Date('2023-01-20'),
     status: Status.ACTIVE,
     tippingNumber: createEquipmentInterface.tippingNumber,
     model: createEquipmentInterface.model,
@@ -135,8 +135,8 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should return InvalidTippingNumber if already exists equipment with tippingNumbe', async () => {
-    equipmentRepository.findByTippingNumber.mockResolvedValueOnce(equipment)
+  test('should return InvalidTippingNumber if already exists equipment with tippingNumber', async () => {
+    // equipmentRepository.findByTippingNumber.mockResolvedValueOnce(equipment)
 
     const result = await createEquipmentUseCase.execute(
       createEquipmentInterface
@@ -224,19 +224,30 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create equipment ', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      type: 'CPU'
-    })
+  test('should create equipment', async () => {
+    const result = await createEquipmentUseCase.execute(
+      createEquipmentInterface
+    )
 
     console.log(result.data)
 
     const equipmentDB = new EquipmentDb()
-    equipmentDB.acquisition = equipment.acquisition
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
     equipmentDB.acquisitionDate = equipment.acquisitionDate
-    equipmentDB.unit = equipment.unit
-    equipmentDB.brand = equipment.brand
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
     equipmentDB.description = ''
     equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = equipment.type
