@@ -1,5 +1,5 @@
 import { UnitRepository } from '../../repository/unitRepository'
-import { FindAllUnitUseCase } from '../../useCases/FindUnit/findAllUnitUseCase'
+import { FindAllUnitUseCase } from '../../../src/useCases/FindUnit/findAllUnitUseCase'
 
 export const makeFindAllUnits = () => {
   const unitRepository = new UnitRepository()
