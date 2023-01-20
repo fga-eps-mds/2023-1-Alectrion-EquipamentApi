@@ -19,6 +19,7 @@ export type CreateOrderServiceData = {
   receiverFunctionalNumber: string
   status: Status
   technicians: string[]
+  receiverDate?: Date
 }
 
 export interface CreateOrderServiceRepository {

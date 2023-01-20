@@ -112,12 +112,13 @@ export class CreateOrderServiceUseCase
         senderFunctionalNumber: data.senderFunctionalNumber,
         date: new Date(data.date),
         receiverFunctionalNumber: data.reciverFunctionalNumber,
-        status: OStatus.MAINTENANCE,
-        technicians: []
+        status: ('MAINTENANCE' as OStatus),
+        technicians: [],
+        receiverDate: null
       })
 
       await this.updateEquipmentRepository.updateEquipment(equipment.id, {
-        status: Status.MAINTENANCE
+        status: ('MAINTENANCE' as Status)
       })
 
       return {
