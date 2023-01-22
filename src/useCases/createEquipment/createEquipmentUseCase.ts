@@ -253,13 +253,6 @@ export class CreateEquipmentUseCase
         equipment.power = equipmentData.power ?? ''
         break
       case Type.Escaneador:
-        if (!equipmentData.power) {
-          return {
-            isSuccess: false,
-            error: new NullFields()
-          }
-        }
-        equipment.power = equipmentData.power ?? ''
         break
       case Type.Estabilizador:
         if (!equipmentData.power) {
