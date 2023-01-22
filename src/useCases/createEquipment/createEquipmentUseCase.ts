@@ -2,7 +2,7 @@ import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
 import { EquipmentBrand } from '../../db/entities/equipment-brand'
 
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-import { Situação } from '../../domain/entities/equipamentEnum/status'
+import { Situacao } from '../../domain/entities/equipamentEnum/status'
 import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
@@ -21,7 +21,7 @@ export interface CreateEquipmentInterface {
 
   type: string
 
-  situação: string
+  situacao: string
 
   estado: string
 
@@ -201,8 +201,8 @@ export class CreateEquipmentUseCase
     }
     equipment.tippingNumber = equipmentData.tippingNumber
     equipment.serialNumber = equipmentData.serialNumber
-    equipment.situação =
-      (equipmentData.situação as Situação) ?? ('Reserva Técnica' as Situação)
+    equipment.situacao =
+      (equipmentData.situacao as Situacao) ?? ('Reserva Técnica' as Situacao)
     equipment.estado = equipmentData.estado as Estado
     equipment.model = equipmentData.model
     equipment.description = equipmentData.description ?? ''

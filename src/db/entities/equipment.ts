@@ -9,7 +9,7 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-import { Situação } from '../../domain/entities/equipamentEnum/status'
+import { Situacao } from '../../domain/entities/equipamentEnum/status'
 import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
@@ -45,9 +45,9 @@ export class Equipment {
 
   @Column({
     type: 'enum',
-    enum: Situação
+    enum: Situacao
   })
-  situação: Situação
+  situacao: Situacao
   
   @Column({
     type: 'enum',

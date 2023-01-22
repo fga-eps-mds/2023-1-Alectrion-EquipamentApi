@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-export enum Situação {
+export enum Situacao {
   Ativo = 'Ativo',
   'Ativo Empréstimo' = 'Ativo Empréstimo',
   Baixado = 'Baixado',
