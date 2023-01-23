@@ -193,7 +193,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'MONITOR',
+      type: 'Monitor',
       screenType: 'LCDS'
     })
 
@@ -206,7 +206,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'NOBREAK',
+      type: 'Nobreak',
       power: undefined
     })
 
@@ -219,7 +219,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'STABILIZER',
+      type: 'Estabilizador',
       power: undefined
     })
 
@@ -264,6 +264,7 @@ describe('Test create order use case', () => {
     equipmentDB.ram_size = equipment.ram_size
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
     equipmentDB.tippingNumber = equipment.tippingNumber
 
     expect(result).toEqual({
