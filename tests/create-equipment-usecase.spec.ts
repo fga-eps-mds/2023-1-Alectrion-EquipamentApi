@@ -1,5 +1,5 @@
 import { MockProxy, mock } from 'jest-mock-extended'
-import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Situacao } from '../src/domain/entities/equipamentEnum/status'
 import { StorageType } from '../src/domain/entities/equipamentEnum/storageType'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
@@ -17,6 +17,7 @@ import {
   EquipmentTypeError
 } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
@@ -35,7 +36,8 @@ describe('Test create order use case', () => {
 
   const createEquipmentInterface: CreateEquipmentInterface = {
     acquisitionDate: new Date(),
-    status: Status.ACTIVE,
+    situacao: Situacao.Ativo,
+    estado: Estado.Novo,
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
@@ -60,7 +62,8 @@ describe('Test create order use case', () => {
     acquisitionDate: createEquipmentInterface.acquisitionDate,
     createdAt: new Date(),
     updatedAt: new Date(),
-    status: Status.ACTIVE,
+    situacao: Situacao.Ativo,
+    estado: Estado.Novo,
     tippingNumber: createEquipmentInterface.tippingNumber,
     model: createEquipmentInterface.model,
     serialNumber: createEquipmentInterface.serialNumber,
@@ -247,7 +250,7 @@ describe('Test create order use case', () => {
     equipmentDB.model = equipment.model
     equipmentDB.ram_size = equipment.ram_size
     equipmentDB.serialNumber = equipment.serialNumber
-    equipmentDB.status = equipment.status
+    equipmentDB.situacao = equipment.situacao
     equipmentDB.tippingNumber = equipment.tippingNumber
 
     expect(result).toEqual({
