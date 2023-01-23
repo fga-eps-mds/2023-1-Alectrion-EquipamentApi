@@ -9,7 +9,8 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-import { Status } from '../../domain/entities/equipamentEnum/status'
+import { Situacao } from '../../domain/entities/equipamentEnum/status'
+import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
 import { Dismissed } from './dismissed'
@@ -44,9 +45,15 @@ export class Equipment {
 
   @Column({
     type: 'enum',
-    enum: Status
+    enum: Situacao
   })
-  status: Status
+  situacao: Situacao
+  
+  @Column({
+    type: 'enum',
+    enum: Estado
+  })
+  estado: Estado
 
   @Column({
     type: 'varchar'

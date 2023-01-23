@@ -16,7 +16,7 @@ export interface GetEquipmentInput {
 
   type?: string
 
-  status?: string
+  situacao?: string
 
   model?: string
 
