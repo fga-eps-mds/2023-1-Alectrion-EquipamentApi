@@ -35,12 +35,6 @@ export class Unit {
   @OneToMany(() => Equipment, (equipment) => equipment.unit)
   equipments?: Equipment[]
 
-  @OneToMany(() => Movement, (borrow) => borrow.destination)
-  borrows?: Movement[]
-
-  @OneToMany(() => Movement, (ownership) => ownership.source)
-  ownershipSources?: Movement[]
-
-  @OneToMany(() => Movement, (ownership) => ownership.destination)
-  ownershipDestinations?: Movement[]
+  @OneToMany(() => Movement, (movement) => movement.destination)
+  destinations?: Movement[]
 }

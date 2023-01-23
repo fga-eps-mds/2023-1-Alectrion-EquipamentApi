@@ -4,7 +4,7 @@ import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmen
 import { UnitRepositoryProcol as UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
 import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
 
-import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationError, InvalidEquipmentError, InvalidSourceError, InvalidStatusError, InvalidTypeError, NullFieldsError } from '../src/useCases/createMovement/createMovementUseCase'
+import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationError, InvalidEquipmentError, InvalidStatusError, InvalidTypeError, NullFieldsError } from '../src/useCases/createMovement/createMovementUseCase'
 
 import { Equipment } from '../src/domain/entities/equipment'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
@@ -24,12 +24,6 @@ describe('Create movement use case', () => {
     const mockedUnitOne : Unit = {
 		"id": "f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2",
 		"name": "Conselho Superior da Polícia Civil",
-		"localization": "Goiânia"
-	}
-
-    const mockedUnitTwo : Unit = {
-		"id": "3be628fa-d55b-4b12-b975-816542e75b48",
-		"name": "Delegacia-Geral Adjunta",
 		"localization": "Goiânia"
 	}
 
@@ -203,7 +197,6 @@ describe('Create movement use case', () => {
             equipments: [{...mockedEquipment, status: Status.ACTIVE}],
             type: 2,
             destination: mockedUnitOne,
-            source: mockedUnitTwo,
             inChargeName: 'José Matheus',
             inChargeRole: 'Sargento',
             chiefName: 'Matheus Texeira',
@@ -215,7 +208,6 @@ describe('Create movement use case', () => {
             equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
             type: 2,
             destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
-            source: '3be628fa-d55b-4b12-b975-816542e75b48',
             inchargename: 'José Matheus',
             inchargerole: 'Sargento',
             chiefname: 'Matheus Texeira',
@@ -223,7 +215,7 @@ describe('Create movement use case', () => {
         }
 
         equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
-        unitRepository.findOne.mockResolvedValueOnce(mockedUnitTwo).mockResolvedValueOnce(mockedUnitOne)
+        unitRepository.findOne.mockResolvedValueOnce(mockedUnitOne)
         movementRepository.create.mockResolvedValueOnce(mockedMovement)
 
         const result = await createMovementUseCase.execute(data)
@@ -237,7 +229,6 @@ describe('Create movement use case', () => {
         expect(result.data.equipments).toHaveLength(1)
         expect(result.data.equipments[0]).toHaveProperty('status', Status.ACTIVE)
         expect(result.data).toHaveProperty('destination')
-        expect(result.data).toHaveProperty('source')
         expect(result.data).toHaveProperty('inChargeName', 'José Matheus')
         expect(result.data).toHaveProperty('inChargeRole', 'Sargento')
         expect(result.data).toHaveProperty('chiefName', 'Matheus Texeira')
@@ -436,7 +427,6 @@ describe('Create movement use case', () => {
             equipments: [{...mockedEquipment, status: Status.ACTIVE}],
             type: 2,
             destination: mockedUnitOne,
-            source: mockedUnitTwo,
             inChargeName: 'José Matheus',
             inChargeRole: 'Sargento',
             chiefName: 'Matheus Texeira',
@@ -448,7 +438,6 @@ describe('Create movement use case', () => {
             equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
             type: 2,
             destination: 'piparaparapo',
-            source: '3be628fa-d55b-4b12-b975-816542e75b48',
             inchargename: 'José Matheus',
             inchargerole: 'Sargento',
             chiefname: 'Matheus Texeira',
@@ -456,7 +445,7 @@ describe('Create movement use case', () => {
         }
 
         equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
-        unitRepository.findOne.mockResolvedValueOnce(mockedUnitTwo).mockResolvedValueOnce(null)
+        unitRepository.findOne.mockResolvedValueOnce(null)
         movementRepository.create.mockResolvedValueOnce(mockedMovement)
 
         const result = await createMovementUseCase.execute(data)
@@ -465,44 +454,5 @@ describe('Create movement use case', () => {
         expect(result).not.toHaveProperty('data')
         expect(result).toHaveProperty('error')
         expect(result.error).toBeInstanceOf(InvalidDestinationError)
-    })
-
-    test('should not create an ownership movement with an invalid source', async () => {
-        const mockedMovement : Movement = {
-            id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            date: new Date(),
-            userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE}],
-            type: 2,
-            destination: mockedUnitOne,
-            source: mockedUnitTwo,
-            inChargeName: 'José Matheus',
-            inChargeRole: 'Sargento',
-            chiefName: 'Matheus Texeira',
-            chiefRole: 'Delegado'
-        }
-
-        const data : CreateMovementUseCaseData = {
-            userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
-            type: 2,
-            destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
-            source: 'piparaparapo',
-            inchargename: 'José Matheus',
-            inchargerole: 'Sargento',
-            chiefname: 'Matheus Texeira',
-            chiefrole: 'Delegado'
-        }
-
-        equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment)
-        unitRepository.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce(mockedUnitOne)
-        movementRepository.create.mockResolvedValueOnce(mockedMovement)
-
-        const result = await createMovementUseCase.execute(data)
-
-        expect(result).toHaveProperty('isSuccess', false)
-        expect(result).not.toHaveProperty('data')
-        expect(result).toHaveProperty('error')
-        expect(result.error).toBeInstanceOf(InvalidSourceError)
     })
 })

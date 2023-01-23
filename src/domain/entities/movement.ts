@@ -29,6 +29,4 @@ export type Movement = {
     description?: string
 
     destination?: Unit
-
-    source?: Unit
 }

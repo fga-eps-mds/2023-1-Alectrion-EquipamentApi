@@ -55,10 +55,6 @@ export class Movement {
   @JoinTable()
   equipments: Equipment[]
 
-  @ManyToOne(() => Unit, (unit) => unit.borrows)
+  @ManyToOne(() => Unit, (unit) => unit.destinations)
   destination?: Unit
-
-  @ManyToOne(() => Unit, (unit) => unit.ownershipSources)
-  source?: Unit
 }
-  

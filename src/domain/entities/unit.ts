@@ -17,9 +17,5 @@ export type Unit = {
 
   equipments?: Equipment[]
 
-  borrows?: Movement[]
-
-  ownershipSources?: Movement[]
-
-  ownershipDestinations?: Movement[]
+  destinations?: Movement[]
 }

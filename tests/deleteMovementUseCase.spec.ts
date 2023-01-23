@@ -42,7 +42,6 @@ describe('Find movements use case', () => {
                 updatedAt: new Date("2023-01-09T21:49:26.057Z")
             }],
             destination: null,
-            source: null,
             inChargeName: 'José Matheus',
             inChargeRole: 'Sargento',
             chiefName: 'Matheus Texeira',
@@ -84,7 +83,6 @@ describe('Find movements use case', () => {
                 updatedAt: new Date("2023-01-09T21:49:26.057Z")
             }],
             destination: null,
-            source: null,
             inChargeName: 'José Matheus',
             inChargeRole: 'Sargento',
             chiefName: 'Matheus Texeira',
@@ -145,7 +143,6 @@ describe('Find movements use case', () => {
                 updatedAt: new Date("2023-01-09T21:49:26.057Z")
             }],
             destination: null,
-            source: null,
             inChargeName: 'José Matheus',
             inChargeRole: 'Sargento',
             chiefName: 'Matheus Texeira',

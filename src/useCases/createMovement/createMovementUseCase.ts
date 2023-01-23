@@ -17,7 +17,6 @@ export type CreateMovementUseCaseData = {
     inchargerole: string
     chiefname: string
     chiefrole: string
-    source?: string
     destination?: string
     status?: EquipmentStatus
 }
@@ -47,13 +46,6 @@ export class InvalidDestinationError extends Error {
     constructor() {
         super('Unidade de destino inválida.')
         this.name = 'InvalidDestinationError'
-    }
-}
-
-export class InvalidSourceError extends Error {
-    constructor() {
-        super('Unidade de origem inválida.')
-        this.name = 'InvalidSourceError'
     }
 }
 
@@ -155,7 +147,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
 
         switch(data.type) {
             case Types.Borrow: {
-                const destination = data.destination ? await this.unitRepository.findOne(data.destination) : undefined
+                const destination = await this.unitRepository.findOne(data.destination)
 
                 if(this.isUnitValid(destination))
                     return {
@@ -183,14 +175,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
             }
 
             default: {
-                const source = await this.unitRepository.findOne(data.source)
                 const destination = await this.unitRepository.findOne(data.destination)
-
-                if(this.isUnitValid(source))
-                    return {
-                        isSuccess: false,
-                        error: new InvalidSourceError()
-                    }
 
                 if(this.isUnitValid(destination))
                     return {
@@ -198,7 +183,6 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
                         error: new InvalidDestinationError()
                     }
 
-                movement.source = source
                 movement.destination = destination
 
                 result = await this.movementRepository.create(movement)

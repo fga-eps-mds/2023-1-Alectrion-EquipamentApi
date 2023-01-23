@@ -74,12 +74,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
                     id: movement.destination.id
                 })
 
-                const source = await this.unitRepository.findOneBy({
-                    id: movement.source.id
-                })
-
                 movementEntity.destination = destination
-                movementEntity.source = source
 
                 savedMovementEntity = await this.movementRepository.save(movementEntity)
                 await this.updateEquipments(equipments, EquipmentStatus.ACTIVE)
@@ -94,8 +89,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
         const queryResult = await this.movementRepository.find({
             relations: {
                 equipments: true,
-                destination: true,
-                source: true
+                destination: true
             },
             where: {
                 id: query.id,
@@ -116,7 +110,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
     async deleteOne(id: string): Promise<boolean> {
         const result = await this.movementRepository.delete(id)
         
-        if(result.affect == 1)
+        if(result.affected == 1)
             return true
         return false
     }

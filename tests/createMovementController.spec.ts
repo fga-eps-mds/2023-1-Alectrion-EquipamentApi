@@ -1,6 +1,6 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 
-import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationError, InvalidEquipmentError, InvalidSourceError, InvalidStatusError, InvalidTypeError, NullFieldsError } from '../src/useCases/createMovement/createMovementUseCase'
+import { CreateMovementUseCase, CreateMovementUseCaseData, InvalidDestinationError, InvalidEquipmentError, InvalidStatusError, InvalidTypeError, NullFieldsError } from '../src/useCases/createMovement/createMovementUseCase'
 import { CreateMovementController } from '../src/presentation/controller/createMovementController'
 
 import { Equipment } from '../src/domain/entities/equipment'
