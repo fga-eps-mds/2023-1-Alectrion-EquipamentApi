@@ -137,7 +137,7 @@ describe('Test create order use case', () => {
 
   test('should return InvalidTippingNumber if already exists equipment with tippingNumber', async () => {
     equipmentRepository.findByTippingNumber.mockResolvedValueOnce(
-      equipment as EquipmentDb
+      equipment as unknown as EquipmentDb
     )
 
     const result = await createEquipmentUseCase.execute(
