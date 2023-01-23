@@ -1,5 +1,6 @@
 import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
 import { EquipmentBrand } from '../../db/entities/equipment-brand'
+import { Unit } from '../../db/entities/unit'
 
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Situacao } from '../../domain/entities/equipamentEnum/status'
@@ -271,7 +272,7 @@ export class CreateEquipmentUseCase
         }
     }
     equipment.acquisition = acquisition as EquipmentAcquisition
-    equipment.unit = unit
+    equipment.unit = unit as Unit
     equipment.brand = brand as EquipmentBrand
 
     await this.equipmentRepository.create(equipment)

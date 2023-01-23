@@ -9,7 +9,7 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "declaration": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "strict": false,
     "strictPropertyInitialization": false,
     "skipLibCheck": true
