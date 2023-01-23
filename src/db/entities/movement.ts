@@ -49,6 +49,12 @@ export class Movement {
   @Column()
   chiefRole: string
 
+  @Column({
+    type: 'jsonb',
+    nullable: true
+  })
+  equipmentSnapshots?: any
+
   @ManyToMany(() => Equipment, {
     cascade: true
   })

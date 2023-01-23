@@ -1,4 +1,4 @@
-import { MoreThanOrEqual, LessThanOrEqual, And } from 'typeorm'
+import { MoreThanOrEqual, LessThanOrEqual, And, Repository } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Movement as MovementEntity } from '../db/entities/movement'
 import { Equipment as EquipmentEntity } from '../db/entities/equipment'
@@ -45,6 +45,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
             inChargeRole: movement.inChargeRole,
             chiefName: movement.chiefName,
             chiefRole: movement.chiefRole,
+            equipmentSnapshots: JSON.stringify(equipments),
             equipments
         })
 
@@ -82,7 +83,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
             }
         }
 
-        return {...movement, id: savedMovementEntity.id}
+        return {...movement, equipments, id: savedMovementEntity.id}
     }
 
     async genericFind(query: Query): Promise<Movement[]> {
@@ -108,6 +109,19 @@ export class MovementRepository implements MovementRepositoryProtocol {
     }
 
     async deleteOne(id: string): Promise<boolean> {
+        const movement : Movement[] = await this.genericFind({
+            id,
+            page: 0,
+            resultQuantity: 1
+        })
+
+        const snapshots = JSON.parse(movement[0].equipmentSnapshots)
+        for(const snapshot of snapshots) {
+            await this.equipmentRepository.update(snapshot.id, {
+                status: snapshot.status
+            })
+        }
+
         const result = await this.movementRepository.delete(id)
         
         if(result.affected == 1)

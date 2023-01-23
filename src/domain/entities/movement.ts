@@ -26,6 +26,8 @@ export type Movement = {
 
     chiefRole: string
 
+    equipmentSnapshots?: any
+
     description?: string
 
     destination?: Unit
