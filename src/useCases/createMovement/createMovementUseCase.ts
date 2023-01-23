@@ -155,7 +155,7 @@ export class CreateMovementUseCase implements UseCase<CreateMovementUseCaseData,
 
         switch(data.type) {
             case Types.Borrow: {
-                const destination = await this.unitRepository.findOne(data.destination)
+                const destination = data.destination ? await this.unitRepository.findOne(data.destination) : undefined
 
                 if(this.isUnitValid(destination))
                     return {

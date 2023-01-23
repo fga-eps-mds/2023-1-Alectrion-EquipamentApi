@@ -63,15 +63,15 @@ export class DeleteMovementUseCase implements UseCase<DeleteMovementUseCaseData,
 
         const now = new Date()
 
-        if(now - movement.date > timeLimit)
+        if((now as any) - (movement.date as any) > timeLimit)
             return {
                 isSuccess: false,
                 error: new TimeLimitError()
             }
 
-        const wasDeleteSuccessful = this.movementRepository.deleteOne(data.id)
+        const wasDeleteSuccessful = await this.movementRepository.deleteOne(data.id)
 
-        if(wasDeleteSuccessful)
+        if(!wasDeleteSuccessful)
             return {
                 isSuccess: false,
                 error: new Error()
