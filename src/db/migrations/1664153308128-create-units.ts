@@ -1,7 +1,10 @@
-/* eslint-disable no-useless-escape */
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
 const units = [
+  {
+    name: 'Assessoria Contábil',
+    localization: 'Goiânia'
+  },
   {
     name: 'Conselho Superior da Polícia Civil',
     localization: 'Goiânia'
@@ -11,15 +14,7 @@ const units = [
     localization: 'Goiânia'
   },
   {
-    name: 'Superintendência de Polícia Judiciária',
-    localization: 'Goiânia'
-  },
-  {
-    name: 'Gerência de Gestão e Finanças',
-    localization: 'Goiânia'
-  },
-  {
-    name: 'Gerência de Operações de Inteligência da Polícia Civil',
+    name: 'Divisão de Suporte Técnico em Informática',
     localization: 'Goiânia'
   },
   {
@@ -31,11 +26,19 @@ const units = [
     localization: 'Goiânia'
   },
   {
+    name: 'Gerência de Gestão e Finanças',
+    localization: 'Goiânia'
+  },
+  {
     name: 'Gerência de Identificação',
     localization: 'Goiânia'
   },
   {
-    name: 'Assessoria Contábil ',
+    name: 'Gerência de Operações de Inteligência da Polícia Civil',
+    localization: 'Goiânia'
+  },
+  {
+    name: 'Superintendência de Polícia Judiciária',
     localization: 'Goiânia'
   }
 ]
@@ -48,5 +51,5 @@ export class createUnits1664153308128 implements MigrationInterface {
     })
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> { /* TODO document why this async method 'down' is empty */ }
 }
