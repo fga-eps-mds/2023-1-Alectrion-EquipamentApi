@@ -29,6 +29,13 @@ export class TimeLimitError extends Error {
     }
 }
 
+export class NotLastMovementError extends Error {
+    constructor() {
+        super('A movimentação fornecida não é a última movimentação registrada.')
+        this.name = 'NotLastMovementError'
+    }
+}
+
 export class DeleteMovementUseCase implements UseCase<DeleteMovementUseCaseData, boolean> {
     constructor(
         private readonly movementRepository: MovementRepositoryProtocol
@@ -60,6 +67,7 @@ export class DeleteMovementUseCase implements UseCase<DeleteMovementUseCaseData,
             }
 
         const movement : Movement = result[0]
+        const lastMovement : Movement = (await this.movementRepository.genericFind({page: 0, resultQuantity: 1}))[0]
 
         const now = new Date()
 
@@ -67,6 +75,12 @@ export class DeleteMovementUseCase implements UseCase<DeleteMovementUseCaseData,
             return {
                 isSuccess: false,
                 error: new TimeLimitError()
+            }
+
+        if(lastMovement.id != movement.id)
+            return {
+                isSuccess: false,
+                error: new NotLastMovementError()
             }
 
         const wasDeleteSuccessful = await this.movementRepository.deleteOne(data.id)

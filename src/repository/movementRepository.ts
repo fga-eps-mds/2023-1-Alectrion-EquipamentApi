@@ -92,6 +92,9 @@ export class MovementRepository implements MovementRepositoryProtocol {
                 equipments: true,
                 destination: true
             },
+            order: {
+                date: "DESC"
+            },
             where: {
                 id: query.id,
                 userId: query.userId,
