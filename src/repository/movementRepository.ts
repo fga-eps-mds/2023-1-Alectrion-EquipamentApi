@@ -22,7 +22,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
 
     async updateEquipments(equipments: any[], status: EquipmentStatus): Promise<void> {
         for(let equipment of equipments) {
-            equipment.status = status
+            equipment.situacao = status
             await this.equipmentRepository.save(equipment)
         }
     }
@@ -121,7 +121,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
         const snapshots = JSON.parse(movement[0].equipmentSnapshots)
         for(const snapshot of snapshots) {
             await this.equipmentRepository.update(snapshot.id, {
-                status: snapshot.status
+                situacao: snapshot.situacao
             })
         }
 

@@ -1,4 +1,5 @@
 import { mock } from 'jest-mock-extended'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
@@ -18,7 +19,8 @@ const mockedEquipment: Equipment = {
   acquisitionDate: new Date(),
   createdAt: new Date(),
   updatedAt: new Date(),
-  status: Status.ACTIVE,
+  situacao: Status.ACTIVE,
+  estado: Estado.Novo,
   tippingNumber: 'any',
   model: 'DELL G15',
   serialNumber: 'any',
@@ -64,7 +66,7 @@ const request: FindOrderServiceUseCaseData = {
   sender: '',
   senderFunctionalNumber: '',
   serialNumber: '',
-  status: '',
+  situacao: '',
   tippingNumber: '',
   type: ''
 }

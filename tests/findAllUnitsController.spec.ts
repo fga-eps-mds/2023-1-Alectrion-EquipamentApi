@@ -2,7 +2,7 @@ import { mock } from 'jest-mock-extended'
 import { Unit } from '../src/domain/entities/unit'
 import { FindAllUnitsController } from '../src/presentation/controller/findAllUnitsController'
 import { ok, serverError } from '../src/presentation/helpers'
-import { FindAllUnitUseCase } from '../src/useCases/findUnit/findAllUnitUseCase'
+import { FindAllUnitUseCase } from '../src/useCases/FindUnit/findAllUnitUseCase'
 
 const useCaseMocked = mock<FindAllUnitUseCase>()
 const findAllUnitsController = new FindAllUnitsController(useCaseMocked)

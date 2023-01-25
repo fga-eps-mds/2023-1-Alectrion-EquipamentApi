@@ -6,6 +6,7 @@ import { CreateMovementController } from '../src/presentation/controller/createM
 import { Equipment } from '../src/domain/entities/equipment'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Unit } from '../src/domain/entities/unit'
 import { Movement } from '../src/domain/entities/movement'
 import { HttpResponse } from '../src/presentation/helpers/http'
@@ -27,8 +28,9 @@ describe('Create movement controller', () => {
             id: "c266c9d5-4e91-4c2e-9c38-fb8710d7e896",
             tippingNumber: "123123",
             serialNumber: "123",
-            type: Type.NOBREAK,
-            status: Status.ACTIVE,
+            type: Type.Nobreak,
+            situacao: Status.ACTIVE,
+            estado: Estado.Novo,
             model: "Xiaomi XT",
             description: "",
             initialUseDate: "2022-12-12",
@@ -48,7 +50,7 @@ describe('Create movement controller', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            equipments: [{...mockedEquipment, situacao: Status.ACTIVE_LOAN}],
             type: 0,
             destination: mockedUnitOne,
             inChargeName: 'José Matheus',

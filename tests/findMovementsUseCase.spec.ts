@@ -7,6 +7,7 @@ import { FindMovementsUseCase, FindMovementsUseCaseData, InvalidDateError } from
 import { Equipment } from '../src/domain/entities/equipment'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Movement } from '../src/domain/entities/movement'
 
 describe('Find movements use case', () => {
@@ -21,8 +22,9 @@ describe('Find movements use case', () => {
             id: "c266c9d5-4e91-4c2e-9c38-fb8710d7e896",
             tippingNumber: "123123",
             serialNumber: "123",
-            type: Type.NOBREAK,
-            status: Status.ACTIVE,
+            type: Type.Nobreak,
+            situacao: Status.ACTIVE,
+            estado: Estado.Novo,
             model: "Xiaomi XT",
             description: "",
             initialUseDate: "2022-12-12",

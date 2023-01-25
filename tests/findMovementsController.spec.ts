@@ -4,6 +4,7 @@ import { FindMovementsUseCase, FindMovementsUseCaseData, InvalidDateError } from
 import { FindMovementsController } from '../src/presentation/controller/findMovementsController'
 
 import { Equipment } from '../src/domain/entities/equipment'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Movement } from '../src/domain/entities/movement'
@@ -20,8 +21,9 @@ describe('Create movement controller', () => {
             id: "c266c9d5-4e91-4c2e-9c38-fb8710d7e896",
             tippingNumber: "123123",
             serialNumber: "123",
-            type: Type.NOBREAK,
-            status: Status.ACTIVE,
+            type: Type.Nobreak,
+            situacao: Status.ACTIVE,
+            estado: Estado.Novo,
             model: "Xiaomi XT",
             description: "",
             initialUseDate: "2022-12-12",

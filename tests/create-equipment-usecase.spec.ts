@@ -17,6 +17,7 @@ import {
   EquipmentTypeError
 } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
@@ -26,21 +27,22 @@ describe('Test create order use case', () => {
   let createEquipmentUseCase: CreateEquipmentUseCase
 
   const unit: Unit = {
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2023-01-20'),
+    updatedAt: new Date('2023-01-20'),
     id: 'teste',
     localization: 'localization',
     name: 'nome'
   }
 
   const createEquipmentInterface: CreateEquipmentInterface = {
-    acquisitionDate: new Date(),
-    status: Status.ACTIVE,
+    acquisitionDate: new Date('2023-01-20'),
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
     type: Type.CPU,
-    initialUseDate: new Date().toISOString(),
+    initialUseDate: new Date('2023-01-20').toISOString(),
     invoiceNumber: 'any',
     unitId: 'any_id',
     acquisitionName: 'any_name',
@@ -57,10 +59,11 @@ describe('Test create order use case', () => {
       id: '',
       name: ''
     },
-    acquisitionDate: createEquipmentInterface.acquisitionDate,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    status: Status.ACTIVE,
+    acquisitionDate: createEquipmentInterface.acquisitionDate,    
+    createdAt: new Date('2023-01-20'),
+    updatedAt: new Date('2023-01-20'),
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
     tippingNumber: createEquipmentInterface.tippingNumber,
     model: createEquipmentInterface.model,
     serialNumber: createEquipmentInterface.serialNumber,
@@ -135,8 +138,10 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should return InvalidTippingNumber if already exists equipment with tippingNumbe', async () => {
-    equipmentRepository.findByTippingNumber.mockResolvedValueOnce(equipment)
+  test('should return InvalidTippingNumber if already exists equipment with tippingNumber', async () => {
+    equipmentRepository.findByTippingNumber.mockResolvedValueOnce(
+      equipment as EquipmentDb
+    )
 
     const result = await createEquipmentUseCase.execute(
       createEquipmentInterface
@@ -188,7 +193,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'MONITOR',
+      type: 'Monitor',
       screenType: 'LCDS'
     })
 
@@ -201,7 +206,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'NOBREAK',
+      type: 'Nobreak',
       power: undefined
     })
 
@@ -214,7 +219,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'STABILIZER',
+      type: 'Estabilizador',
       power: undefined
     })
 
@@ -224,19 +229,30 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create equipment ', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      type: 'CPU'
-    })
+  test('should create equipment', async () => {
+    const result = await createEquipmentUseCase.execute(
+      createEquipmentInterface
+    )
 
     console.log(result.data)
 
     const equipmentDB = new EquipmentDb()
-    equipmentDB.acquisition = equipment.acquisition
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
     equipmentDB.acquisitionDate = equipment.acquisitionDate
-    equipmentDB.unit = equipment.unit
-    equipmentDB.brand = equipment.brand
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
     equipmentDB.description = ''
     equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = equipment.type
@@ -247,7 +263,8 @@ describe('Test create order use case', () => {
     equipmentDB.model = equipment.model
     equipmentDB.ram_size = equipment.ram_size
     equipmentDB.serialNumber = equipment.serialNumber
-    equipmentDB.status = equipment.status
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
     equipmentDB.tippingNumber = equipment.tippingNumber
 
     expect(result).toEqual({

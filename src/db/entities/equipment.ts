@@ -10,6 +10,7 @@ import {
 } from 'typeorm'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
+import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
 import { EquipmentAcquisition } from './equipment-acquisition'
@@ -45,7 +46,13 @@ export class Equipment {
     type: 'enum',
     enum: Status
   })
-  status: Status
+  situacao: Status
+  
+  @Column({
+    type: 'enum',
+    enum: Estado
+  })
+  estado: Estado
 
   @Column({
     type: 'varchar'

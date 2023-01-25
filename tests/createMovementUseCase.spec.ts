@@ -32,8 +32,9 @@ describe('Create movement use case', () => {
             id: "c266c9d5-4e91-4c2e-9c38-fb8710d7e896",
             tippingNumber: "123123",
             serialNumber: "123",
-            type: Type.NOBREAK,
-            status: Status.ACTIVE,
+            type: Type.Nobreak,
+            situacao: Status.ACTIVE,
+            estado: 'Novo',
             model: "Xiaomi XT",
             description: "",
             initialUseDate: "2022-12-12",
@@ -56,7 +57,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            equipments: [{...mockedEquipment, situacao: Status.ACTIVE_LOAN}],
             type: 0,
             destination: mockedUnitOne,
             inChargeName: 'José Matheus',
@@ -89,7 +90,7 @@ describe('Create movement use case', () => {
         expect(result.data).toHaveProperty('equipments')
         expect(result.data.equipments).toBeInstanceOf(Array)
         expect(result.data.equipments).toHaveLength(1)
-        expect(result.data.equipments[0]).toHaveProperty('status', Status.ACTIVE_LOAN)
+        expect(result.data.equipments[0]).toHaveProperty('situacao', Status.ACTIVE_LOAN)
         expect(result.data).toHaveProperty('destination')
         expect(result.data).toHaveProperty('inChargeName', 'José Matheus')
         expect(result.data).toHaveProperty('inChargeRole', 'Sargento')
@@ -102,7 +103,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.TECHNICAL_RESERVE}],
+            equipments: [{...mockedEquipment, situacao: Status.TECHNICAL_RESERVE}],
             type: 1,
             inChargeName: 'José Matheus',
             inChargeRole: 'Sargento',
@@ -134,7 +135,7 @@ describe('Create movement use case', () => {
         expect(result.data).toHaveProperty('equipments')
         expect(result.data.equipments).toBeInstanceOf(Array)
         expect(result.data.equipments).toHaveLength(1)
-        expect(result.data.equipments[0]).toHaveProperty('status', Status.TECHNICAL_RESERVE)
+        expect(result.data.equipments[0]).toHaveProperty('situacao', Status.TECHNICAL_RESERVE)
         expect(result.data).not.toHaveProperty('description')
         expect(result.data).toHaveProperty('inChargeName', 'José Matheus')
         expect(result.data).toHaveProperty('inChargeRole', 'Sargento')
@@ -147,7 +148,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.DOWNGRADED}],
+            equipments: [{...mockedEquipment, situacao: Status.DOWNGRADED}],
             type: 1,
             description: 'Caiu no chão e ficou só o caco.',
             inChargeName: 'José Matheus',
@@ -181,7 +182,7 @@ describe('Create movement use case', () => {
         expect(result.data).toHaveProperty('equipments')
         expect(result.data.equipments).toBeInstanceOf(Array)
         expect(result.data.equipments).toHaveLength(1)
-        expect(result.data.equipments[0]).toHaveProperty('status', Status.DOWNGRADED)
+        expect(result.data.equipments[0]).toHaveProperty('situacao', Status.DOWNGRADED)
         expect(result.data).toHaveProperty('description', 'Caiu no chão e ficou só o caco.')
         expect(result.data).toHaveProperty('inChargeName', 'José Matheus')
         expect(result.data).toHaveProperty('inChargeRole', 'Sargento')
@@ -194,7 +195,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE}],
+            equipments: [{...mockedEquipment, situacao: Status.ACTIVE}],
             type: 2,
             destination: mockedUnitOne,
             inChargeName: 'José Matheus',
@@ -227,7 +228,7 @@ describe('Create movement use case', () => {
         expect(result.data).toHaveProperty('equipments')
         expect(result.data.equipments).toBeInstanceOf(Array)
         expect(result.data.equipments).toHaveLength(1)
-        expect(result.data.equipments[0]).toHaveProperty('status', Status.ACTIVE)
+        expect(result.data.equipments[0]).toHaveProperty('situacao', Status.ACTIVE)
         expect(result.data).toHaveProperty('destination')
         expect(result.data).toHaveProperty('inChargeName', 'José Matheus')
         expect(result.data).toHaveProperty('inChargeRole', 'Sargento')
@@ -240,7 +241,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            equipments: [{...mockedEquipment, situacao: Status.ACTIVE_LOAN}],
             type: 0,
             destination: mockedUnitOne,
             inChargeName: 'José Matheus',
@@ -277,7 +278,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            equipments: [{...mockedEquipment, situacao: Status.ACTIVE_LOAN}],
             type: 0,
             destination: mockedUnitOne,
             inChargeName: 'José Matheus',
@@ -314,7 +315,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            equipments: [{...mockedEquipment, situacao: Status.ACTIVE_LOAN}],
             type: 0,
             destination: mockedUnitOne,
             inChargeName: 'José Matheus',
@@ -351,7 +352,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.ACTIVE_LOAN}],
+            equipments: [{...mockedEquipment, situacao: Status.ACTIVE_LOAN}],
             type: 0,
             destination: mockedUnitOne,
             inChargeName: 'José Matheus',
@@ -388,7 +389,7 @@ describe('Create movement use case', () => {
             id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
             date: new Date(),
             userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-            equipments: [{...mockedEquipment, status: Status.TECHNICAL_RESERVE}],
+            equipments: [{...mockedEquipment, situacao: Status.TECHNICAL_RESERVE}],
             type: 1,
             inChargeName: 'José Matheus',
             inChargeRole: 'Sargento',
