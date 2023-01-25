@@ -16,7 +16,7 @@ export class ListOrderServiceRepository
     delete query.userId
 
     const os = await this.orderServiceRepository.find({
-      relations: ['equipment'],
+      relations: ['equipment', 'destination'],
       where: {
         ...query
       }
