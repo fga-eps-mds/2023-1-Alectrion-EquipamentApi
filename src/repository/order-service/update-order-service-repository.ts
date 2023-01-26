@@ -17,7 +17,7 @@ export type EditPayload = {
   date?: Date
   receiverFunctionalNumber?: string
   status?: Status
-  technicians?: string[]
+  technicians?: []
   receiverDate?: Date
 }
 

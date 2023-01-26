@@ -26,8 +26,6 @@ export class CreateOrderServiceTypeOrmRepository  implements CreateOrderServiceR
       receiverDate: data.receiverDate
     })
 
-    console.log(result.sender)
-
     await this.historyRepository.save(result)
 
     return result

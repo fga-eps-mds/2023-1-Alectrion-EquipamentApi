@@ -32,7 +32,7 @@ export type UpdateOrderServiceUseCaseData = {
   date: string
   reciverFunctionalNumber: string
   status: string
-  techinicias: string[]
+  techinicias: []
   receiverDate: string
 }
 
@@ -123,7 +123,7 @@ export class UpdateOrderServiceUseCase
             date: new Date(data.date),
             receiverFunctionalNumber: data.reciverFunctionalNumber,
             status: (data.status.toUpperCase() as OSStatus),
-            technicians: [],
+            technicians: data.techinicias,
             receiverDate: new Date(data.receiverDate)
           }
         )
@@ -131,6 +131,12 @@ export class UpdateOrderServiceUseCase
       if (this.handleOSStatus(data.status) == OSStatus.CONCLUDED || this.handleOSStatus(data.status) == OSStatus.CANCELED ) {
         await this.updateEquipmentRepository.updateEquipment(equipment.id, {
           status: ('ACTIVE' as Status)
+        })
+      }
+
+      if (this.handleOSStatus(data.status) == OSStatus.MAINTENANCE || this.handleOSStatus(data.status) == OSStatus.WARRANTY ) {
+        await this.updateEquipmentRepository.updateEquipment(equipment.id, {
+          status: ('MAINTENANCE' as Status)
         })
       }
 

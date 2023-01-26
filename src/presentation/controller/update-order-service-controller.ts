@@ -23,7 +23,7 @@ export type UpdateOrderServiceHttpRequest = {
   date: string
   recieverFunctionalNumber: string
   status: string
-  techinicias: string[]
+  techinicias: []
   recieverDate: string
 }
 
