@@ -1,4 +1,4 @@
-import { Situacao } from '../../domain/entities/equipamentEnum/status'
+import { Status } from '../../domain/entities/equipamentEnum/status'
 import { History } from '../../domain/entities/history'
 import { OrderService } from '../../domain/entities/order-service'
 import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
@@ -112,7 +112,7 @@ export class CreateOrderServiceUseCase
       })
 
       await this.updateEquipmentRepository.updateEquipment(equipment.id, {
-        situacao: Situacao.Manutenção
+        situacao: Status.MAINTENANCE
       })
 
       return {

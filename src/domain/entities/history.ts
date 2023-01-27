@@ -1,4 +1,3 @@
-import { Dismissed } from './dismissed'
 import { Equipment } from './equipment'
 import { OrderService } from './order-service'
 
@@ -8,8 +7,6 @@ export type History = {
   equipmentSnapshot: any
 
   orderServices?: OrderService[]
-
-  dismisseds?: Dismissed[]
 
   equipment: Equipment
 

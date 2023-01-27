@@ -3,7 +3,7 @@ import { EquipmentBrand } from '../../db/entities/equipment-brand'
 import { Unit } from '../../db/entities/unit'
 
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-import { Situacao } from '../../domain/entities/equipamentEnum/status'
+import { Status } from '../../domain/entities/equipamentEnum/status'
 import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
@@ -203,7 +203,7 @@ export class CreateEquipmentUseCase
     equipment.tippingNumber = equipmentData.tippingNumber
     equipment.serialNumber = equipmentData.serialNumber
     equipment.situacao =
-      (equipmentData.situacao as Situacao) ?? ('Reserva Técnica' as Situacao)
+      (equipmentData.situacao as Status) ?? ('Reserva Técnica' as Status)
     equipment.estado = equipmentData.estado as Estado
     equipment.model = equipmentData.model
     equipment.description = equipmentData.description ?? ''

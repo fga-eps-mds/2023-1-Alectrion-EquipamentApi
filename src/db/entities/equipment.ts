@@ -9,11 +9,10 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-import { Situacao } from '../../domain/entities/equipamentEnum/status'
+import { Status } from '../../domain/entities/equipamentEnum/status'
 import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
-import { Dismissed } from './dismissed'
 import { EquipmentAcquisition } from './equipment-acquisition'
 import { EquipmentBrand } from './equipment-brand'
 import { OrderService } from './order-service'
@@ -45,9 +44,9 @@ export class Equipment {
 
   @Column({
     type: 'enum',
-    enum: Situacao
+    enum: Status
   })
-  situacao: Situacao
+  situacao: Status
   
   @Column({
     type: 'enum',
@@ -142,9 +141,6 @@ export class Equipment {
 
   @OneToMany(() => OrderService, (orderService) => orderService.equipment)
   orderServices?: OrderService[]
-
-  @OneToMany(() => Dismissed, (dismissed) => dismissed.equipment)
-  dismisseds?: Dismissed[]
 
   @ManyToOne(() => EquipmentBrand, (equipmentBrand) => equipmentBrand.equipment)
   brand?: EquipmentBrand

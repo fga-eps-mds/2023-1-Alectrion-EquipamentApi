@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-export enum Situacao {
-  Ativo = 'Ativo',
-  'Ativo Empréstimo' = 'Ativo Empréstimo',
-  Baixado = 'Baixado',
-  'Manutenção' = 'Manutenção',
-  'Reserva Técnica' = 'Reserva Técnica'
+export enum Status {
+  ACTIVE = 'Ativo',
+  ACTIVE_LOAN = 'Ativo Empréstimo',
+  DOWNGRADED = 'Baixado',
+  MAINTENANCE = 'Manutenção',
+  TECHNICAL_RESERVE = 'Reserva Técnica'
 }

@@ -1,7 +1,6 @@
 import { EquipmentBrand } from './brand'
-import { Dismissed } from './dismissed'
 import { ScreenType } from './equipamentEnum/screenType'
-import { Situacao } from './equipamentEnum/status'
+import { Status } from './equipamentEnum/status'
 import { Estado } from './equipamentEnum/estado'
 import { StorageType } from './equipamentEnum/storageType'
 import { Type } from './equipamentEnum/type'
@@ -20,7 +19,7 @@ export type Equipment = {
 
   estado: Estado
 
-  situacao: Situacao
+  situacao: Status
 
   model: string
 
@@ -53,8 +52,6 @@ export type Equipment = {
   updatedAt: Date
 
   orderServices?: OrderService[]
-
-  dismisseds?: Dismissed[]
 
   brand?: EquipmentBrand
 
