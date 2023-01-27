@@ -7,4 +7,3 @@ yarn.lock
 db.env
 data
 .vscode
-/src/db/migrations/*.ts
