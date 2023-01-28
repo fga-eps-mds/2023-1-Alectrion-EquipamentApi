@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
-import { Situacao } from '../src/domain/entities/equipamentEnum/status'
+import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { OrderService } from '../src/domain/entities/order-service'
@@ -34,7 +34,7 @@ const equipment: Equipment = {
   acquisitionDate: new Date(),
   createdAt: new Date(),
   updatedAt: new Date(),
-  situacao: Situacao.Ativo,
+  situacao: Status.ACTIVE,
   estado: Estado.Novo,
   tippingNumber: 'any',
   model: 'DELL G15',

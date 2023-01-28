@@ -1,5 +1,5 @@
 import { MockProxy, mock } from 'jest-mock-extended'
-import { Situacao } from '../src/domain/entities/equipamentEnum/status'
+import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { StorageType } from '../src/domain/entities/equipamentEnum/storageType'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
@@ -36,7 +36,7 @@ describe('Test create order use case', () => {
 
   const createEquipmentInterface: CreateEquipmentInterface = {
     acquisitionDate: new Date('2023-01-20'),
-    situacao: Situacao.Ativo,
+    situacao: Status.ACTIVE,
     estado: Estado.Novo,
     tippingNumber: 'any',
     model: 'DELL G15',
@@ -62,7 +62,7 @@ describe('Test create order use case', () => {
     acquisitionDate: createEquipmentInterface.acquisitionDate,    
     createdAt: new Date('2023-01-20'),
     updatedAt: new Date('2023-01-20'),
-    situacao: Situacao.Ativo,
+    situacao: Status.ACTIVE,
     estado: Estado.Novo,
     tippingNumber: createEquipmentInterface.tippingNumber,
     model: createEquipmentInterface.model,

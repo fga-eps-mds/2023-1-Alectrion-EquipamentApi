@@ -1,6 +1,6 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
-import { Situacao } from '../src/domain/entities/equipamentEnum/status'
+import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { History } from '../src/domain/entities/history'
@@ -37,7 +37,7 @@ describe('Test create order use case', () => {
     acquisitionDate: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),
-    situacao: Situacao.Ativo,
+    situacao: Status.ACTIVE,
     estado: Estado.Novo,
     tippingNumber: 'any',
     model: 'DELL G15',
@@ -204,7 +204,7 @@ describe('Test create order use case', () => {
     expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(
       equipment.id,
       {
-        situacao: Situacao.Manutenção
+        situacao: Status.MAINTENANCE
       }
     )
 

@@ -1,5 +1,6 @@
 import { Equipment } from './equipment'
 import { OrderService } from './order-service'
+import { Movement } from './movement'
 
 export type Unit = {
   id?: string
@@ -15,4 +16,6 @@ export type Unit = {
   orderServices?: OrderService[]
 
   equipments?: Equipment[]
+
+  destinations?: Movement[]
 }
