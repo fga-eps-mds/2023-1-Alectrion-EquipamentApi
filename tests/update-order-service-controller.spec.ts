@@ -1,4 +1,5 @@
 import { mock } from 'jest-mock-extended'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
@@ -37,13 +38,14 @@ const equipment: Equipment = {
   acquisitionDate: new Date(),
   createdAt: new Date(),
   updatedAt: new Date(),
-  status: Status.ACTIVE,
+  situacao: Status.ACTIVE,
   tippingNumber: 'any',
   model: 'DELL G15',
   serialNumber: 'any',
   type: Type.CPU,
   initialUseDate: new Date().toISOString(),
-  invoiceNumber: 'any'
+  invoiceNumber: 'any',
+  estado: Estado.Novo
 }
 
 const orderService: OrderService = {
