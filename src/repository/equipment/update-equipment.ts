@@ -5,7 +5,7 @@ import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Unit } from '../../domain/entities/unit'
 
 export type EditPayload = {
-  status?: Status
+  situacao?: Status
 
   model?: string
 

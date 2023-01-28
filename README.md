@@ -26,9 +26,15 @@ Aplicação disponível em: https://alectrion-2022.herokuapp.com
 
 3. Crie o arquivo .env e db.env utilizando como base os arquivo de exemplo(.env.example e o db.env.example).
 
-4. Execute o projeto
+4. Crie a network ```alectrion-network``` caso ela não exista. Para verificar se a network existe execute:
+> docker network ls
+
+Se a network não existir execute o seguinte comando para criar
+> docker network create alectrion-network
+
+5. Execute o projeto
     
-    > docker-compose up
+> docker-compose up
 
 A aplicação sera iniciada na porta 4002
 

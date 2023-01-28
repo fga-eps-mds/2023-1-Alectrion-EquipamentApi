@@ -2,9 +2,9 @@
 
 export enum Type {
   CPU = 'CPU',
-  NOBREAK = 'NOBREAK',
-  SCANNER = 'SCANNER',
-  WEBCAM = 'WEBCAM',
-  MONITOR = 'MONITOR',
-  STABILIZER = 'STABILIZER'
+  Escaneador = 'Escaneador',
+  Estabilizador = 'Estabilizador',
+  Monitor = 'Monitor',
+  Nobreak = 'Nobreak',
+  Webcam = 'Webcam'
 }

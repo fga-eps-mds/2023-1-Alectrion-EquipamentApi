@@ -17,6 +17,7 @@ import {
   EquipmentTypeError
 } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
+import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
@@ -35,7 +36,8 @@ describe('Test create order use case', () => {
 
   const createEquipmentInterface: CreateEquipmentInterface = {
     acquisitionDate: new Date('2023-01-20'),
-    status: Status.ACTIVE,
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
@@ -57,10 +59,11 @@ describe('Test create order use case', () => {
       id: '',
       name: ''
     },
-    acquisitionDate: createEquipmentInterface.acquisitionDate,
+    acquisitionDate: createEquipmentInterface.acquisitionDate,    
     createdAt: new Date('2023-01-20'),
     updatedAt: new Date('2023-01-20'),
-    status: Status.ACTIVE,
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
     tippingNumber: createEquipmentInterface.tippingNumber,
     model: createEquipmentInterface.model,
     serialNumber: createEquipmentInterface.serialNumber,
@@ -190,7 +193,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'MONITOR',
+      type: 'Monitor',
       screenType: 'LCDS'
     })
 
@@ -203,7 +206,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'NOBREAK',
+      type: 'Nobreak',
       power: undefined
     })
 
@@ -216,7 +219,7 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'STABILIZER',
+      type: 'Estabilizador',
       power: undefined
     })
 
@@ -260,7 +263,8 @@ describe('Test create order use case', () => {
     equipmentDB.model = equipment.model
     equipmentDB.ram_size = equipment.ram_size
     equipmentDB.serialNumber = equipment.serialNumber
-    equipmentDB.status = equipment.status
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
     equipmentDB.tippingNumber = equipment.tippingNumber
 
     expect(result).toEqual({

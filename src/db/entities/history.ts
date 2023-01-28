@@ -9,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
-import { Dismissed } from './dismissed'
 import { Equipment } from './equipment'
 import { OrderService } from './order-service'
 
@@ -26,9 +25,6 @@ export class History {
 
   @OneToMany(() => OrderService, (orderService) => orderService.equipment)
   orderServices?: OrderService[]
-
-  @OneToMany(() => Dismissed, (dismissed) => dismissed.equipment)
-  dismisseds?: Dismissed[]
 
   @OneToOne(() => Equipment)
   @JoinColumn()

@@ -4,6 +4,7 @@ import { Unit } from '../../db/entities/unit'
 
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
+import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
 import { Equipment } from '../../domain/entities/equipment'
@@ -21,7 +22,9 @@ export interface CreateEquipmentInterface {
 
   type: string
 
-  status: string
+  situacao: string
+
+  estado: string
 
   model: string
 
@@ -98,7 +101,8 @@ export class CreateEquipmentUseCase
       equipmentData.serialNumber.trim().length > 0 &&
       equipmentData.model.trim().length > 0 &&
       equipmentData.initialUseDate !== null &&
-      equipmentData.type.trim().length > 0
+      equipmentData.type.trim().length > 0 &&
+      equipmentData.estado.trim().length > 0
     ) {
       return true
     } else {
@@ -198,8 +202,9 @@ export class CreateEquipmentUseCase
     }
     equipment.tippingNumber = equipmentData.tippingNumber
     equipment.serialNumber = equipmentData.serialNumber
-    equipment.status =
-      (equipmentData.status as Status) ?? ('TECHNICAL_RESERVE' as Status)
+    equipment.situacao =
+      (equipmentData.situacao as Status) ?? ('Reserva Técnica' as Status)
+    equipment.estado = equipmentData.estado as Estado
     equipment.model = equipmentData.model
     equipment.description = equipmentData.description ?? ''
     equipment.initialUseDate = equipmentData.initialUseDate
@@ -220,7 +225,7 @@ export class CreateEquipmentUseCase
         equipment.storageType = equipmentData.storageType as StorageType
         equipment.ram_size = equipmentData.ram_size ?? ''
         break
-      case Type.MONITOR:
+      case Type.Monitor:
         if (!this.validMonitorFields(equipmentData)) {
           return {
             isSuccess: false,
@@ -231,9 +236,9 @@ export class CreateEquipmentUseCase
         equipment.screenSize = equipmentData.screenSize ?? ''
         break
 
-      case Type.WEBCAM:
+      case Type.Webcam:
         break
-      case Type.NOBREAK:
+      case Type.Nobreak:
         if (!this.validOthersFields(equipmentData)) {
           return {
             isSuccess: false,
@@ -248,16 +253,9 @@ export class CreateEquipmentUseCase
         }
         equipment.power = equipmentData.power ?? ''
         break
-      case Type.SCANNER:
-        if (!equipmentData.power) {
-          return {
-            isSuccess: false,
-            error: new NullFields()
-          }
-        }
-        equipment.power = equipmentData.power ?? ''
+      case Type.Escaneador:
         break
-      case Type.STABILIZER:
+      case Type.Estabilizador:
         if (!equipmentData.power) {
           return {
             isSuccess: false,

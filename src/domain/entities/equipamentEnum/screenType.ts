@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 export enum ScreenType {
+  IPS = 'IPS',
   LCD = 'LCD',
-  OLED = 'OLED',
   LED = 'LED',
+  OLED = 'OLED',
   TN = 'TN',
-  VA = 'VA',
-  IPS = 'IPS'
+  VA = 'VA'
 }

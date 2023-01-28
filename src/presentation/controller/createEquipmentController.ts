@@ -16,7 +16,9 @@ export type CreateEquipmentHttpRequest = {
 
   type: string
 
-  status: string
+  estado: string
+
+  situacao: string
 
   model: string
 

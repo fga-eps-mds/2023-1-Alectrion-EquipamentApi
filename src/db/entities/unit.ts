@@ -7,6 +7,7 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 import { Equipment } from './equipment'
+import { Movement } from './movement'
 import { OrderService } from './order-service'
 
 @Entity()
@@ -33,4 +34,7 @@ export class Unit {
 
   @OneToMany(() => Equipment, (equipment) => equipment.unit)
   equipments?: Equipment[]
+
+  @OneToMany(() => Movement, (movement) => movement.destination)
+  destinations?: Movement[]
 }

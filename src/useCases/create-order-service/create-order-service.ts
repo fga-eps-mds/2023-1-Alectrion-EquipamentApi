@@ -118,7 +118,7 @@ export class CreateOrderServiceUseCase
       })
 
       await this.updateEquipmentRepository.updateEquipment(equipment.id, {
-        status: ('MAINTENANCE' as Status)
+        situacao: Status.MAINTENANCE
       })
 
       return {
