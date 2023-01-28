@@ -28,15 +28,14 @@ export class default1664153249772 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TYPE "public"."equipment_status_enum" AS ENUM('ACTIVE', 'ACTIVE_LOAN', 'DOWNGRADED', 'MAINTENANCE', 'TECHNICAL_RESERVE')`
     ) // Removido "INACTIVE"
+    await queryRunner.query(`CREATE TYPE "public"."equipment_estado_enum" AS ENUM('Novo', 'Usado')`);
     await queryRunner.query(
       `CREATE TYPE "public"."equipment_screen_type_enum" AS ENUM('LCD', 'OLED', 'LED', 'TN', 'VA', 'IPS')`
     )
     await queryRunner.query(
       `CREATE TYPE "public"."equipment_storage_type_enum" AS ENUM('HD', 'SSD')`
     )
-    await queryRunner.query(
-      `CREATE TABLE "equipment" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "tipping_number" character varying NOT NULL, "serial_number" character varying NOT NULL, "type" "public"."equipment_type_enum" NOT NULL, "status" "public"."equipment_status_enum" NOT NULL, "model" character varying NOT NULL, "description" character varying NOT NULL, "initial_use_date" character varying NOT NULL, "acquisition_date" date NOT NULL, "screen_size" character varying, "invoice_number" character varying NOT NULL, "power" character varying, "screen_type" "public"."equipment_screen_type_enum", "processor" character varying, "storage_type" "public"."equipment_storage_type_enum", "storage_amount" character varying, "ram_size" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "brandId" uuid, "acquisitionId" uuid, "unitId" uuid, CONSTRAINT "UQ_fbc3cbdf5d7779c6aa431183ba2" UNIQUE ("tipping_number"), CONSTRAINT "PK_0722e1b9d6eb19f5874c1678740" PRIMARY KEY ("id"))`
-    )
+    await queryRunner.query(`CREATE TABLE "equipment" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "tipping_number" character varying NOT NULL, "serial_number" character varying NOT NULL, "type" "public"."equipment_type_enum" NOT NULL, "situacao" "public"."equipment_status_enum" NOT NULL, "estado" "public"."equipment_estado_enum" NOT NULL, "model" character varying NOT NULL, "description" character varying NOT NULL, "initial_use_date" character varying NOT NULL, "acquisition_date" date NOT NULL, "screen_size" character varying, "invoice_number" character varying NOT NULL, "power" character varying, "screen_type" "public"."equipment_screen_type_enum", "processor" character varying, "storage_type" "public"."equipment_storage_type_enum", "storage_amount" character varying, "ram_size" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "brandId" uuid, "acquisitionId" uuid, "unitId" uuid, CONSTRAINT "UQ_fbc3cbdf5d7779c6aa431183ba2" UNIQUE ("tipping_number"), CONSTRAINT "PK_0722e1b9d6eb19f5874c1678740" PRIMARY KEY ("id"))`);
     await queryRunner.query(
       `CREATE TABLE "dismissed" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "date" date NOT NULL, "description" character varying NOT NULL, "author_id" uuid NOT NULL, "equipment_snapshot" jsonb NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "equipmentId" uuid, "historyId" uuid, "destinationId" uuid, CONSTRAINT "REL_6cdcb1ed8c88c7b1299450d19e" UNIQUE ("destinationId"), CONSTRAINT "PK_d57cb086a6c4bbf87275979da24" PRIMARY KEY ("id"))`
     )
@@ -106,6 +105,7 @@ export class default1664153249772 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "dismissed"`)
     await queryRunner.query(`DROP TABLE "equipment"`)
     await queryRunner.query(`DROP TYPE "public"."equipment_storage_type_enum"`)
+    await queryRunner.query(`DROP TYPE "public"."equipment_estado_enum"`);
     await queryRunner.query(`DROP TYPE "public"."equipment_screen_type_enum"`)
     await queryRunner.query(`DROP TYPE "public"."equipment_status_enum"`)
     await queryRunner.query(`DROP TYPE "public"."equipment_type_enum"`)
