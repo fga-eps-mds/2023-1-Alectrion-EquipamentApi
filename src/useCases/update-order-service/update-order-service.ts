@@ -130,13 +130,13 @@ export class UpdateOrderServiceUseCase
 
       if (this.handleOSStatus(data.status) == OSStatus.CONCLUDED || this.handleOSStatus(data.status) == OSStatus.CANCELED ) {
         await this.updateEquipmentRepository.updateEquipment(equipment.id, {
-          status: ('ACTIVE' as Status)
+          situacao: ('ACTIVE' as Status)
         })
       }
 
       if (this.handleOSStatus(data.status) == OSStatus.MAINTENANCE || this.handleOSStatus(data.status) == OSStatus.WARRANTY ) {
         await this.updateEquipmentRepository.updateEquipment(equipment.id, {
-          status: ('MAINTENANCE' as Status)
+          situacao: ('MAINTENANCE' as Status)
         })
       }
 
