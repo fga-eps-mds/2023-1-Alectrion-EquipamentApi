@@ -88,7 +88,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
 
     async genericFind(query: Query): Promise<Movement[]> {
         const queryResult = await this.movementRepository.find({
-            relations: ['equipments', 'equipments.brand', 'destination'],
+            relations: ['equipments', 'equipments.brand', 'equipments.unit', 'destination'],
             order: {
                 date: "DESC"
             },

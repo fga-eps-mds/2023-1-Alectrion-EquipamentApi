@@ -154,5 +154,6 @@ export class Equipment {
   acquisition?: EquipmentBrand
 
   @ManyToOne(() => Unit, (unit) => unit.equipments)
+  @JoinTable()
   unit?: Unit
 }
