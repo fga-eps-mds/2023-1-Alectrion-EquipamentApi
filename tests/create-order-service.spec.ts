@@ -210,7 +210,7 @@ describe('Test create order use case', () => {
     expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(
       equipment.id,
       {
-        situacao: Status.MAINTENANCE
+        situacao:  ('MAINTENANCE' as Status)
       }
     )
 
