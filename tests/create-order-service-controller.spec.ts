@@ -1,6 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { OrderService } from '../src/domain/entities/order-service'
@@ -14,13 +15,14 @@ import {
   badRequest,
   serverError
 } from '../src/presentation/helpers'
-import { CreateOrderServiceUseCase } from '../src/useCases/create-order-service/create-order-service'
+import { 
+  CreateOrderServiceUseCaseData,
+  CreateOrderServiceUseCase 
+} from '../src/useCases/create-order-service/create-order-service'
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
-  InvalidUnitError,
   InvalidSenderError,
-  UnitNotFoundError,
   InvalidDateError
 } from '../src/useCases/create-order-service/errors'
 
@@ -50,15 +52,10 @@ const orderService: OrderService = {
   updatedAt: new Date(),
   date: new Date(),
   id: 'any_id',
+  receiverFunctionalNumber: 'any',
+  status: ('MAINTENANCE' as OSStatus),
   equipment,
   authorId: 'any_author',
-  destination: {
-    createdAt: new Date(),
-    id: 'any_id',
-    name: 'any_name',
-    updatedAt: new Date(),
-    localization: 'any_localization'
-  },
   equipmentSnapshot: equipment,
   sender: 'any_sender',
   senderFunctionalNumber: 'any_sender_number',
@@ -75,24 +72,24 @@ const request: CreateOrderServiceHttpRequest = {
   authorFunctionalNumber: 'any',
   date: new Date().toISOString(),
   description: '',
-  destination: '',
   equipmentId: '',
   receiverName: '',
   senderFunctionalNumber: '',
   senderName: '',
-  userId: ''
+  userId: '',
+  recieverFunctionalNumber: ''
 }
 
-const useCaseParam = {
+const useCaseParam: CreateOrderServiceUseCaseData = {
   equipmentId: request.equipmentId,
   authorId: request.userId,
   authorFunctionalNumber: request.authorFunctionalNumber,
-  destination: request.destination,
   senderName: request.senderName,
   senderFunctionalNumber: request.senderFunctionalNumber,
   date: request.date,
   description: request.description,
-  receiverName: request.receiverName
+  receiverName: request.receiverName,
+  reciverFunctionalNumber: request.recieverFunctionalNumber
 }
 
 describe('Should test CreateOrderServiceController', () => {
@@ -141,21 +138,6 @@ describe('Should test CreateOrderServiceController', () => {
     )
   })
 
-  it('should return badrequest error if usecase returns InvalidUnitError', async () => {
-    createOrderServiceUseCaseMocked.execute.mockResolvedValue({
-      isSuccess: false,
-      error: new InvalidUnitError()
-    })
-
-    const response = await createOrderServiceController.perform(request)
-
-    expect(response).toEqual(badRequest(new InvalidUnitError()))
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
-      useCaseParam
-    )
-  })
-
   it('should return badrequest error if usecase returns InvalidSenderError', async () => {
     createOrderServiceUseCaseMocked.execute.mockResolvedValue({
       isSuccess: false,
@@ -165,21 +147,6 @@ describe('Should test CreateOrderServiceController', () => {
     const response = await createOrderServiceController.perform(request)
 
     expect(response).toEqual(badRequest(new InvalidSenderError()))
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
-      useCaseParam
-    )
-  })
-
-  it('should return badrequest error if usecase returns UnitNotFoundError', async () => {
-    createOrderServiceUseCaseMocked.execute.mockResolvedValue({
-      isSuccess: false,
-      error: new UnitNotFoundError()
-    })
-
-    const response = await createOrderServiceController.perform(request)
-
-    expect(response).toEqual(notFound(new UnitNotFoundError()))
     expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
     expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
       useCaseParam

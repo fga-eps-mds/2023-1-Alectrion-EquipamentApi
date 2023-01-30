@@ -1,6 +1,7 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { History } from '../src/domain/entities/history'
@@ -16,10 +17,8 @@ import {
 } from '../src/useCases/create-order-service/create-order-service'
 import {
   EquipmentNotFoundError,
-  UnitNotFoundError,
   CreateOrderServiceError,
   InvalidAuthorError,
-  InvalidUnitError,
   InvalidDateError,
   InvalidSenderError
 } from '../src/useCases/create-order-service/errors'
@@ -52,11 +51,12 @@ describe('Test create order use case', () => {
     authorId: 'author_id',
     date: new Date().toISOString(),
     description: 'any_description',
-    destination: 'destination_id',
     equipmentId: 'equipment_id',
     receiverName: 'any_receiver',
     senderFunctionalNumber: 'functional_number',
-    senderName: 'any_sender'
+    senderName: 'any_sender',
+    reciverFunctionalNumber: 'any-number'
+
   }
 
   const orderService: OrderService = {
@@ -66,13 +66,6 @@ describe('Test create order use case', () => {
     id: 'any_id',
     equipment,
     authorId: 'any_author',
-    destination: {
-      createdAt: new Date(),
-      id: 'any_id',
-      name: 'any_name',
-      updatedAt: new Date(),
-      localization: 'any_localization'
-    },
     receiverName: '',
     equipmentSnapshot: equipment,
     sender: 'any_sender',
@@ -83,7 +76,10 @@ describe('Test create order use case', () => {
       createdAt: new Date(),
       id: 'any_id',
       updatedAt: new Date()
-    }
+    },
+    receiverFunctionalNumber: 'any_number',
+    status: ('MAINTENANCE' as OSStatus)
+
   }
 
   beforeEach(() => {
@@ -125,18 +121,6 @@ describe('Test create order use case', () => {
     expect(result).toEqual({
       isSuccess: false,
       error: new EquipmentNotFoundError()
-    })
-  })
-
-  test('should return UnitNotFoundError if no unit was found', async () => {
-    unitRepository.listOne.mockResolvedValueOnce(undefined)
-
-    const result = await createOrderServiceUseCase.execute(data)
-
-    expect(unitRepository.listOne).toBeCalledWith(data.destination)
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new UnitNotFoundError()
     })
   })
 
@@ -204,7 +188,7 @@ describe('Test create order use case', () => {
     expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(
       equipment.id,
       {
-        situacao: Status.MAINTENANCE
+        situacao:  Status.MAINTENANCE
       }
     )
 
@@ -234,18 +218,6 @@ describe('Test create order use case', () => {
     expect(result).toEqual({
       isSuccess: false,
       error: new InvalidAuthorError()
-    })
-  })
-
-  test('should return InvalidUnitError if destination was undefined', async () => {
-    const result = await createOrderServiceUseCase.execute({
-      ...data,
-      destination: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new InvalidUnitError()
     })
   })
 

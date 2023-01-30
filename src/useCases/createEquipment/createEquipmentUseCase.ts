@@ -271,15 +271,15 @@ export class CreateEquipmentUseCase
           error: new EquipmentTypeError()
         }
     }
-    equipment.acquisition = acquisition as EquipmentAcquisition
-    equipment.unit = unit as Unit
+    equipment.acquisition = acquisition as unknown as EquipmentAcquisition
+    equipment.unit = unit as unknown as Unit
     equipment.brand = brand as EquipmentBrand
 
     await this.equipmentRepository.create(equipment)
 
     return {
       isSuccess: true,
-      data: equipment
+      data: equipment as unknown as Equipment
     }
   }
 }

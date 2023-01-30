@@ -9,7 +9,7 @@ import {
 } from 'typeorm'
 import { Equipment } from './equipment'
 import { History } from './history'
-import { Unit } from './unit'
+import { Status } from '../../domain/entities/serviceOrderEnum/status'
 
 @Entity()
 export class OrderService {
@@ -37,15 +37,33 @@ export class OrderService {
 
   @Column({
     type: 'varchar',
+    name: 'author_functional_number'
+  })
+  authorFunctionalNumber: string
+
+  @Column({
+    type: 'varchar',
     name: 'receiver_name'
   })
   receiverName: string
 
   @Column({
     type: 'varchar',
+    name: 'receiver_functional_number'
+  })
+  receiverFunctionalNumber: string
+
+  @Column({
+    name: 'receiver_date',
+    type: 'date'
+  })
+  receiverDate: Date
+
+  @Column({
+    type: 'varchar',
     name: 'sender'
   })
-  sender: string
+  senderName: string
 
   @Column({
     type: 'jsonb',
@@ -58,6 +76,19 @@ export class OrderService {
     name: 'sender_functional_number'
   })
   senderFunctionalNumber: string
+
+  @Column({
+    type: 'enum',
+    enum: Status
+  })
+  status: Status
+
+  @Column({
+    type: 'varchar',
+    array: true,
+    name: 'technicians'
+  })
+  technicians: string[]
 
   @Column({ type: 'timestamptz' })
   @CreateDateColumn()
@@ -73,6 +104,4 @@ export class OrderService {
   @ManyToOne(() => History, (history) => history.orderServices)
   history: History
 
-  @ManyToOne(() => Unit, (unit) => unit.orderServices)
-  destination: Unit
 }

@@ -1,4 +1,5 @@
 import { Status } from '../../domain/entities/equipamentEnum/status'
+import { Status as OStatus } from '../../domain/entities/serviceOrderEnum/status'
 import { History } from '../../domain/entities/history'
 import { OrderService } from '../../domain/entities/order-service'
 import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
@@ -23,10 +24,10 @@ export type CreateOrderServiceUseCaseData = {
   authorId: string
   receiverName: string
   authorFunctionalNumber: string
-  destination: string
   senderName: string
   senderFunctionalNumber: string
   date: string
+  reciverFunctionalNumber: string
 }
 
 export class CreateOrderServiceUseCase
@@ -47,13 +48,6 @@ export class CreateOrderServiceUseCase
       return {
         isSuccess: false,
         error: new InvalidAuthorError()
-      }
-    }
-
-    if (!data.destination) {
-      return {
-        isSuccess: false,
-        error: new InvalidUnitError()
       }
     }
 
@@ -80,15 +74,6 @@ export class CreateOrderServiceUseCase
       }
     }
 
-    const unit = await this.unitRepository.listOne(data.destination)
-
-    if (unit === undefined) {
-      return {
-        isSuccess: false,
-        error: new UnitNotFoundError()
-      }
-    }
-
     if (!equipment.history) {
       this.history = await this.historyRepository.create({
         equipment,
@@ -102,13 +87,16 @@ export class CreateOrderServiceUseCase
         receiverName: data.receiverName,
         authorFunctionalNumber: data.authorFunctionalNumber,
         description: data.description,
-        destination: unit,
         equipment,
         history: this.history,
         equipmentSnapshot: equipment,
         senderName: data.senderName,
         senderFunctionalNumber: data.senderFunctionalNumber,
-        date: new Date(data.date)
+        date: new Date(data.date),
+        receiverFunctionalNumber: data.reciverFunctionalNumber,
+        status: ('MAINTENANCE' as OStatus),
+        technicians: [],
+        receiverDate: null
       })
 
       await this.updateEquipmentRepository.updateEquipment(equipment.id, {
