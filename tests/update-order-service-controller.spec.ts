@@ -21,9 +21,7 @@ import {
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
-  InvalidUnitError,
   InvalidSenderError,
-  UnitNotFoundError,
   InvalidDateError,
   UpdateOrderServiceError
 } from '../src/useCases/create-order-service/errors'
@@ -58,13 +56,6 @@ const orderService: OrderService = {
   status: ('MAINTENANCE' as OSStatus),
   equipment,
   authorId: 'any_author',
-  destination: {
-    createdAt: new Date(),
-    id: 'any_id',
-    name: 'any_name',
-    updatedAt: new Date(),
-    localization: 'any_localization'
-  },
   equipmentSnapshot: equipment,
   sender: 'any_sender',
   senderFunctionalNumber: 'any_sender_number',
@@ -85,7 +76,6 @@ const request: UpdateOrderServiceHttpRequest = {
     authorFunctionalNumber: 'any',
     date: new Date().toISOString(),
     description: '',
-    destination: '',
     equipmentId: '',
     receiverName: '',
     senderFunctionalNumber: '',
@@ -98,7 +88,6 @@ const useCaseParam : UpdateOrderServiceUseCaseData = {
   equipmentId: request.equipmentId,
   authorId: request.userId,
   authorFunctionalNumber: request.authorFunctionalNumber,
-  destination: request.destination,
   senderName: request.senderName,
   senderFunctionalNumber: request.senderFunctionalNumber,
   date: request.date,
@@ -156,21 +145,6 @@ describe('Should test UpdateOrderServiceController', () => {
     )
   })
 
-  it('should return badrequest error if usecase returns InvalidUnitError', async () => {
-    updateOrderServiceUseCaseMocked.execute.mockResolvedValue({
-      isSuccess: false,
-      error: new InvalidUnitError()
-    })
-
-    const response = await updateOrderServiceController.perform(request)
-
-    expect(response).toEqual(badRequest(new InvalidUnitError()))
-    expect(updateOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
-    expect(updateOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
-      useCaseParam
-    )
-  })
-
   it('should return badrequest error if usecase returns InvalidSenderError', async () => {
     updateOrderServiceUseCaseMocked.execute.mockResolvedValue({
       isSuccess: false,
@@ -180,21 +154,6 @@ describe('Should test UpdateOrderServiceController', () => {
     const response = await updateOrderServiceController.perform(request)
 
     expect(response).toEqual(badRequest(new InvalidSenderError()))
-    expect(updateOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
-    expect(updateOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
-      useCaseParam
-    )
-  })
-
-  it('should return badrequest error if usecase returns UnitNotFoundError', async () => {
-    updateOrderServiceUseCaseMocked.execute.mockResolvedValue({
-      isSuccess: false,
-      error: new UnitNotFoundError()
-    })
-
-    const response = await updateOrderServiceController.perform(request)
-
-    expect(response).toEqual(notFound(new UnitNotFoundError()))
     expect(updateOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
     expect(updateOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
       useCaseParam

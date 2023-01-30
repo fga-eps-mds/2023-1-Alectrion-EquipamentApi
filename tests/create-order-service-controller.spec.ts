@@ -22,9 +22,7 @@ import {
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
-  InvalidUnitError,
   InvalidSenderError,
-  UnitNotFoundError,
   InvalidDateError
 } from '../src/useCases/create-order-service/errors'
 
@@ -58,13 +56,6 @@ const orderService: OrderService = {
   status: ('MAINTENANCE' as OSStatus),
   equipment,
   authorId: 'any_author',
-  destination: {
-    createdAt: new Date(),
-    id: 'any_id',
-    name: 'any_name',
-    updatedAt: new Date(),
-    localization: 'any_localization'
-  },
   equipmentSnapshot: equipment,
   sender: 'any_sender',
   senderFunctionalNumber: 'any_sender_number',
@@ -81,7 +72,6 @@ const request: CreateOrderServiceHttpRequest = {
   authorFunctionalNumber: 'any',
   date: new Date().toISOString(),
   description: '',
-  destination: '',
   equipmentId: '',
   receiverName: '',
   senderFunctionalNumber: '',
@@ -94,7 +84,6 @@ const useCaseParam: CreateOrderServiceUseCaseData = {
   equipmentId: request.equipmentId,
   authorId: request.userId,
   authorFunctionalNumber: request.authorFunctionalNumber,
-  destination: request.destination,
   senderName: request.senderName,
   senderFunctionalNumber: request.senderFunctionalNumber,
   date: request.date,
@@ -149,21 +138,6 @@ describe('Should test CreateOrderServiceController', () => {
     )
   })
 
-  it('should return badrequest error if usecase returns InvalidUnitError', async () => {
-    createOrderServiceUseCaseMocked.execute.mockResolvedValue({
-      isSuccess: false,
-      error: new InvalidUnitError()
-    })
-
-    const response = await createOrderServiceController.perform(request)
-
-    expect(response).toEqual(badRequest(new InvalidUnitError()))
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
-      useCaseParam
-    )
-  })
-
   it('should return badrequest error if usecase returns InvalidSenderError', async () => {
     createOrderServiceUseCaseMocked.execute.mockResolvedValue({
       isSuccess: false,
@@ -173,21 +147,6 @@ describe('Should test CreateOrderServiceController', () => {
     const response = await createOrderServiceController.perform(request)
 
     expect(response).toEqual(badRequest(new InvalidSenderError()))
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
-    expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
-      useCaseParam
-    )
-  })
-
-  it('should return badrequest error if usecase returns UnitNotFoundError', async () => {
-    createOrderServiceUseCaseMocked.execute.mockResolvedValue({
-      isSuccess: false,
-      error: new UnitNotFoundError()
-    })
-
-    const response = await createOrderServiceController.perform(request)
-
-    expect(response).toEqual(notFound(new UnitNotFoundError()))
     expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalled()
     expect(createOrderServiceUseCaseMocked.execute).toHaveBeenCalledWith(
       useCaseParam

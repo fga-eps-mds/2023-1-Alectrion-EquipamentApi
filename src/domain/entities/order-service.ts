@@ -1,6 +1,5 @@
 import { History } from './history'
 import { Equipment } from './equipment'
-import { Unit } from './unit'
 import { Status } from './serviceOrderEnum/status'
 
 export type OrderService = {
@@ -27,8 +26,6 @@ export type OrderService = {
   equipment: Equipment
 
   history: History
-
-  destination: Unit
 
   receiverFunctionalNumber: string
 

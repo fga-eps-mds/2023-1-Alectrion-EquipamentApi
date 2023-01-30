@@ -15,7 +15,6 @@ export type CreateOrderServiceHttpRequest = {
   userId: string
   receiverName: string
   authorFunctionalNumber: string
-  destination: string
   senderName: string
   senderFunctionalNumber: string
   description: string
@@ -33,7 +32,6 @@ export class CreateOrderServiceController extends Controller {
       equipmentId: params.equipmentId,
       authorId: params.userId,
       authorFunctionalNumber: params.authorFunctionalNumber,
-      destination: params.destination,
       senderName: params.senderName,
       senderFunctionalNumber: params.senderFunctionalNumber,
       date: params.date,

@@ -9,7 +9,6 @@ import {
 } from 'typeorm'
 import { Equipment } from './equipment'
 import { History } from './history'
-import { Unit } from './unit'
 import { Status } from '../../domain/entities/serviceOrderEnum/status'
 
 @Entity()
@@ -105,6 +104,4 @@ export class OrderService {
   @ManyToOne(() => History, (history) => history.orderServices)
   history: History
 
-  @ManyToOne(() => Unit, (unit) => unit.orderServices)
-  destination: Unit
 }

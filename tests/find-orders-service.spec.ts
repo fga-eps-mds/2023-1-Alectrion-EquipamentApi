@@ -40,13 +40,6 @@ const orderService: OrderService = {
   authorId: 'any_author',
   receiverFunctionalNumber: '123456789',
   status: OSStatus.MAINTENANCE,
-  destination: {
-    createdAt: new Date(),
-    id: 'any_id',
-    name: 'any_name',
-    updatedAt: new Date(),
-    localization: 'any_localization'
-  },
   equipmentSnapshot: mockedEquipment,
   sender: 'any_sender',
   senderFunctionalNumber: 'any_sender_number',
@@ -63,7 +56,6 @@ const request: FindOrderServiceUseCaseData = {
   authorFunctionalNumber: '',
   authorId: '',
   date: '',
-  destination: '',
   equipmentId: '',
   receiverName: '',
   sender: '',

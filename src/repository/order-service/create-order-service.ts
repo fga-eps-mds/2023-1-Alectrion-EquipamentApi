@@ -12,7 +12,6 @@ export type CreateOrderServiceData = {
   authorId: string
   receiverName: string
   authorFunctionalNumber: string
-  destination: Unit
   senderName: string
   senderFunctionalNumber: string
   date: Date

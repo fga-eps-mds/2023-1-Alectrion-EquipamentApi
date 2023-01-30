@@ -15,7 +15,6 @@ export class CreateOrderServiceTypeOrmRepository  implements CreateOrderServiceR
       history: data.history,
       description: data.description,
       senderName: data.senderName,
-      destination: data.destination,
       equipment: data.equipment,
       equipmentSnapshot: data.equipmentSnapshot,
       receiverName: data.receiverName,

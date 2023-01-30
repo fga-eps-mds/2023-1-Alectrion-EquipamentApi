@@ -26,7 +26,6 @@ export type UpdateOrderServiceUseCaseData = {
   authorId: string
   receiverName: string
   authorFunctionalNumber: string
-  destination: string
   senderName: string
   senderFunctionalNumber: string
   date: string
@@ -58,13 +57,6 @@ export class UpdateOrderServiceUseCase
       }
     }
 
-    if (!data.destination) {
-      return {
-        isSuccess: false,
-        error: new InvalidUnitError()
-      }
-    }
-
     if (!data.date || !Date.parse(data.date)) {
       return {
         isSuccess: false,
@@ -88,17 +80,6 @@ export class UpdateOrderServiceUseCase
       }
     }
 
-    const unit = await this.unitRepository.listOne(data.destination)
-
-    /* consulta one order service */
-
-    if (unit === undefined) {
-      return {
-        isSuccess: false,
-        error: new UnitNotFoundError()
-      }
-    }
-
     if (!equipment.history) {
       this.history = await this.historyRepository.create({
         equipment,
@@ -114,7 +95,6 @@ export class UpdateOrderServiceUseCase
             receiverName: data.receiverName,
             authorFunctionalNumber: data.authorFunctionalNumber,
             description: data.description,
-            destination: unit,
             equipment,
             history: this.history,
             equipmentSnapshot: equipment,
