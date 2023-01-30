@@ -203,7 +203,7 @@ export class CreateEquipmentUseCase
     equipment.tippingNumber = equipmentData.tippingNumber
     equipment.serialNumber = equipmentData.serialNumber
     equipment.situacao =
-      (equipmentData.situacao as Status) ?? ('TECHNICAL_RESERVE' as Status)
+      (equipmentData.situacao as Status) ?? ('Reserva Técnica' as Status)
     equipment.estado = equipmentData.estado as Estado
     equipment.model = equipmentData.model
     equipment.description = equipmentData.description ?? ''
