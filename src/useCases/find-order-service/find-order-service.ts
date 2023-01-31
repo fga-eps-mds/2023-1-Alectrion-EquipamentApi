@@ -14,7 +14,6 @@ export type FindOrderServiceUseCaseData = {
   equipmentId: string
   authorId: string
   authorFunctionalNumber: string
-  destination: string
   sender: string
   senderFunctionalNumber: string
   date: string

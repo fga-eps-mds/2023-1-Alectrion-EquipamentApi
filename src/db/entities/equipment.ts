@@ -6,7 +6,8 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  JoinTable
 } from 'typeorm'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
@@ -143,6 +144,7 @@ export class Equipment {
   orderServices?: OrderService[]
 
   @ManyToOne(() => EquipmentBrand, (equipmentBrand) => equipmentBrand.equipment)
+  @JoinTable()
   brand?: EquipmentBrand
 
   @ManyToOne(
@@ -152,5 +154,6 @@ export class Equipment {
   acquisition?: EquipmentBrand
 
   @ManyToOne(() => Unit, (unit) => unit.equipments)
+  @JoinTable()
   unit?: Unit
 }

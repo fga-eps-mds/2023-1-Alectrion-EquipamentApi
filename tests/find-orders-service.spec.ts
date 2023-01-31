@@ -1,6 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
+import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { OrderService } from '../src/domain/entities/order-service'
@@ -37,13 +38,8 @@ const orderService: OrderService = {
   receiverName: '',
   equipment: mockedEquipment,
   authorId: 'any_author',
-  destination: {
-    createdAt: new Date(),
-    id: 'any_id',
-    name: 'any_name',
-    updatedAt: new Date(),
-    localization: 'any_localization'
-  },
+  receiverFunctionalNumber: '123456789',
+  status: OSStatus.MAINTENANCE,
   equipmentSnapshot: mockedEquipment,
   sender: 'any_sender',
   senderFunctionalNumber: 'any_sender_number',
@@ -60,7 +56,6 @@ const request: FindOrderServiceUseCaseData = {
   authorFunctionalNumber: '',
   authorId: '',
   date: '',
-  destination: '',
   equipmentId: '',
   receiverName: '',
   sender: '',

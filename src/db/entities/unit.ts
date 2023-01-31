@@ -29,7 +29,7 @@ export class Unit {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @OneToMany(() => OrderService, (orderService) => orderService.destination)
+  @OneToMany(() => OrderService, (orderService) => orderService)
   orderServices?: OrderService[]
 
   @OneToMany(() => Equipment, (equipment) => equipment.unit)
