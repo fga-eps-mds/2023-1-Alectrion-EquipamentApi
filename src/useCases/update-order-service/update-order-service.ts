@@ -53,7 +53,7 @@ export class UpdateOrderServiceUseCase
 
   async execute(
     data: UpdateOrderServiceUseCaseData
-  ): Promise<UseCaseReponse<EditPayload>> {
+  ){
     if (!data.authorFunctionalNumber || !data.receiverName) {
       return {
         isSuccess: false,

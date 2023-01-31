@@ -9,27 +9,30 @@ import { OrderService } from '../src/domain/entities/order-service'
 import { ListOneEquipmentRepository } from '../src/repository/equipment/list-one-equipment'
 import { UpdateEquipmentRepository } from '../src/repository/equipment/update-equipment'
 import { CreateHistoryRepository } from '../src/repository/history/create-history-repository'
-import { CreateOrderServiceRepository } from '../src/repository/order-service/create-order-service'
+import { UpdateOrderServiceRepository } from '../src/repository/order-service/update-order-service-repository'
 import { ListOneUnitRepository } from '../src/repository/unit/list-one-unit'
 import {
-  CreateOrderServiceUseCase,
-  CreateOrderServiceUseCaseData
-} from '../src/useCases/create-order-service/create-order-service'
+  UpdateOrderServiceUseCase,
+  UpdateOrderServiceUseCaseData
+} from '../src/useCases/update-order-service/update-order-service'
 import {
   EquipmentNotFoundError,
   CreateOrderServiceError,
   InvalidAuthorError,
   InvalidDateError,
-  InvalidSenderError
+  InvalidSenderError,
+  UpdateOrderServiceError
 } from '../src/useCases/create-order-service/errors'
+import { ListOrderServiceRepository } from '../src/repository/order-service/list-order-service'
 
-describe('Test create order use case', () => {
+describe('Test update order use case', () => {
   let equipmentRepository: MockProxy<ListOneEquipmentRepository>
   let updateEquipmentRepository: MockProxy<UpdateEquipmentRepository>
   let unitRepository: MockProxy<ListOneUnitRepository>
   let historyRepository: MockProxy<CreateHistoryRepository>
-  let createOrderServiceRepository: MockProxy<CreateOrderServiceRepository>
-  let createOrderServiceUseCase: CreateOrderServiceUseCase
+  let updateOrderServiceRepository: MockProxy<UpdateOrderServiceRepository>
+  let listOrderServiceRepository: MockProxy<ListOrderServiceRepository>
+  let updateOrderServiceUseCase: UpdateOrderServiceUseCase
 
   const equipment: Equipment = {
     id: 'id',
@@ -46,7 +49,7 @@ describe('Test create order use case', () => {
     invoiceNumber: 'any'
   }
 
-  const data: CreateOrderServiceUseCaseData = {
+  const data: UpdateOrderServiceUseCaseData = {
     authorFunctionalNumber: 'author_name',
     authorId: 'author_id',
     date: new Date().toISOString(),
@@ -55,7 +58,11 @@ describe('Test create order use case', () => {
     receiverName: 'any_receiver',
     senderFunctionalNumber: 'functional_number',
     senderName: 'any_sender',
-    reciverFunctionalNumber: 'any-number'
+    reciverFunctionalNumber: 'any-number',
+    id: 'any_id',
+    status: 'MAINTENANCE' as OSStatus,
+    techinicias: [],
+    receiverDate: null
   }
 
   const orderService: OrderService = {
@@ -85,13 +92,14 @@ describe('Test create order use case', () => {
     updateEquipmentRepository = mock()
     unitRepository = mock()
     historyRepository = mock()
-    createOrderServiceRepository = mock()
-    createOrderServiceUseCase = new CreateOrderServiceUseCase(
+    updateOrderServiceRepository = mock()
+    updateOrderServiceUseCase = new UpdateOrderServiceUseCase(
       equipmentRepository,
       updateEquipmentRepository,
       unitRepository,
       historyRepository,
-      createOrderServiceRepository
+      updateOrderServiceRepository,
+      listOrderServiceRepository
     )
 
     equipmentRepository.listOne.mockResolvedValue(equipment)
@@ -102,10 +110,12 @@ describe('Test create order use case', () => {
       updatedAt: new Date(),
       localization: 'any_localization'
     })
-    createOrderServiceRepository.create.mockResolvedValue(orderService)
+    /* updateOrderServiceRepository.updateOrderSevice.mockResolvedValue(
+        orderService
+    ) */
   })
   test('should call equipment repository with correct params', async () => {
-    await createOrderServiceUseCase.execute(data)
+    await updateOrderServiceUseCase.execute(data)
 
     expect(equipmentRepository.listOne).toBeCalledWith(data.equipmentId)
   })
@@ -113,7 +123,7 @@ describe('Test create order use case', () => {
   test('should return EquipmentNotFoundError if no equipment was found', async () => {
     equipmentRepository.listOne.mockResolvedValueOnce(undefined)
 
-    const result = await createOrderServiceUseCase.execute(data)
+    const result = await updateOrderServiceUseCase.execute(data)
 
     expect(equipmentRepository.listOne).toBeCalledWith(data.equipmentId)
     expect(result).toEqual({
@@ -122,8 +132,8 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create equipment history if equipment found doesnt have history', async () => {
-    await createOrderServiceUseCase.execute(data)
+  test('should update equipment history if equipment found doesnt have history', async () => {
+    await updateOrderServiceUseCase.execute(data)
 
     expect(historyRepository.create).toBeCalledTimes(1)
     expect(historyRepository.create).toBeCalledWith({
@@ -132,55 +142,16 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should update history if equipment found already has history', async () => {
-    const history = {
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      equipment,
-      id: 'any_id',
-      equipmentSnapshot: {}
-    }
-    equipmentRepository.listOne.mockResolvedValueOnce({
-      ...equipment,
-      history
-    })
-
-    await createOrderServiceUseCase.execute(data)
-
-    expect(historyRepository.create).toBeCalledTimes(0)
-    expect(createOrderServiceUseCase.history).toEqual(history)
-  })
-
-  test('should update history if equipment found already has history', async () => {
-    const history: History = {
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      equipment,
-      id: 'any_id',
-      equipmentSnapshot: {}
-    }
-    equipmentRepository.listOne.mockResolvedValueOnce({
-      ...equipment,
-      history
-    })
-
-    await createOrderServiceUseCase.execute(data)
-
-    expect(historyRepository.create).toBeCalledTimes(0)
-    expect(createOrderServiceUseCase.history).toEqual(history)
-  })
-
-  test('should create order service', async () => {
-    const result = await createOrderServiceUseCase.execute(data)
+  test('should update order service', async () => {
+    const result = await updateOrderServiceUseCase.execute(data)
 
     expect(result).toEqual({
-      isSuccess: true,
-      data: orderService
+      isSuccess: true
     })
   })
 
-  test('should call updateEquipmentRepository if order service was created', async () => {
-    const result = await createOrderServiceUseCase.execute(data)
+  test('should call updateEquipmentRepository if order service was updated', async () => {
+    const result = await updateOrderServiceUseCase.execute(data)
 
     expect(updateEquipmentRepository.updateEquipment).toBeCalledTimes(1)
     expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(
@@ -191,24 +162,22 @@ describe('Test create order use case', () => {
     )
 
     expect(result).toEqual({
-      isSuccess: true,
-      data: orderService
+      isSuccess: true
     })
   })
-
-  test('should return CreateOrderServiceError if history returns undefined', async () => {
+  test('should return UpdateOrderServiceError if history returns undefined', async () => {
     historyRepository.create.mockResolvedValueOnce(null)
 
-    const result = await createOrderServiceUseCase.execute(data)
+    const result = await updateOrderServiceUseCase.execute(data)
 
     expect(result).toEqual({
       isSuccess: false,
-      error: new CreateOrderServiceError()
+      error: new UpdateOrderServiceError()
     })
   })
 
   test('should return InvalidAuthorError if receiverName equals undefined', async () => {
-    const result = await createOrderServiceUseCase.execute({
+    const result = await updateOrderServiceUseCase.execute({
       ...data,
       receiverName: undefined
     })
@@ -220,7 +189,7 @@ describe('Test create order use case', () => {
   })
 
   test('should return InvalidDateError if date was undefined', async () => {
-    const result = await createOrderServiceUseCase.execute({
+    const result = await updateOrderServiceUseCase.execute({
       ...data,
       date: undefined
     })
@@ -232,7 +201,7 @@ describe('Test create order use case', () => {
   })
 
   test('should return InvalidSenderError if senderName was undefined', async () => {
-    const result = await createOrderServiceUseCase.execute({
+    const result = await updateOrderServiceUseCase.execute({
       ...data,
       senderName: undefined
     })
