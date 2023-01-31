@@ -4,7 +4,6 @@ import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
-import { History } from '../src/domain/entities/history'
 import { OrderService } from '../src/domain/entities/order-service'
 import { ListOneEquipmentRepository } from '../src/repository/equipment/list-one-equipment'
 import { UpdateEquipmentRepository } from '../src/repository/equipment/update-equipment'
@@ -17,7 +16,6 @@ import {
 } from '../src/useCases/update-order-service/update-order-service'
 import {
   EquipmentNotFoundError,
-  CreateOrderServiceError,
   InvalidAuthorError,
   InvalidDateError,
   InvalidSenderError,
@@ -63,28 +61,6 @@ describe('Test update order use case', () => {
     status: 'MAINTENANCE' as OSStatus,
     techinicias: [],
     receiverDate: null
-  }
-
-  const orderService: OrderService = {
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    date: new Date(),
-    id: 'any_id',
-    equipment,
-    authorId: 'any_author',
-    receiverName: '',
-    equipmentSnapshot: equipment,
-    sender: 'any_sender',
-    senderFunctionalNumber: 'any_sender_number',
-    history: {
-      equipmentSnapshot: {},
-      equipment,
-      createdAt: new Date(),
-      id: 'any_id',
-      updatedAt: new Date()
-    },
-    receiverFunctionalNumber: 'any_number',
-    status: 'MAINTENANCE' as OSStatus
   }
 
   beforeEach(() => {
