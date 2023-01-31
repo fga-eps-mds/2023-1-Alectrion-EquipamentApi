@@ -2,7 +2,6 @@ import { Equipment } from '../../domain/entities/equipment'
 import { History } from '../../domain/entities/history'
 import { OrderService } from '../../domain/entities/order-service'
 import { Status } from '../../domain/entities/serviceOrderEnum/status'
-import { Unit } from '../../domain/entities/unit'
 
 export type CreateOrderServiceData = {
   equipment: Equipment
