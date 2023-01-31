@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { Status as OSStatus } from '../../domain/entities/serviceOrderEnum/status'
 import { History } from '../../domain/entities/history'
@@ -115,12 +116,7 @@ export class UpdateOrderServiceUseCase
         await this.updateEquipmentRepository.updateEquipment(equipment.id, {
           situacao: Status.ACTIVE
         })
-      }
-
-      if (
-        this.handleOSStatus(data.status) === OSStatus.MAINTENANCE ||
-        this.handleOSStatus(data.status) === OSStatus.WARRANTY
-      ) {
+      } else {
         await this.updateEquipmentRepository.updateEquipment(equipment.id, {
           situacao: Status.MAINTENANCE
         })
@@ -136,7 +132,7 @@ export class UpdateOrderServiceUseCase
       }
   }
 
-  public handleOSStatus(status: string): OSStatus {
+  private handleOSStatus(status: string): OSStatus {
     switch (status.toUpperCase()) {
       case 'MAINTENANCE': {
         return OSStatus.MAINTENANCE

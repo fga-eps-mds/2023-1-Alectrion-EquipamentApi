@@ -1,11 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { UpdateOrderServiceUseCase } from '../../useCases/update-order-service/update-order-service'
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
   InvalidDateError,
-  InvalidSenderError,
-  InvalidUnitError,
-  UnitNotFoundError
+  InvalidSenderError
 } from '../../useCases/create-order-service/errors'
 import { notFound, ok, badRequest, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
@@ -59,16 +58,8 @@ export class UpdateOrderServiceController extends Controller {
       return badRequest(response.error)
     }
 
-    if (!response.isSuccess && response.error instanceof InvalidUnitError) {
-      return badRequest(response.error)
-    }
-
     if (!response.isSuccess && response.error instanceof InvalidSenderError) {
       return badRequest(response.error)
-    }
-
-    if (!response.isSuccess && response.error instanceof UnitNotFoundError) {
-      return notFound(response.error)
     }
 
     if (!response.isSuccess && response.error instanceof InvalidDateError) {
