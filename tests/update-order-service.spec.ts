@@ -3,8 +3,8 @@ import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
+import { History } from '../src/domain/entities/history'
 import { Equipment } from '../src/domain/entities/equipment'
-import { OrderService } from '../src/domain/entities/order-service'
 import { ListOneEquipmentRepository } from '../src/repository/equipment/list-one-equipment'
 import { UpdateEquipmentRepository } from '../src/repository/equipment/update-equipment'
 import { CreateHistoryRepository } from '../src/repository/history/create-history-repository'
@@ -63,6 +63,38 @@ describe('Test update order use case', () => {
     receiverDate: null
   }
 
+  const dataConcluded: UpdateOrderServiceUseCaseData = {
+    authorFunctionalNumber: 'author_name',
+    authorId: 'author_id',
+    date: new Date().toISOString(),
+    description: 'any_description',
+    equipmentId: 'equipment_id',
+    receiverName: 'any_receiver',
+    senderFunctionalNumber: 'functional_number',
+    senderName: 'any_sender',
+    reciverFunctionalNumber: 'any-number',
+    id: 'any_id',
+    status: 'CONCLUDED' as OSStatus,
+    techinicias: [],
+    receiverDate: null
+  }
+
+  const dataCanceled: UpdateOrderServiceUseCaseData = {
+    authorFunctionalNumber: 'author_name',
+    authorId: 'author_id',
+    date: new Date().toISOString(),
+    description: 'any_description',
+    equipmentId: 'equipment_id',
+    receiverName: 'any_receiver',
+    senderFunctionalNumber: 'functional_number',
+    senderName: 'any_sender',
+    reciverFunctionalNumber: 'any-number',
+    id: 'any_id',
+    status: 'CANCELED' as OSStatus,
+    techinicias: [],
+    receiverDate: null
+  }
+
   beforeEach(() => {
     equipmentRepository = mock()
     updateEquipmentRepository = mock()
@@ -86,9 +118,6 @@ describe('Test update order use case', () => {
       updatedAt: new Date(),
       localization: 'any_localization'
     })
-    /* updateOrderServiceRepository.updateOrderSevice.mockResolvedValue(
-        orderService
-    ) */
   })
   test('should call equipment repository with correct params', async () => {
     await updateOrderServiceUseCase.execute(data)
@@ -118,6 +147,44 @@ describe('Test update order use case', () => {
     })
   })
 
+  test('should update history if equipment found already has history', async () => {
+    const history = {
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      equipment,
+      id: 'any_id',
+      equipmentSnapshot: {}
+    }
+    equipmentRepository.listOne.mockResolvedValueOnce({
+      ...equipment,
+      history
+    })
+
+    await updateOrderServiceUseCase.execute(data)
+
+    expect(historyRepository.create).toBeCalledTimes(0)
+    expect(updateOrderServiceUseCase.history).toEqual(history)
+  })
+
+  test('should update history if equipment found already has history', async () => {
+    const history: History = {
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      equipment,
+      id: 'any_id',
+      equipmentSnapshot: {}
+    }
+    equipmentRepository.listOne.mockResolvedValueOnce({
+      ...equipment,
+      history
+    })
+
+    await updateOrderServiceUseCase.execute(data)
+
+    expect(historyRepository.create).toBeCalledTimes(0)
+    expect(updateOrderServiceUseCase.history).toEqual(history)
+  })
+
   test('should update order service', async () => {
     const result = await updateOrderServiceUseCase.execute(data)
 
@@ -141,6 +208,39 @@ describe('Test update order use case', () => {
       isSuccess: true
     })
   })
+
+  test('should call updateEquipmentRepository if order service status was updated to concluded', async () => {
+    const result = await updateOrderServiceUseCase.execute(dataConcluded)
+
+    expect(updateEquipmentRepository.updateEquipment).toBeCalledTimes(1)
+    expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(
+      equipment.id,
+      {
+        situacao: Status.ACTIVE
+      }
+    )
+
+    expect(result).toEqual({
+      isSuccess: true
+    })
+  })
+
+  test('should call updateEquipmentRepository if order service status was updated to canceled', async () => {
+    const result = await updateOrderServiceUseCase.execute(dataCanceled)
+
+    expect(updateEquipmentRepository.updateEquipment).toBeCalledTimes(1)
+    expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(
+      equipment.id,
+      {
+        situacao: Status.ACTIVE
+      }
+    )
+
+    expect(result).toEqual({
+      isSuccess: true
+    })
+  })
+
   test('should return UpdateOrderServiceError if history returns undefined', async () => {
     historyRepository.create.mockResolvedValueOnce(null)
 

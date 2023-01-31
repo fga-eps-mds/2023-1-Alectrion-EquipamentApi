@@ -4,13 +4,12 @@ import { Status as OSStatus } from '../../domain/entities/serviceOrderEnum/statu
 import { History } from '../../domain/entities/history'
 import { OrderService } from '../../domain/entities/order-service'
 import {
-  EditPayload,
   UpdateEquipmentRepository
 } from '../../repository/equipment/update-equipment'
 import { CreateHistoryRepository } from '../../repository/history/create-history-repository'
 import { ListOneUnitRepository } from '../../repository/unit/list-one-unit'
 import { ListOneEquipmentRepository } from './../../repository/equipment/list-one-equipment'
-import { UseCase, UseCaseReponse } from './../protocol/useCase'
+import { UseCase } from './../protocol/useCase'
 import { UpdateOrderServiceRepository } from '../../repository/order-service/update-order-service-repository'
 import { ListOrderServiceRepository } from '../../repository/order-service/list-order-service'
 import {
