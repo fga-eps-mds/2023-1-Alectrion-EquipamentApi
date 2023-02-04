@@ -35,13 +35,6 @@ export class InvalidTypeError extends Error {
   }
 }
 
-export class InvalidUserError extends Error {
-  constructor() {
-    super('Usuário inválido.')
-    this.name = 'InvalidUserError'
-  }
-}
-
 export class InvalidDestinationError extends Error {
   constructor() {
     super('Unidade de destino inválida.')
@@ -92,10 +85,6 @@ export class CreateMovementUseCase
     return false
   }
 
-  private isUserInvalid(data: CreateMovementUseCaseData): boolean {
-    return false
-  }
-
   private isUnitValid(unit: any): boolean {
     if (!unit) return true
     return false
@@ -126,12 +115,6 @@ export class CreateMovementUseCase
       return {
         isSuccess: false,
         error: new InvalidTypeError()
-      }
-
-    if (this.isUserInvalid(data))
-      return {
-        isSuccess: false,
-        error: new InvalidUserError()
       }
 
     const equipments = []
