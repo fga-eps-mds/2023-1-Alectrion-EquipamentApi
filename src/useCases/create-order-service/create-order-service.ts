@@ -11,9 +11,7 @@ import { UseCase } from './../protocol/useCase'
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
-  InvalidUnitError,
   InvalidSenderError,
-  UnitNotFoundError,
   CreateOrderServiceError,
   InvalidDateError
 } from './errors'
@@ -94,7 +92,7 @@ export class CreateOrderServiceUseCase
         senderFunctionalNumber: data.senderFunctionalNumber,
         date: new Date(data.date),
         receiverFunctionalNumber: data.reciverFunctionalNumber,
-        status: ('MAINTENANCE' as OStatus),
+        status: 'MAINTENANCE' as OStatus,
         technicians: [],
         receiverDate: null
       })

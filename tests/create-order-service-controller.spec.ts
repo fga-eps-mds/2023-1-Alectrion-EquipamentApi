@@ -15,9 +15,9 @@ import {
   badRequest,
   serverError
 } from '../src/presentation/helpers'
-import { 
+import {
   CreateOrderServiceUseCaseData,
-  CreateOrderServiceUseCase 
+  CreateOrderServiceUseCase
 } from '../src/useCases/create-order-service/create-order-service'
 import {
   EquipmentNotFoundError,
@@ -53,7 +53,7 @@ const orderService: OrderService = {
   date: new Date(),
   id: 'any_id',
   receiverFunctionalNumber: 'any',
-  status: ('MAINTENANCE' as OSStatus),
+  status: 'MAINTENANCE' as OSStatus,
   equipment,
   authorId: 'any_author',
   equipmentSnapshot: equipment,
