@@ -1,6 +1,5 @@
 import { Equipment } from '../../domain/entities/equipment'
 import { History } from '../../domain/entities/history'
-import { Unit } from '../../domain/entities/unit'
 import { Status } from '../../domain/entities/serviceOrderEnum/status'
 
 export type EditPayload = {

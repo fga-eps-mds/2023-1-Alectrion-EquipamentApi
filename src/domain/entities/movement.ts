@@ -2,33 +2,33 @@ import { Equipment } from './equipment'
 import { Unit } from './unit'
 
 export enum Types {
-    Borrow = 0,
-    Dismiss,
-    Ownership
+  Borrow = 0,
+  Dismiss,
+  Ownership
 }
 
 export type Movement = {
-    id: string
-    
-    date: Date
+  id: string
 
-    userId: string
+  date: Date
 
-    equipments: Equipment[]
+  userId: string
 
-    type: Number
+  equipments: Equipment[]
 
-    inChargeName: string
+  type: number
 
-    inChargeRole: string
+  inChargeName: string
 
-    chiefName: string
+  inChargeRole: string
 
-    chiefRole: string
+  chiefName: string
 
-    equipmentSnapshots?: any
+  chiefRole: string
 
-    description?: string
+  equipmentSnapshots?: any
 
-    destination?: Unit
+  description?: string
+
+  destination?: Unit
 }
