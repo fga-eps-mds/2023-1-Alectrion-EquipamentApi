@@ -18,6 +18,7 @@ import {
 } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
+import { ScreenType } from '../src/domain/entities/equipamentEnum/screenType'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
@@ -53,13 +54,48 @@ describe('Test create order use case', () => {
     processor: 'i7'
   }
 
+  const createMonitorInterface: CreateEquipmentInterface = {
+    acquisitionDate: new Date('2023-01-20'),
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
+    tippingNumber: 'any',
+    model: 'DELL G15',
+    serialNumber: 'any',
+    type: Type.Monitor,
+    screenType: ScreenType.LED,
+    screenSize: '40pol',
+    initialUseDate: new Date('2023-01-20').toISOString(),
+    invoiceNumber: 'any',
+    unitId: 'any_id',
+    acquisitionName: 'any_name',
+    brandName: 'brand_name',
+    ram_size: '16',
+    storageAmount: '256',
+    storageType: 'SSD',
+    processor: 'i7'
+  }
+
+  const createGeneralEquipmentInterface = {
+    acquisitionDate: new Date('2023-01-20'),
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
+    tippingNumber: 'any',
+    model: 'DELL G15',
+    serialNumber: 'any',
+    initialUseDate: new Date('2023-01-20').toISOString(),
+    invoiceNumber: 'any',
+    unitId: 'any_id',
+    acquisitionName: 'any_name',
+    brandName: 'brand_name'
+  }
+
   const equipment: Equipment = {
     id: 'id',
     acquisition: {
       id: '',
       name: ''
     },
-    acquisitionDate: createEquipmentInterface.acquisitionDate,    
+    acquisitionDate: createEquipmentInterface.acquisitionDate,
     createdAt: new Date('2023-01-20'),
     updatedAt: new Date('2023-01-20'),
     situacao: Status.ACTIVE,
@@ -74,6 +110,30 @@ describe('Test create order use case', () => {
     storageAmount: '256',
     storageType: 'SSD' as StorageType,
     processor: 'i7',
+    unit,
+    brand: {
+      id: '',
+      name: 'brand'
+    }
+  }
+
+  const monitor: Equipment = {
+    id: 'id',
+    acquisition: {
+      id: '',
+      name: ''
+    },
+    acquisitionDate: createMonitorInterface.acquisitionDate,
+    createdAt: new Date('2023-01-20'),
+    updatedAt: new Date('2023-01-20'),
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
+    tippingNumber: createMonitorInterface.tippingNumber,
+    model: createMonitorInterface.model,
+    serialNumber: createMonitorInterface.serialNumber,
+    type: createMonitorInterface.type as Type,
+    initialUseDate: createMonitorInterface.initialUseDate,
+    invoiceNumber: createMonitorInterface.invoiceNumber,
     unit,
     brand: {
       id: '',
@@ -165,6 +225,20 @@ describe('Test create order use case', () => {
     })
   })
 
+  test('should return NullFields if pass wrong screen type for monitor', async () => {
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Monitor,
+      screenSize: '40pol',
+      screenType: 'CRT'
+    })
+
+    expect(result).toEqual({
+      isSuccess: false,
+      error: new NullFields()
+    })
+  })
+
   test('should return EquipmentTypeError if pass wrong equipment type', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
@@ -226,6 +300,44 @@ describe('Test create order use case', () => {
     expect(result).toEqual({
       isSuccess: false,
       error: new NullFields()
+    })
+  })
+
+  test('should create monitor', async () => {
+    const result = await createEquipmentUseCase.execute(createMonitorInterface)
+
+    const equipmentDB = new EquipmentDb()
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
+    equipmentDB.acquisitionDate = equipment.acquisitionDate
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
+    equipmentDB.description = ''
+    equipmentDB.initialUseDate = monitor.initialUseDate
+    equipmentDB.type = monitor.type
+    equipmentDB.invoiceNumber = monitor.invoiceNumber
+    equipmentDB.model = monitor.model
+    equipmentDB.serialNumber = monitor.serialNumber
+    equipmentDB.situacao = monitor.situacao
+    equipmentDB.estado = monitor.estado
+    equipmentDB.tippingNumber = monitor.tippingNumber
+    equipmentDB.screenType = ScreenType.LED
+    equipmentDB.screenSize = '40pol'
+
+    expect(result).toEqual({
+      isSuccess: true,
+      data: equipmentDB
     })
   })
 
