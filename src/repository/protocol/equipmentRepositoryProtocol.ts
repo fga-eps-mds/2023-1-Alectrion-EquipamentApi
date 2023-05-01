@@ -7,4 +7,5 @@ export interface EquipmentRepositoryProtocol {
   genericFind(query: any): Promise<Equipment[]>
   findByTippingNumberOrSerialNumber(id: string): Promise<Equipment | null>
   findByTippingNumber(tippingNumber: string): Promise<Equipment | null>
+  deleteOne(id: string): Promise<boolean>
 }
