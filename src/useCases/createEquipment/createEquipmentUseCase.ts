@@ -15,7 +15,6 @@ import { UnitRepositoryProcol } from '../../repository/protocol/unitRepositoryPr
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
 import { Equipment as EquipmentEntity } from '../../db/entities/equipment'
 
-
 export interface CreateEquipmentInterface {
   tippingNumber: string
 
@@ -59,8 +58,7 @@ export interface CreateEquipmentInterface {
 }
 
 export interface EquipmentResource {
-  
-  id: string 
+  id: string
 
   tippingNumber: string
 
@@ -101,7 +99,6 @@ export interface EquipmentResource {
   unit: Unit
 
   ram_size?: string
-
 }
 
 export class EquipmentTypeError extends Error {
@@ -197,49 +194,49 @@ export class CreateEquipmentUseCase
     }
   }
 
-  private mapEquipmentToEquipmentResource(equipment:Equipment){
+  private mapEquipmentToEquipmentResource(equipment: Equipment) {
     return {
-    id: equipment.id,
+      id: equipment.id,
 
-    tippingNumber: equipment.tippingNumber,
+      tippingNumber: equipment.tippingNumber,
 
-    serialNumber: equipment.serialNumber,
+      serialNumber: equipment.serialNumber,
 
-    type: equipment.type,
+      type: equipment.type,
 
-    situacao: equipment.situacao,
+      situacao: equipment.situacao,
 
-    estado: equipment.estado,
+      estado: equipment.estado,
 
-    model: equipment.model,
+      model: equipment.model,
 
-    description: equipment.description,
-  
-    initialUseDate: equipment.initialUseDate,
-  
-    acquisitionDate: equipment.acquisitionDate,
-  
-    screenSize: equipment.screenSize,
-  
-    invoiceNumber: equipment.invoiceNumber,
-  
-    power: equipment.power,
-  
-    screenType: equipment.screenType,
-  
-    processor: equipment.processor,
-  
-    storageType: equipment.storageType,
-  
-    storageAmount: equipment.storageAmount,
-  
-    brand: equipment.brand,
-  
-    acquisition: equipment.acquisition,
-  
-    unit: equipment.unit,
-  
-    ram_size: equipment.ram_size,
+      description: equipment.description,
+
+      initialUseDate: equipment.initialUseDate,
+
+      acquisitionDate: equipment.acquisitionDate,
+
+      screenSize: equipment.screenSize,
+
+      invoiceNumber: equipment.invoiceNumber,
+
+      power: equipment.power,
+
+      screenType: equipment.screenType,
+
+      processor: equipment.processor,
+
+      storageType: equipment.storageType,
+
+      storageAmount: equipment.storageAmount,
+
+      brand: equipment.brand,
+
+      acquisition: equipment.acquisition,
+
+      unit: equipment.unit,
+
+      ram_size: equipment.ram_size
     }
   }
 
@@ -373,9 +370,6 @@ export class CreateEquipmentUseCase
     return {
       isSuccess: true,
       data: this.mapEquipmentToEquipmentResource(equipment)
-     
     }
   }
-  
 }
-
