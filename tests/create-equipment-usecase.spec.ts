@@ -54,27 +54,6 @@ describe('Test create order use case', () => {
     processor: 'i7'
   }
 
-  const createMonitorInterface: CreateEquipmentInterface = {
-    acquisitionDate: new Date('2023-01-20'),
-    situacao: Status.ACTIVE,
-    estado: Estado.Novo,
-    tippingNumber: 'any',
-    model: 'DELL G15',
-    serialNumber: 'any',
-    type: Type.Monitor,
-    screenType: ScreenType.LED,
-    screenSize: '40pol',
-    initialUseDate: new Date('2023-01-20').toISOString(),
-    invoiceNumber: 'any',
-    unitId: 'any_id',
-    acquisitionName: 'any_name',
-    brandName: 'brand_name',
-    ram_size: '16',
-    storageAmount: '256',
-    storageType: 'SSD',
-    processor: 'i7'
-  }
-
   const createGeneralEquipmentInterface = {
     acquisitionDate: new Date('2023-01-20'),
     situacao: Status.ACTIVE,
@@ -110,30 +89,6 @@ describe('Test create order use case', () => {
     storageAmount: '256',
     storageType: 'SSD' as StorageType,
     processor: 'i7',
-    unit,
-    brand: {
-      id: '',
-      name: 'brand'
-    }
-  }
-
-  const monitor: Equipment = {
-    id: 'id',
-    acquisition: {
-      id: '',
-      name: ''
-    },
-    acquisitionDate: createMonitorInterface.acquisitionDate,
-    createdAt: new Date('2023-01-20'),
-    updatedAt: new Date('2023-01-20'),
-    situacao: Status.ACTIVE,
-    estado: Estado.Novo,
-    tippingNumber: createMonitorInterface.tippingNumber,
-    model: createMonitorInterface.model,
-    serialNumber: createMonitorInterface.serialNumber,
-    type: createMonitorInterface.type as Type,
-    initialUseDate: createMonitorInterface.initialUseDate,
-    invoiceNumber: createMonitorInterface.invoiceNumber,
     unit,
     brand: {
       id: '',
@@ -318,7 +273,12 @@ describe('Test create order use case', () => {
   })
 
   test('should create monitor', async () => {
-    const result = await createEquipmentUseCase.execute(createMonitorInterface)
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Monitor,
+      screenType: ScreenType.LED,
+      screenSize: '40pol'
+    })
 
     const equipmentDB = new EquipmentDb()
     equipmentDB.acquisition = {
@@ -338,14 +298,14 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = monitor.initialUseDate
-    equipmentDB.type = monitor.type
-    equipmentDB.invoiceNumber = monitor.invoiceNumber
-    equipmentDB.model = monitor.model
-    equipmentDB.serialNumber = monitor.serialNumber
-    equipmentDB.situacao = monitor.situacao
-    equipmentDB.estado = monitor.estado
-    equipmentDB.tippingNumber = monitor.tippingNumber
+    equipmentDB.initialUseDate = equipment.initialUseDate
+    equipmentDB.type = Type.Monitor
+    equipmentDB.invoiceNumber = equipment.invoiceNumber
+    equipmentDB.model = equipment.model
+    equipmentDB.serialNumber = equipment.serialNumber
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
+    equipmentDB.tippingNumber = equipment.tippingNumber
     equipmentDB.screenType = ScreenType.LED
     equipmentDB.screenSize = '40pol'
 
@@ -396,7 +356,7 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create estabilizador', async () => {
+  test('should create "estabilizador"', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
       type: Type.Estabilizador,
@@ -476,7 +436,7 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create webcam', async () => {
+  test('should create "escaneador"', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
       type: Type.Escaneador
@@ -515,7 +475,7 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create equipment', async () => {
+  test('should create equipment (CPU)', async () => {
     const result = await createEquipmentUseCase.execute(
       createEquipmentInterface
     )
