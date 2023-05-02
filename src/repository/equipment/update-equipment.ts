@@ -13,7 +13,7 @@ export type EditPayload = {
 
   initialUseDate?: Date
 
-  screenSize?: string
+  screenSize?: string 
 
   invoiceNumber?: string
 

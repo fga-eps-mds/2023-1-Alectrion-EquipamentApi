@@ -58,7 +58,7 @@ export class UpdateOrderServiceUseCase
         isSuccess: false,
         error: new InvalidAuthorError()
       }
-    }
+    } 
 
     if (!data.date || !Date.parse(data.date)) {
       return {
