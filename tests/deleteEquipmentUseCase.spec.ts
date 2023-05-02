@@ -1,6 +1,5 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 
-import { Equipment } from '../src/domain/entities/equipment'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Type } from '../src/domain/entities/equipamentEnum/type'
