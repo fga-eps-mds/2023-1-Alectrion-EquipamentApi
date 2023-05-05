@@ -14,7 +14,7 @@ jobs:
 
       - name: Coleta métricas
         run: mkdir analytics-raw-data
-        run: python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
+            python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
 
       - name: Envia métricas para repositório de DOC
         run: |
