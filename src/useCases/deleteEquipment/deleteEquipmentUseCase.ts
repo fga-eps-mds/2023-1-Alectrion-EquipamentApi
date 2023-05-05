@@ -53,9 +53,7 @@ export class DeleteEquipmentUseCase
     const timeLimit = 60 * 10 * 1000// 10 minutes
 
     const result: Equipment[] = await this.equipmentRepository.genericFind({
-      id: data.id,
-      page: 0,
-      resultQuantity: 1
+      id: data.id
     })
 
     if (result.length < 1)
