@@ -13,7 +13,8 @@ jobs:
           fetch-depth: 0
 
       - name: Coleta métricas
-        run: mkdir analytics-raw-data
+        run: | 
+            mkdir analytics-raw-data
             python parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
 
       - name: Envia métricas para repositório de DOC
