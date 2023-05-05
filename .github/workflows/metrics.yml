@@ -21,8 +21,8 @@ jobs:
           git config --global user.email "${{secrets.GIT_USER_EMAIL}}"
           git config --global user.name "${{secrets.GIT_USER_NAME}}"
           git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_GITHUB}}@github.com/fga-eps-mds/2023-1-Alectrion-DOC" 2023-1-Alectrion-DOC
-          mkdir -p doc/analytics-raw-data
-          cp -R analytics-raw-data/*.json doc/analytics-raw-data
+          mkdir -p 2023-1-Alectrion-DOC/analytics-raw-data
+          cp -R analytics-raw-data/*.json 2023-1-Alectrion-DOC/analytics-raw-data
           cd 2023-1-Alectrion-DOC
           git add .
           git commit -m "Adicionando métricas do repositório ${{ github.event.repository.name }} ${{ github.ref_name }}"
