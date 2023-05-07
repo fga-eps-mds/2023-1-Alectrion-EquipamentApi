@@ -11,7 +11,7 @@ import { Controller } from '../protocols/controller'
 
 export type UpdateOrderServiceHttpRequest = {
   id: string
-  equipmentId: string
+  equipmentId: string 
   userId: string
   receiverName: string
   authorFunctionalNumber: string

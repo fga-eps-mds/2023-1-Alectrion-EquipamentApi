@@ -59,7 +59,7 @@ describe('Test create order use case', () => {
       id: '',
       name: ''
     },
-    acquisitionDate: createEquipmentInterface.acquisitionDate,    
+    acquisitionDate: createEquipmentInterface.acquisitionDate,
     createdAt: new Date('2023-01-20'),
     updatedAt: new Date('2023-01-20'),
     situacao: Status.ACTIVE,
