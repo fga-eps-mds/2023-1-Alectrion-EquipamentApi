@@ -50,22 +50,23 @@ export class DeleteEquipmentUseCase
         error: new NullFieldsError()
       }
 
-    const timeLimit = 60 * 10 * 1000// 10 minutes
-
-    const result: Equipment[] = await this.equipmentRepository.genericFind({
-      id: data.id
-    })
-
-    if (result.length < 1)
+      
+      const result: Equipment[] = await this.equipmentRepository.genericFind({
+        id: data.id
+      })
+      
+      if (result.length < 1)
       return {
         isSuccess: false,
         error: new InvalidEquipmentError()
       }
-
-    const equipment: Equipment = result[0]
-
-    const now = new Date()
-
+      
+      const equipment: Equipment = result[0]
+      
+      const now = new Date()
+      
+    const timeLimit = 60 * 10 * 1000// 10 minutes
+    
     if ((now as any) - (equipment.createdAt as any) > timeLimit)
       return {
         isSuccess: false,
