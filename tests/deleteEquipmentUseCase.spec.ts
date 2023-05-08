@@ -16,7 +16,7 @@ import {
   NullFieldsError
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
 
-describe('Find equipments use case', () => {
+describe('Delete equipments use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
 
   let deleteEquipmentUseCase: DeleteEquipmentUseCase
