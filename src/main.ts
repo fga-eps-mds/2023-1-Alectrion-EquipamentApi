@@ -14,7 +14,7 @@ dataSource
   })
 
 const port = process.env.PORT || 4002
-export const app = express()
+const app = express()
 app.use(cors())
 app.use(json())
 app.get('/', function (req, res) {

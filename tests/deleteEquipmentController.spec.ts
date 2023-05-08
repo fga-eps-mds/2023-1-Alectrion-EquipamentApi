@@ -1,5 +1,6 @@
-import { MockProxy, mock } from 'jest-mock-extended'
+import  request from 'supertest'
 
+import { MockProxy, mock } from 'jest-mock-extended'
 import { NullFields } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { DeleteEquipmentController } from '../src/presentation/controller/deleteEquipmentController'
 
@@ -105,3 +106,68 @@ describe('Delete equipment controller', () => {
     expect(response.data).toBeInstanceOf(ServerError)
   })
 })
+
+describe('admin request tests', () => {
+  const app = 'http://localhost:4002/equipment'
+  const adminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NzAyZmFmMC04MWRjLTQ1ODctOTBjNC0zMDdmM2M4ZWY3MzEiLCJyb2xlIjoiYWRtaW5pc3RyYWRvciIsImlhdCI6MTY4MzU2MDMxMywiZXhwIjoxNjgzNTYzOTEzfQ.yGfrQ0aFUOUaHky041wPGzdOa5J2ZdQZxMkHMAQoEO8'
+  const notAdminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NWY4ZDNkNS1hYWNhLTQyMmQtYWQxMS1mYzA2MDIxOGMyNDYiLCJyb2xlIjoiZ2VyZW50ZSIsImlhdCI6MTY4MzU2MDMzOSwiZXhwIjoxNjgzNTYzOTM5fQ.mSDcvjDG4D4SYOsYgWpds6TxOERqK70nddCIF0-maqk'
+  let equipId = ''
+  
+  beforeEach( async () => {
+    const equipment = {
+      "tippingNumber": "t2912",
+      "serialNumber": "12345",
+      "type": "CPU",
+      "situacao": "Ativo",
+      "model": "positivo",
+      "description": "",
+      "initialUseDate": "ola",
+      "acquisitionDate": "2023-01-10",
+      "screenSize": "string",
+      "invoiceNumber": "12453366",
+      "power": "string",
+      "screenType": "string",
+      "processor": "string",
+      "storageType": "HD",
+      "storageAmount": "string",
+      "brandName": "positivo",
+      "acquisitionName": "ola",
+      "unitId": null,
+      "ram_size": "string",
+      "estado": "Novo"
+    } 
+  
+    const response = await request('localhost:4002/equipment')
+    .post('/createEquipment')
+    .send(equipment)
+    
+    const createEquipResponse = response.body
+    equipId = createEquipResponse.id
+    console.log('EQUIPAMENTO CRIADO: \n\n', createEquipResponse)
+    console.log('ID DO EQUIPAMENTO: ', equipId)
+  })
+
+  test('Admin should delete equipment', async () => {
+    const response = await request(app)
+    .delete('/deleteEquipment')
+    .set('Authorization', `Bearer ${adminToken}`)
+    .send({id: equipId})
+    
+    const deleteEquipResponse = response.body
+    expect(deleteEquipResponse).toHaveProperty('result')
+    expect(deleteEquipResponse.result).toBe(true)
+  })
+
+  test('Not admin should not delete equipment', async () => {
+    const response = await request(app)
+    .delete('/deleteEquipment')
+    .set('Authorization', `Bearer ${notAdminToken}`)
+    .send({id: equipId})
+    
+    const deleteEquipResponse = response.body
+    expect(response).toHaveProperty('statusCode', 403)
+    expect(deleteEquipResponse).toHaveProperty('message', 'Acesso negado. Você não é um administrador.')
+  })
+  
+})
+

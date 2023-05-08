@@ -6,20 +6,20 @@ export const checkAdminAccessToken = (
     resp: Response,
     next: () => void
   ): void => {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1]
     if (!token) {
-      resp.status(401).json({ message: 'Token não informado' });
-      return;
-    }
+      resp.status(401).json({ message: 'Token não informado' })
+      return
+    }    
   
-    const { userId, role } = decode(token) as { userId: string, role: string };
+    const { userId, role } = decode(token) as { userId: string, role: string }
     
-    if (role != "administrador") {
-      resp.status(403).json({ message: 'Acesso negado. Você não é um administrador.' });
-      return;
+    if (role != 'administrador') {
+      resp.status(403).json({ message: 'Acesso negado. Você não é um administrador.' })
+      return
     }
   
-    req.userId = userId;
-    next();
-  };
+    req.userId = userId
+    next()
+  }
   
