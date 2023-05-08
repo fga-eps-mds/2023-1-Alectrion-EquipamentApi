@@ -13,6 +13,7 @@ import { makeUpdateOrderController } from './factories/controllers/update-order-
 import { makeCreateMovementController } from './factories/controllers/createMovement'
 import { makeFindMovementsController } from './factories/controllers/findMovements'
 import { makeDeleteMovementController } from './factories/controllers/deleteMovement'
+import { makeDeleteEquipmentController } from './factories/controllers/deleteEquipment'
 
 const routes = Router()
 
@@ -32,5 +33,6 @@ routes.put('/updateOrderService', adapt(makeUpdateOrderController()))
 routes.post('/createMovement', adapt(makeCreateMovementController()))
 routes.get('/findMovements', adapt(makeFindMovementsController()))
 routes.delete('/deleteMovement', adapt(makeDeleteMovementController()))
+routes.delete('/deleteEquipment', adapt(makeDeleteEquipmentController()))
 
 export default routes
