@@ -2,6 +2,7 @@ import { UseCase } from '../protocol/useCase'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { History } from '../../domain/entities/history'
 import { Equipment } from '../../domain/entities/equipment'
+import { BrandRepositoryProtocol } from '../../repository/protocol/brandRepositoryProtocol'
 // import { CreateHistoryRepository } from '../../repository/history/create-history-repository'
 // import { ListOneUnitRepository } from '../../repository/unit/list-one-unit'
 import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
@@ -11,9 +12,10 @@ import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
 import { EquipmentBrand } from '../../domain/entities/brand'
+import AcquisitionRepositoryProtocol from '../../repository/protocol/acquisitionRepositoryProtocol'
 
 export type UpdateEquipmentUseCaseData = {
-  tippingNumber: string
+  tippingNumber?: string
   id: string
   serialNumber: string
   type: string
@@ -50,15 +52,35 @@ export class UpdateEquipmentUseCase
 
   constructor(
     private readonly equipmentRepository: ListOneEquipmentRepository,
-    private readonly updateEquipmentRepository: UpdateEquipmentRepository
+    private readonly updateEquipmentRepository: UpdateEquipmentRepository,
+    private readonly brandRepository: BrandRepositoryProtocol,
+    private readonly acquisitionRepository: AcquisitionRepositoryProtocol
   ) {}
 
   async execute(data: UpdateEquipmentUseCaseData) {
+    let brandName = await this.brandRepository.findOneByName(data.brand.name)
+    let acquisitionName = await this.acquisitionRepository.findOneByName(
+      data.acquisition.name
+    )
+
+    if (!brandName) {
+      brandName = await this.brandRepository.create({
+        name: data.brand.name
+      })
+    }
+
+    if (!acquisitionName) {
+      acquisitionName = await this.acquisitionRepository.create({
+        name: data.acquisition.name,
+        id: '',
+        equipment: []
+      })
+    }
+
     await this.updateEquipmentRepository.updateEquipment(data.id, {
-      tippingNumber: data.tippingNumber,
       serialNumber: data.serialNumber,
       type: data.type as Type,
-      situacao: data.situacao.toUpperCase() as Status,
+      situacao: data.situacao as Status,
       estado: data.estado,
       model: data.model,
       description: data.description,
@@ -70,8 +92,8 @@ export class UpdateEquipmentUseCase
       processor: data.processor,
       storageType: data.storageType as StorageType,
       storageAmount: data.storageAmount,
-      brand: data.brand as EquipmentBrand,
-      acquisition: data.acquisition as EquipmentBrand,
+      brand: brandName,
+      acquisition: acquisitionName,
       unitId: data.unitId,
       ram_size: data.ram_size
     })
@@ -83,6 +105,10 @@ export class UpdateEquipmentUseCase
         isSuccess: false,
         error: new UpdateEquipmentError()
       }
+    }
+
+    return {
+      isSuccess: true
     }
   }
 }

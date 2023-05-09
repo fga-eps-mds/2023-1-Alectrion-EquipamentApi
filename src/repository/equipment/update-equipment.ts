@@ -6,7 +6,6 @@ import { Unit } from '../../domain/entities/unit'
 import { Type } from '../../domain/entities/equipamentEnum/type'
 
 export type EditPayload = {
-  tippingNumber?: string
   serialNumber?: string
   type?: Type
   situacao?: Status

@@ -234,8 +234,6 @@ describe('Test create order use case', () => {
       createEquipmentInterface
     )
 
-    console.log(result.data)
-
     const equipmentDB = new EquipmentDb()
     equipmentDB.acquisition = {
       id: '',
