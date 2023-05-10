@@ -108,14 +108,14 @@ describe('Delete equipment controller', () => {
 })
 
 describe('admin request tests', () => {
-  const app = 'http://localhost:4002/equipment'
-  const adminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NzAyZmFmMC04MWRjLTQ1ODctOTBjNC0zMDdmM2M4ZWY3MzEiLCJyb2xlIjoiYWRtaW5pc3RyYWRvciIsImlhdCI6MTY4MzU2MDMxMywiZXhwIjoxNjgzNTYzOTEzfQ.yGfrQ0aFUOUaHky041wPGzdOa5J2ZdQZxMkHMAQoEO8'
-  const notAdminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NWY4ZDNkNS1hYWNhLTQyMmQtYWQxMS1mYzA2MDIxOGMyNDYiLCJyb2xlIjoiZ2VyZW50ZSIsImlhdCI6MTY4MzU2MDMzOSwiZXhwIjoxNjgzNTYzOTM5fQ.mSDcvjDG4D4SYOsYgWpds6TxOERqK70nddCIF0-maqk'
+  const equipApp = 'http://localhost:4002/equipment'
+  const userApp = 'http://localhost:4001/user'
+
   let equipId = ''
-  
+
   beforeAll( async () => {
     const equipment = {
-      "tippingNumber": "teste90",
+      "tippingNumber": "teste9",
       "serialNumber": "12345",
       "type": "CPU",
       "situacao": "Ativo",
@@ -136,17 +136,22 @@ describe('admin request tests', () => {
       "ram_size": "string",
       "estado": "Novo"
     } 
-  
+    
     const response = await request('localhost:4002/equipment')
     .post('/createEquipment')
     .send(equipment)
     
     equipId = response.body.id
   })
-
+  
   
   test('Not admin should not delete equipment', async () => {
-    const response = await request(app)
+    let loginResponse = await request(userApp)
+    .post('/login')
+    .send({username: 'p21', password: '1234'})
+    let notAdminToken = loginResponse.body.token
+    
+    const response = await request(equipApp)
     .delete('/deleteEquipment')
     .set('Authorization', `Bearer ${notAdminToken}`)
     .send({id: equipId})
@@ -156,7 +161,12 @@ describe('admin request tests', () => {
   })
 
   test('Admin should delete equipment', async () => {
-    const response = await request(app)
+    let loginResponse = await request(userApp)
+    .post('/login')
+    .send({username: 'admin', password: 'admin1234'})
+    let adminToken = loginResponse.body.token
+    
+    const response = await request(equipApp)
     .delete('/deleteEquipment')
     .set('Authorization', `Bearer ${adminToken}`)
     .send({id: equipId})
