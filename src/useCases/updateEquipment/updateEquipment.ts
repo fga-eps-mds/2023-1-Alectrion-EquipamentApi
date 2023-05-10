@@ -21,7 +21,7 @@ export type UpdateEquipmentUseCaseData = {
   model: string
   description?: string
   initialUseDate: string
-  acquisitionDate: Date
+  acquisitionDate?: Date
   screenSize?: string
   invoiceNumber: string
   power?: string
@@ -31,7 +31,7 @@ export type UpdateEquipmentUseCaseData = {
   storageAmount?: string
   brandName: string
   acquisitionName: string
-  unitId: string
+  unitId?: string
   ram_size?: string
 }
 

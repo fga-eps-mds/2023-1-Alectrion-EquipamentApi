@@ -15,7 +15,7 @@ export type EditPayload = {
   model?: string
   description?: string
   initialUseDate?: string
-  acquisitionDate: Date
+  acquisitionDate?: Date
   screenSize?: string
   invoiceNumber?: string
   power?: string
@@ -26,7 +26,7 @@ export type EditPayload = {
   brand?: EquipmentBrand
   acquisition?: EquipmentAcquisition
   ram_size?: string
-  unitId: string
+  unitId?: string
   unit?: Unit
 }
 
