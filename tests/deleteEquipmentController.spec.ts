@@ -113,9 +113,9 @@ describe('admin request tests', () => {
   const notAdminToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1NWY4ZDNkNS1hYWNhLTQyMmQtYWQxMS1mYzA2MDIxOGMyNDYiLCJyb2xlIjoiZ2VyZW50ZSIsImlhdCI6MTY4MzU2MDMzOSwiZXhwIjoxNjgzNTYzOTM5fQ.mSDcvjDG4D4SYOsYgWpds6TxOERqK70nddCIF0-maqk'
   let equipId = ''
   
-  beforeEach( async () => {
+  beforeAll( async () => {
     const equipment = {
-      "tippingNumber": "t2912",
+      "tippingNumber": "teste90",
       "serialNumber": "12345",
       "type": "CPU",
       "situacao": "Ativo",
@@ -141,10 +141,18 @@ describe('admin request tests', () => {
     .post('/createEquipment')
     .send(equipment)
     
-    const createEquipResponse = response.body
-    equipId = createEquipResponse.id
-    console.log('EQUIPAMENTO CRIADO: \n\n', createEquipResponse)
-    console.log('ID DO EQUIPAMENTO: ', equipId)
+    equipId = response.body.id
+  })
+
+  
+  test('Not admin should not delete equipment', async () => {
+    const response = await request(app)
+    .delete('/deleteEquipment')
+    .set('Authorization', `Bearer ${notAdminToken}`)
+    .send({id: equipId})
+    
+    expect(response).toHaveProperty('statusCode', 403)
+    expect(response.body).toHaveProperty('message', 'Acesso negado. Você não é um administrador.')
   })
 
   test('Admin should delete equipment', async () => {
@@ -153,20 +161,8 @@ describe('admin request tests', () => {
     .set('Authorization', `Bearer ${adminToken}`)
     .send({id: equipId})
     
-    const deleteEquipResponse = response.body
-    expect(deleteEquipResponse).toHaveProperty('result')
-    expect(deleteEquipResponse.result).toBe(true)
-  })
-
-  test('Not admin should not delete equipment', async () => {
-    const response = await request(app)
-    .delete('/deleteEquipment')
-    .set('Authorization', `Bearer ${notAdminToken}`)
-    .send({id: equipId})
-    
-    const deleteEquipResponse = response.body
-    expect(response).toHaveProperty('statusCode', 403)
-    expect(deleteEquipResponse).toHaveProperty('message', 'Acesso negado. Você não é um administrador.')
+    expect(response.body).toHaveProperty('result')
+    expect(response.body.result).toBe(true)
   })
   
 })
