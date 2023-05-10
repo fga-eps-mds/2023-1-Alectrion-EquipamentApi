@@ -1,4 +1,4 @@
-import { UseCase } from '../protocol/useCase'
+import { UseCase, UseCaseReponse } from '../protocol/useCase'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { History } from '../../domain/entities/history'
 import { Equipment } from '../../domain/entities/equipment'
@@ -54,7 +54,9 @@ export class UpdateEquipmentUseCase
     private readonly acquisitionRepository: AcquisitionRepositoryProtocol
   ) {}
 
-  async execute(data: UpdateEquipmentUseCaseData) {
+  async execute(
+    data: UpdateEquipmentUseCaseData
+  ): Promise<UseCaseReponse<Equipment>> {
     let brand = await this.brandRepository.findOneByName(data.brandName)
     let acquisition = await this.acquisitionRepository.findOneByName(
       data.acquisitionName
@@ -106,7 +108,7 @@ export class UpdateEquipmentUseCase
 
     return {
       isSuccess: true,
-      data
+      data: equipment as unknown as Equipment
     }
   }
 }
