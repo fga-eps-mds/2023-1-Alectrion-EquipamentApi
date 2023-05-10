@@ -3,6 +3,9 @@ import { Status } from '../../domain/entities/equipamentEnum/status'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Unit } from '../../domain/entities/unit'
 import { Type } from '../../domain/entities/equipamentEnum/type'
+import { EquipmentBrand } from '../../domain/entities/brand'
+import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
+import { Equipment } from '../../domain/entities/equipment'
 
 export type EditPayload = {
   serialNumber?: string
@@ -20,13 +23,16 @@ export type EditPayload = {
   processor?: string
   storageType?: StorageType
   storageAmount?: string
-  brandName?: string
-  acquisitionName?: string
+  brand?: EquipmentBrand
+  acquisition?: EquipmentAcquisition
   ram_size?: string
   unitId: string
   unit?: Unit
 }
 
 export interface UpdateEquipmentRepository {
-  updateEquipment(equipmentId: string, editPayload: EditPayload): Promise<void>
+  updateEquipment(
+    equipmentId: string,
+    editPayload: EditPayload
+  ): Promise<Equipment | undefined>
 }

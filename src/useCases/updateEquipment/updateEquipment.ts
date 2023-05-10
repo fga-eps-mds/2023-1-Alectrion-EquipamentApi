@@ -3,12 +3,9 @@ import { Status } from '../../domain/entities/equipamentEnum/status'
 import { History } from '../../domain/entities/history'
 import { Equipment } from '../../domain/entities/equipment'
 import { BrandRepositoryProtocol } from '../../repository/protocol/brandRepositoryProtocol'
-// import { CreateHistoryRepository } from '../../repository/history/create-history-repository'
-// import { ListOneUnitRepository } from '../../repository/unit/list-one-unit'
 import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
 import { ListOneEquipmentRepository } from '../../repository/equipment/list-one-equipment'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
-// import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
 import AcquisitionRepositoryProtocol from '../../repository/protocol/acquisitionRepositoryProtocol'
@@ -16,7 +13,6 @@ import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
 import { EquipmentBrand } from '../../db/entities/equipment-brand'
 
 export type UpdateEquipmentUseCaseData = {
-  tippingNumber?: string
   id: string
   serialNumber: string
   type: string

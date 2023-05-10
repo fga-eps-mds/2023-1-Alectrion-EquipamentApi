@@ -10,7 +10,6 @@ import { notFound, ok, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
 
 export type UpdateEquipmentHttpRequest = {
-  tippingNumber: string
   id: string
   serialNumber: string
   type: string
@@ -40,7 +39,6 @@ export class UpdateEquipmentController extends Controller {
 
   async perform(params: UpdateEquipmentHttpRequest) {
     const response = await this.updateEquipmentUseCase.execute({
-      tippingNumber: params.tippingNumber,
       id: params.id,
       serialNumber: params.serialNumber,
       type: params.type,
