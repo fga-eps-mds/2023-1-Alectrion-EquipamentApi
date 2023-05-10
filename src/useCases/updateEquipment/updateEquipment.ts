@@ -11,8 +11,9 @@ import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 // import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Type } from '../../domain/entities/equipamentEnum/type'
-import { EquipmentBrand } from '../../domain/entities/brand'
 import AcquisitionRepositoryProtocol from '../../repository/protocol/acquisitionRepositoryProtocol'
+import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
+import { EquipmentBrand } from '../../db/entities/equipment-brand'
 
 export type UpdateEquipmentUseCaseData = {
   tippingNumber?: string
@@ -32,8 +33,8 @@ export type UpdateEquipmentUseCaseData = {
   processor?: string
   storageType?: string
   storageAmount?: string
-  brand: EquipmentBrand
-  acquisition: EquipmentBrand
+  brandName: string
+  acquisitionName: string
   unitId: string
   ram_size?: string
 }
@@ -58,20 +59,20 @@ export class UpdateEquipmentUseCase
   ) {}
 
   async execute(data: UpdateEquipmentUseCaseData) {
-    let brandName = await this.brandRepository.findOneByName(data.brand.name)
-    let acquisitionName = await this.acquisitionRepository.findOneByName(
-      data.acquisition.name
+    let brand = await this.brandRepository.findOneByName(data.brandName)
+    let acquisition = await this.acquisitionRepository.findOneByName(
+      data.acquisitionName
     )
 
-    if (!brandName) {
-      brandName = await this.brandRepository.create({
-        name: data.brand.name
+    if (!brand) {
+      brand = await this.brandRepository.create({
+        name: data.brandName
       })
     }
 
-    if (!acquisitionName) {
-      acquisitionName = await this.acquisitionRepository.create({
-        name: data.acquisition.name,
+    if (!acquisition) {
+      acquisition = await this.acquisitionRepository.create({
+        name: data.acquisitionName,
         id: '',
         equipment: []
       })
@@ -92,8 +93,8 @@ export class UpdateEquipmentUseCase
       processor: data.processor,
       storageType: data.storageType as StorageType,
       storageAmount: data.storageAmount,
-      brand: brandName,
-      acquisition: acquisitionName,
+      brand: brand as EquipmentBrand,
+      acquisition: acquisition as unknown as EquipmentAcquisition,
       unitId: data.unitId,
       ram_size: data.ram_size
     })
@@ -108,7 +109,8 @@ export class UpdateEquipmentUseCase
     }
 
     return {
-      isSuccess: true
+      isSuccess: true,
+      data
     }
   }
 }

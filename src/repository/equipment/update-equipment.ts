@@ -1,4 +1,3 @@
-import { EquipmentBrand } from '../../domain/entities/brand'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
@@ -21,8 +20,8 @@ export type EditPayload = {
   processor?: string
   storageType?: StorageType
   storageAmount?: string
-  brand?: EquipmentBrand
-  acquisition?: EquipmentBrand
+  brandName?: string
+  acquisitionName?: string
   ram_size?: string
   unitId: string
   unit?: Unit

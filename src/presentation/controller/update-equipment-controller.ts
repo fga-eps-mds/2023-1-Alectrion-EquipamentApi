@@ -8,8 +8,6 @@ import { UpdateEquipmentUseCase } from '../../useCases/updateEquipment/updateEqu
 // } from '../../useCases/create-order-service/errors'
 import { notFound, ok, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
-import { EquipmentBrand } from '../../domain/entities/brand'
-
 
 export type UpdateEquipmentHttpRequest = {
   tippingNumber: string
@@ -29,8 +27,8 @@ export type UpdateEquipmentHttpRequest = {
   processor: string
   storageType: string
   storageAmount: string
-  brand: EquipmentBrand
-  acquisition: EquipmentBrand
+  brandName: string
+  acquisitionName: string
   unitId: string
   ram_size: string
 }
@@ -59,8 +57,8 @@ export class UpdateEquipmentController extends Controller {
       processor: params.processor,
       storageType: params.storageType,
       storageAmount: params.storageAmount,
-      brand: params.brand,
-      acquisition: params.acquisition,
+      brandName: params.brandName,
+      acquisitionName: params.acquisitionName,
       unitId: params.unitId,
       ram_size: params.ram_size
     })
