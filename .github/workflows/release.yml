@@ -19,7 +19,6 @@ jobs:
 
     - name: Gera release
       run: |
-          mkdir analytics-raw-data
           cd scripts && yarn install && node release.js
 
     - name: Envia métricas para repositório de DOC

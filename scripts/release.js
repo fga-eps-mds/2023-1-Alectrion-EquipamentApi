@@ -58,11 +58,11 @@ const createRelease = async () => {
 }
 
 const saveSonarFile = async (tag) => {
+  const dirPath = './analytics-raw-data'
+  fs.mkdirSync(dirPath)
+  const filePath = `./analytics-raw-data/fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${tag}.json`
   await axios.get(SONAR_URL).then((res) => {
-    fs.writeFileSync(
-      `/analytics-raw-data/fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${tag}.json`,
-      JSON.stringify(res?.data)
-    )
+    fs.writeFileSync(filePath, JSON.stringify(res?.data))
   })
 }
 
