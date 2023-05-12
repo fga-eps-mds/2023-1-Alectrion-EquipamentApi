@@ -16,10 +16,11 @@ jobs:
           touch ./scripts/.env
           echo TOKEN=${{ secrets.API_TOKEN_GITHUB }} >> ./scripts/.env
           echo RELEASE_MAJOR=true >> ./scripts/.env
-          mkdir analytics-raw-data
 
     - name: Gera release
-      run: cd scripts && yarn install && node release.js
+      run: |
+          mkdir analytics-raw-data
+          cd scripts && yarn install && node release.js
 
     - name: Envia métricas para repositório de DOC
       run: |
