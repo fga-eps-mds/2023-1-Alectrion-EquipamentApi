@@ -1,10 +1,9 @@
 name: Release
 
 on: 
-  pull_request:
+  push:
     branches:
-      - teste-release-main
-    types: [ closed ]
+      - teste-release-develop4
     
 jobs:
   release:
@@ -17,10 +16,7 @@ jobs:
       run: |
           touch ./scripts/.env
           echo TOKEN=${{ secrets.API_TOKEN_GITHUB }} >> ./scripts/.env
-          echo RELEASE_MAJOR=${{ contains(github.event.pull_request.labels.*.name, 'MAJOR RELEASE') }} >> ./scripts/.env
-          echo RELEASE_MINOR=${{ contains(github.event.pull_request.labels.*.name, 'MINOR RELEASE') }} >> ./scripts/.env
-          echo RELEASE_FIX=${{ contains(github.event.pull_request.labels.*.name, 'FIX RELEASE') }} >> ./scripts/.env
-          echo NOT_RELEASE=${{ contains(github.event.pull_request.labels.*.name, 'NOT RELEASE') }} >> ./scripts/.env
+          echo RELEASE_MAJOR=true >> ./scripts/.env
 
     - name: Gera release
       run: cd scripts && yarn install && node release.js
