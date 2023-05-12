@@ -24,7 +24,10 @@ const getLatestRelease = async () => {
     repo: REPO
   })
   console.log(releases)
-  return releases?.data[0]?.tag_name | '0.0.0'
+  if (releases?.data.length > 0) {
+    return releases?.data?.[0]?.tag_name
+  }
+  return '0.0.0'
 }
 
 const newTagName = async () => {
