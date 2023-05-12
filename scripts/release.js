@@ -72,7 +72,7 @@ const uploadSonarFile = async (release) => {
     url: release[0],
     token: [TOKEN],
     assets: [
-      `fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${release[1]}.json`,
+      `./analytics-raw-data/fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${release[1]}.json`,
       {
         name: `fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${release[1]}.json`,
         path: ''
