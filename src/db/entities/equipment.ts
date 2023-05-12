@@ -48,7 +48,7 @@ export class Equipment {
     enum: Status
   })
   situacao: Status
-  
+
   @Column({
     type: 'enum',
     enum: Estado
