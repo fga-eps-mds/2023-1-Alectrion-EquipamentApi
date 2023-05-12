@@ -8,6 +8,8 @@ on:
 jobs:
   release:
     runs-on: "ubuntu-latest"
+     with:
+          fetch-depth: 0
 
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +29,6 @@ jobs:
         git config --global user.name "${{secrets.GIT_USER_NAME}}"
         git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_GITHUB}}@github.com/fga-eps-mds/${{secrets.GIT_DOC_REPO}}" ${{secrets.GIT_DOC_REPO}}
         mkdir -p ${{secrets.GIT_DOC_REPO}}/analytics-raw-data
-        ls
         cp -R analytics-raw-data/*.json ${{secrets.GIT_DOC_REPO}}/analytics-raw-data
         cd ${{secrets.GIT_DOC_REPO}}
         git add .
