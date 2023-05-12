@@ -23,7 +23,6 @@ const getLatestRelease = async () => {
     owner: OWNER,
     repo: REPO
   })
-  console.log(releases)
   if (releases?.data.length > 0) {
     return releases?.data?.[0]?.tag_name
   }
