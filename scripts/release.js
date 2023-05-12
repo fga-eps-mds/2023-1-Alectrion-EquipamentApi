@@ -23,7 +23,7 @@ const getLatestRelease = async () => {
     owner: OWNER,
     repo: REPO
   })
-  return releases.data[0].tag_name
+  return releases?.data[0]?.tag_name | '0.0.0'
 }
 
 const newTagName = async () => {
@@ -50,14 +50,14 @@ const createRelease = async () => {
     tag_name: tag,
     name: tag
   })
-  return [res.data.upload_url, tag]
+  return [res?.data?.upload_url, tag]
 }
 
 const saveSonarFile = async (tag) => {
   await axios.get(SONAR_URL).then((res) => {
     fs.writeFileSync(
       `/analytics-raw-data/fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${tag}.json`,
-      JSON.stringify(res.data)
+      JSON.stringify(res?.data)
     )
   })
 }
