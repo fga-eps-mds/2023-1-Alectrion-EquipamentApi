@@ -8,11 +8,12 @@ on:
 jobs:
   release:
     runs-on: "ubuntu-latest"
-     with:
-          fetch-depth: 0
 
     steps:
     - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+          
     - name: Cria arquivo .env
       run: |
           touch ./scripts/.env
