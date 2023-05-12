@@ -9,6 +9,7 @@ import { Equipment } from '../../domain/entities/equipment'
 
 export type EditPayload = {
   serialNumber?: string
+  tippingNumber?: string
   type?: Type
   situacao?: Status
   estado?: string

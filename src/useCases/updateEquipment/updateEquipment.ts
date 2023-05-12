@@ -14,6 +14,7 @@ import { EquipmentBrand } from '../../db/entities/equipment-brand'
 
 export type UpdateEquipmentUseCaseData = {
   id: string
+  tippingNumber?: string
   serialNumber: string
   type: string
   situacao: string
@@ -78,6 +79,7 @@ export class UpdateEquipmentUseCase
 
     await this.updateEquipmentRepository.updateEquipment(data.id, {
       serialNumber: data.serialNumber,
+      tippingNumber: data.tippingNumber,
       type: data.type as Type,
       situacao: data.situacao as Status,
       estado: data.estado,

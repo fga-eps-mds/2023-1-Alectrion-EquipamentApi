@@ -11,6 +11,7 @@ import { Controller } from '../protocols/controller'
 
 export type UpdateEquipmentHttpRequest = {
   id: string
+  tippingNumber: string
   serialNumber: string
   type: string
   situacao: string
@@ -40,6 +41,7 @@ export class UpdateEquipmentController extends Controller {
   async perform(params: UpdateEquipmentHttpRequest) {
     const response = await this.updateEquipmentUseCase.execute({
       id: params.id,
+      tippingNumber: params.tippingNumber,
       serialNumber: params.serialNumber,
       type: params.type,
       situacao: params.situacao,
