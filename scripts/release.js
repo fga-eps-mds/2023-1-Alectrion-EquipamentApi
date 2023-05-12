@@ -60,7 +60,7 @@ const createRelease = async () => {
 const saveSonarFile = async (tag) => {
   await axios.get(SONAR_URL).then((res) => {
     fs.writeFileSync(
-      `./analytics-raw-data/fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${tag}.json`,
+      `/analytics-raw-data/fga-eps-mds-${REPO}-${month}-${day}-${year}-${hours}-${minutes}-${seconds}-${tag}.json`,
       JSON.stringify(res?.data)
     )
   })
