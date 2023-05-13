@@ -1,4 +1,4 @@
-import  request from 'supertest'
+//import  request from 'supertest'
 
 import { MockProxy, mock } from 'jest-mock-extended'
 import { NullFields } from '../src/useCases/createEquipment/createEquipmentUseCase'
@@ -12,6 +12,10 @@ import {
   InvalidEquipmentError,
   TimeLimitError
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
+
+import { Request, Response } from 'express'
+import { sign} from 'jsonwebtoken'
+import { checkAdminAccessToken } from '../src/middlewares/admin-auth-middleware'
 
 describe('Delete equipment controller', () => {
   let deleteEquipmentUseCase: MockProxy<DeleteEquipmentUseCase>
@@ -107,7 +111,76 @@ describe('Delete equipment controller', () => {
   })
 })
 
-describe('admin request tests', () => {
+describe('Middleware - checkAdminAccessToken', () => {
+  let mockRequest: Partial<Request>
+  let mockResponse: Partial<Response>
+  let mockNext: jest.Mock
+
+  beforeEach(() => {
+    mockRequest = {
+      headers: {}
+    }
+    mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    }
+    mockNext = jest.fn()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  test('should return 401 if no token is given', () => {
+    checkAdminAccessToken(mockRequest as Request, mockResponse as Response, mockNext)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(401)
+
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      message: 'Token não informado',
+    })
+  })
+
+  test('should authenticate only admin', () => {
+    const payload = {userId: "admin", role: "administrador"}
+    const secret = "" + process.env.SECRET_JWT
+    const options = { expiresIn: 60 }
+
+    const token = sign(payload, secret, options)
+
+    mockRequest.headers = {
+      authorization: `Bearer ${token}`,
+    }
+
+    checkAdminAccessToken(mockRequest as Request, mockResponse as Response, mockNext)
+
+    expect(mockNext).toHaveBeenCalled()
+  })
+
+  test('should not authenticate non-admin user', () => {
+    const payload = {userId: "non-admin", role: "gerente"}
+    const secret = "" + process.env.SECRET_JWT
+    const options = { expiresIn: 60 }
+    
+    const token = sign(payload, secret, options)
+
+    mockRequest.headers = {
+      authorization: `Bearer ${token}`,
+    }
+
+    checkAdminAccessToken(mockRequest as Request, mockResponse as Response, mockNext)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(403)
+
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      message: 'Acesso negado. Você não é um administrador.',
+    })
+
+    expect(mockNext).not.toHaveBeenCalled()
+  })
+})
+
+/* describe('admin request tests', () => {
   const equipApp = 'http://localhost:4002/equipment'
   const userApp = 'http://localhost:4001/user'
 
@@ -149,6 +222,7 @@ describe('admin request tests', () => {
     let loginResponse = await request(userApp)
     .post('/login')
     .send({username: 'p21', password: '1234'})
+
     let notAdminToken = loginResponse.body.token
     
     const response = await request(equipApp)
@@ -175,5 +249,4 @@ describe('admin request tests', () => {
     expect(response.body.result).toBe(true)
   })
   
-})
-
+}) */

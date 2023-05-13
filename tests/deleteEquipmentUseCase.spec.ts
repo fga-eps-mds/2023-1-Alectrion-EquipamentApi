@@ -100,6 +100,6 @@ describe('Delete equipments use case', () => {
       expect(result).toHaveProperty('isSuccess', false)
       expect(result).toHaveProperty('error')
       expect(result.error).toBeInstanceOf(TimeLimitError)
-    })
+    })    
   })  
 
