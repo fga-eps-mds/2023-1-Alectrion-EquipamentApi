@@ -102,6 +102,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
         'equipments.brand',
         'equipments.unit',
         'destination'
+
       ],
       order: {
         date: 'DESC'
@@ -110,18 +111,24 @@ export class MovementRepository implements MovementRepositoryProtocol {
         id: query.id,
         userId: query.userId,
         type: query.type,
+        inChargeName: query.inChargeName,
         equipments: query.equipmentId
           ? {
               id: query.equipmentId
             }
           : undefined,
-        date: query.lowerDate
+          destination: query.destination
+          ? {
+              id: query.destination
+            }
+          : undefined,
+          date:query.lowerDate
           ? And(
-              MoreThanOrEqual(query.lowerDate),
-              LessThanOrEqual(query.higherDate)
-            )
+             MoreThanOrEqual(query.lowerDate),
+             LessThanOrEqual(query.higherDate)
+           )
           : undefined
-      },
+       },
       take: query.resultQuantity,
       skip: query.page * query.resultQuantity
     })
