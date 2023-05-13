@@ -12,7 +12,7 @@
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm t -- --watch",
     "test:staged": "npm t -- --findRelatedTests",
-    "test:all": "CI=true run test --coverage --testResultsProcessor jest-sonar-reporter",
+    "test:all": "CI=true npm run test -- --coverage",
     "test:integration": "npm t -- --config ./jest.integration.config.js",
     "lint": "eslint ./",
     "lint:fix": "yarn lint --fix"
@@ -26,11 +26,6 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/fga-eps-mds/2022-1-SGPTI-EquipamentApi/issues"
-  },
-  "jestSonar": {
-    "reportPath": "coverage",
-    "reportFile": "sonar-report.xml",
-    "indent": 4
   },
   "homepage": "https://github.com/fga-eps-mds/2022-1-SGPTI-EquipamentApi#readme",
   "devDependencies": {
@@ -56,7 +51,6 @@
     "jest": "^27.3.1",
     "jest-mock-extended": "^2.0.7",
     "jest-sonar": "^0.2.12",
-    "jest-sonar-reporter": "^2.0.0",
     "prettier": "^2.7.1",
     "prettier-config-standard": "^5.0.0",
     "ts-jest": "^27.0.7",
