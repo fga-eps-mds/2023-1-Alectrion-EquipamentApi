@@ -1,7 +1,6 @@
 //import  request from 'supertest'
 
 import { MockProxy, mock } from 'jest-mock-extended'
-import { NullFields } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { DeleteEquipmentController } from '../src/presentation/controller/deleteEquipmentController'
 
 import { HttpResponse } from '../src/presentation/helpers/http'
@@ -10,7 +9,8 @@ import {
   DeleteEquipmentUseCase,
   DeleteEquipmentUseCaseData,
   InvalidEquipmentError,
-  TimeLimitError
+  TimeLimitError,
+  NullFieldsError
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
 
 import { Request, Response } from 'express'
@@ -49,14 +49,14 @@ describe('Delete equipment controller', () => {
 
     deleteEquipmentUseCase.execute.mockResolvedValue({
       isSuccess: false,
-      error: new NullFields()
+      error: new NullFieldsError()
     })
 
     const response: HttpResponse = await deleteEquipmentController.perform(data)
 
-    expect(response).toHaveProperty('statusCode', 500)
+    expect(response).toHaveProperty('statusCode', 400)
     expect(response).toHaveProperty('data')
-    expect(response.data).toBeInstanceOf(NullFields)
+    expect(response.data).toBeInstanceOf(NullFieldsError)
   })
 
   test('should get a invalid moviment error response', async () => {

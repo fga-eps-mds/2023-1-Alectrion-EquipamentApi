@@ -28,6 +28,16 @@ describe('Delete equipments use case', () => {
       deleteEquipmentUseCase = new DeleteEquipmentUseCase(equipmentRepository)
     })
 
+    test('should get a bad null fields error', async () => {
+      const data: DeleteEquipmentUseCaseData = {
+        id: ''
+      }
+      const result = deleteEquipmentUseCase.execute(data)
+      expect((await result).isSuccess).toBe(false)
+      expect((await result).error).toBeInstanceOf(NullFieldsError)
+
+    })
+
     test('should delete equipment', async () => {
       const now = Date.now()
       const mockedResult: EquipmentDb[] = [
