@@ -28,7 +28,7 @@ describe('Delete equipments use case', () => {
       deleteEquipmentUseCase = new DeleteEquipmentUseCase(equipmentRepository)
     })
 
-    test('should get a bad null fields error', async () => {
+    test('should get a null fields error', async () => {
       const data: DeleteEquipmentUseCaseData = {
         id: ''
       }
@@ -36,6 +36,56 @@ describe('Delete equipments use case', () => {
       expect((await result).isSuccess).toBe(false)
       expect((await result).error).toBeInstanceOf(NullFieldsError)
 
+    })
+
+    test('should get a invalid equipment error', async () => {
+      const mockedResult: EquipmentDb[] = []
+
+      const data: DeleteEquipmentUseCaseData = {
+        id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896'
+      }
+      equipmentRepository.genericFind
+        .mockResolvedValueOnce(mockedResult)
+        .mockResolvedValueOnce(mockedResult)
+
+      const result = await deleteEquipmentUseCase.execute(data)
+      expect(result).toHaveProperty('isSuccess', false)
+      expect(result.error).toBeInstanceOf(InvalidEquipmentError)
+
+    })
+
+    test('should get an unsuccessful delete error', async () => {
+      const now = Date.now()
+      const mockedResult: EquipmentDb[] = [
+        {
+          id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
+          tippingNumber: '123123',
+          serialNumber: '123',
+          type: Type.Nobreak,
+          situacao: Status.ACTIVE,
+          estado: Estado.Novo,
+          model: 'Xiaomi XT',
+          description: '',
+          initialUseDate: '2022-12-12',
+          acquisitionDate: new Date('2022-12-12'),
+          invoiceNumber: '123',
+          power: '220',
+          createdAt: new Date(now),
+          updatedAt: new Date(now)
+        }
+      ]
+
+      const data: DeleteEquipmentUseCaseData = {
+        id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896'
+      }
+      equipmentRepository.genericFind
+        .mockResolvedValueOnce(mockedResult)
+        .mockResolvedValueOnce(mockedResult)
+      equipmentRepository.deleteOne.mockReturnValueOnce(Promise.resolve(false))
+
+      const result = await deleteEquipmentUseCase.execute(data)
+      expect(result).toHaveProperty('isSuccess', false)
+      expect(result.error).toBeInstanceOf(Error)
     })
 
     test('should delete equipment', async () => {
