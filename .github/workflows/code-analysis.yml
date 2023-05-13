@@ -1,12 +1,5 @@
 name: Análise de Código
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-      - develop
+on: [push]
 
 jobs:
   sonarcloud:

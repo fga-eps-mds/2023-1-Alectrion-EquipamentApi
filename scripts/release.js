@@ -26,22 +26,22 @@ const getLatestRelease = async () => {
   if (releases?.data.length > 0) {
     return releases?.data?.[0]?.tag_name
   }
-  return '0.0.0'
+  return 'v0.0.0'
 }
 
 const newTagName = async () => {
   let oldTag = await getLatestRelease()
-  oldTag = oldTag.split('.')
+  oldTag = oldTag.replace('v', '').split('.')
 
   if (RELEASE_MAJOR === 'true') {
     const majorTagNum = parseInt(oldTag[0]) + 1
-    return majorTagNum + '.0.0'
+    return 'v' + majorTagNum + '.0.0'
   } else if (RELEASE_MINOR === 'true') {
     const minorTagNum = parseInt(oldTag[1]) + 1
-    return oldTag[0] + '.' + minorTagNum + '.0'
+    return 'v' + oldTag[0] + '.' + minorTagNum + '.0'
   }
   const fixTagNum = parseInt(oldTag[2]) + 1
-  return oldTag[0] + '.' + oldTag[1] + '.' + fixTagNum
+  return 'v' + oldTag[0] + '.' + oldTag[1] + '.' + fixTagNum
 }
 
 const createRelease = async () => {
