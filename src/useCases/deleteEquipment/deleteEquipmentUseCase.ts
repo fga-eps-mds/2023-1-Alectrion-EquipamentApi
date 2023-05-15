@@ -26,7 +26,7 @@ export class TimeLimitError extends Error {
   constructor() {
     super('Tempo limite para operação excedido.')
     this.name = 'TimeLimitError'
-  }''
+  }
 }
 
 
@@ -50,24 +50,21 @@ export class DeleteEquipmentUseCase
         error: new NullFieldsError()
       }
 
-      
-      const result: Equipment[] = await this.equipmentRepository.genericFind({
-        id: data.id
-      })
-      
-      if (result.length < 1)
-      return {
-        isSuccess: false,
-        error: new InvalidEquipmentError()
-      }
-      
-      const equipment: Equipment = result[0]
-      
-      const now = new Date()
-      
-    const timeLimit = 60 * 10 * 1000// 10 minutes
+    const result: Equipment = await this.equipmentRepository.findOne(
+      data.id
+    )
+
+    if (result == null)
+    return {
+      isSuccess: false,
+      error: new InvalidEquipmentError()
+    }
     
-    if ((now as any) - (equipment.createdAt as any) > timeLimit)
+    const now = new Date()
+    
+    const timeLimit = 60 * 10 * 1000// 10 minutes
+
+    if ((now as any) - (result.createdAt as any) > timeLimit)
       return {
         isSuccess: false,
         error: new TimeLimitError()
