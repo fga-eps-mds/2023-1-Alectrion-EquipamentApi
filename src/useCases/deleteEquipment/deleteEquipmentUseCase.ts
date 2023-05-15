@@ -26,7 +26,7 @@ export class TimeLimitError extends Error {
   constructor() {
     super('Tempo limite para operação excedido.')
     this.name = 'TimeLimitError'
-  }''
+  }
 }
 
 
@@ -52,21 +52,19 @@ export class DeleteEquipmentUseCase
 
     const timeLimit = 60 * 10 * 1000// 10 minutes
 
-    const result: Equipment[] = await this.equipmentRepository.genericFind({
-      id: data.id
-    })
+    const result: Equipment = await this.equipmentRepository.findOne(
+      data.id
+    )
 
-    if (result.length < 1)
+    if (result == null)
       return {
         isSuccess: false,
         error: new InvalidEquipmentError()
       }
 
-    const equipment: Equipment = result[0]
-
     const now = new Date()
 
-    if ((now as any) - (equipment.createdAt as any) > timeLimit)
+    if ((now as any) - (result.createdAt as any) > timeLimit)
       return {
         isSuccess: false,
         error: new TimeLimitError()

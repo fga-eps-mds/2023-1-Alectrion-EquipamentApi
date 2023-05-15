@@ -32,13 +32,20 @@ import {
     ): Promise<HttpResponse<Model>> {
       const response = await this.deleteEquipment.execute(httpRequest)
   
-      if (response.isSuccess) return ok({ result: true })
+      if (response.isSuccess) 
+        return ok()
+
       if (response.error instanceof NullFieldsError)
         return badRequest(response.error)
+
       if (response.error instanceof InvalidEquipmentError)
         return notFound(response.error)
-      if (response.error instanceof TimeLimitError) return unauthorized()
+
+      if (response.error instanceof TimeLimitError) 
+        return unauthorized()
+
       return serverError(response.error)
     }
   }
+  
   
