@@ -13,7 +13,7 @@ export type OrderService = {
 
   receiverName: string
 
-  sender: string
+  sender?: string
 
   equipmentSnapshot: any
 
