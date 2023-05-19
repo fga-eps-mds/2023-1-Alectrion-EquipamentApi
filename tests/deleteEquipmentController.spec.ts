@@ -90,7 +90,7 @@ describe('Delete equipment controller', () => {
 
     expect(response).toHaveProperty('statusCode', 401)
     expect(response).toHaveProperty('data')
-    expect(response.data).toBeInstanceOf(UnauthorizedError)
+    expect(response.data).toBeInstanceOf(TimeLimitError)
   })
 
   test('should return server error response', async () => {
@@ -137,7 +137,7 @@ describe('Middleware - checkAdminAccessToken', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(401)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
-      message: 'Token não informado',
+      error: 'Token não informado',
     })
   })
 
@@ -173,7 +173,7 @@ describe('Middleware - checkAdminAccessToken', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(403)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
-      message: 'Acesso negado. Você não é um administrador.',
+      error: 'Acesso negado. Você não é um administrador.',
     })
 
     expect(mockNext).not.toHaveBeenCalled()

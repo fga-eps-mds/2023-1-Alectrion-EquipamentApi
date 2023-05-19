@@ -19,19 +19,27 @@ import {
   EquipmentMovedError
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
 
+import { MovementRepository } from '../src/repository/movementRepository'
+import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
+import { UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
+import { CreateOrderServiceTypeOrmRepository } from '../src/db/repositories/order-service/create-order-service-typeorm-repository'
+import { UnitRepository } from '../src/repository/unitRepository'
+
 describe('Delete equipments use case', () => {
-
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
-
+  let movementRepository: MockProxy<MovementRepositoryProtocol>
+  let unitRepository: MockProxy<UnitRepositoryProtocol>
+  
   let deleteEquipmentUseCase: DeleteEquipmentUseCase
-
-  let createMovementUseCase : CreateMovementUseCase
+  let createMovementUseCase: CreateMovementUseCase
   
   beforeEach(() => {
-
       equipmentRepository = mock()
+      movementRepository = mock()
+      unitRepository = mock()
 
       deleteEquipmentUseCase = new DeleteEquipmentUseCase(equipmentRepository)
+      createMovementUseCase = new CreateMovementUseCase(equipmentRepository, unitRepository, movementRepository)
     })
 
     test('should get a null fields error', async () => {

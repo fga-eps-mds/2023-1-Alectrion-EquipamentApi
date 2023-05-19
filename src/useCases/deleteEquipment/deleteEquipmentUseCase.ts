@@ -8,6 +8,8 @@ import { Movement } from '../../domain/entities/movement'
 
 import { EquipmentRepositoryProtocol } from '../../repository/protocol/equipmentRepositoryProtocol'
 
+import { MovementRepository } from '../../repository/movementRepository'
+
 export type DeleteEquipmentUseCaseData = {
   id: string
 }
@@ -35,20 +37,20 @@ export class TimeLimitError extends Error {
 
 export class EquipmentMovedError extends Error {
   constructor() {
-    super('Equipamento está em uma movimentação.')
+    super('Equipamento já foi movimentado.')
     this.name = 'EquipmentMovedError'
   }
 }
 
 
 export class DeleteEquipmentUseCase
-  implements UseCase<DeleteEquipmentUseCaseData, boolean>
+implements UseCase<DeleteEquipmentUseCaseData, boolean>
 {
   constructor(
     private readonly equipmentRepository: EquipmentRepositoryProtocol,
     private readonly movementRepository: MovementRepositoryProtocol
   ) {}
-
+      
   private areFieldsNull(data: DeleteEquipmentUseCaseData): boolean {
     return data.id === ''
   }
@@ -83,7 +85,7 @@ export class DeleteEquipmentUseCase
       isSuccess: false,
       error: new EquipmentMovedError()
     }
-    
+
     const now = new Date()
     const timeLimit = 60 * 10 * 1000// 10 minutes
 

@@ -11,7 +11,7 @@ import { Equipment } from '../../domain/entities/equipment'
 import AcquisitionRepositoryProtocol from '../../repository/protocol/acquisitionRepositoryProtocol'
 import { BrandRepositoryProtocol } from '../../repository/protocol/brandRepositoryProtocol'
 import { EquipmentRepositoryProtocol } from '../../repository/protocol/equipmentRepositoryProtocol'
-import { UnitRepositoryProcol } from '../../repository/protocol/unitRepositoryProtocol'
+import { UnitRepositoryProtocol } from '../../repository/protocol/unitRepositoryProtocol'
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
 import { Equipment as EquipmentEntity } from '../../db/entities/equipment'
 
@@ -90,7 +90,7 @@ export class CreateEquipmentUseCase
 {
   constructor(
     private readonly equipmentRepository: EquipmentRepositoryProtocol,
-    private readonly unitRepository: UnitRepositoryProcol,
+    private readonly unitRepository: UnitRepositoryProtocol,
     private readonly brandRepository: BrandRepositoryProtocol,
     private readonly acquisitionRepository: AcquisitionRepositoryProtocol
   ) {}
