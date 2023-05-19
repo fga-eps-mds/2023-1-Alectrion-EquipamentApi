@@ -1,0 +1,39 @@
+name: Envio de métricas
+
+on:
+  push:
+    branches: [develop, main]
+
+jobs:
+  release:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Coleta métricas
+        run: | 
+            mkdir analytics-raw-data
+            python scripts/parser.py ${{ github.event.repository.name }} ${{ github.ref_name }}
+
+      - name: Envia métricas para repositório de DOC
+        run: |
+          git config --global user.email "${{secrets.GIT_USER_EMAIL}}"
+          git config --global user.name "${{secrets.GIT_USER_NAME}}"
+          git clone --single-branch --branch main "https://x-access-token:${{secrets.API_TOKEN_GITHUB}}@github.com/fga-eps-mds/2023-1-Alectrion-DOC" 2023-1-Alectrion-DOC
+          mkdir -p 2023-1-Alectrion-DOC/analytics-raw-data
+          cp -R analytics-raw-data/*.json 2023-1-Alectrion-DOC/analytics-raw-data
+          cd 2023-1-Alectrion-DOC
+          git add .
+          git commit -m "Adicionando métricas do repositório ${{ github.event.repository.name }} ${{ github.ref_name }}"
+          git push
+          
+
+      - name: Envia métricas como assets da release
+        if: startsWith(github.ref, 'refs/tags')
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'analytics-raw-data/*'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{ github.ref_name }}

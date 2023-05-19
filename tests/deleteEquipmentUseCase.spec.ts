@@ -8,12 +8,15 @@ import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
 
 import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
 
+import { CreateMovementUseCase,CreateMovementUseCaseData } from '../src/useCases/createMovement/createMovementUseCase'
+
 import {
   DeleteEquipmentUseCase,
   DeleteEquipmentUseCaseData,
   InvalidEquipmentError,
   TimeLimitError,
-  NullFieldsError
+  NullFieldsError,
+  EquipmentMovedError
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
 
 describe('Delete equipments use case', () => {
@@ -22,7 +25,10 @@ describe('Delete equipments use case', () => {
 
   let deleteEquipmentUseCase: DeleteEquipmentUseCase
 
-    beforeEach(() => {
+  let createMovementUseCase : CreateMovementUseCase
+  
+  beforeEach(() => {
+
       equipmentRepository = mock()
 
       deleteEquipmentUseCase = new DeleteEquipmentUseCase(equipmentRepository)
@@ -123,6 +129,58 @@ describe('Delete equipments use case', () => {
       expect(result).toHaveProperty('isSuccess', true)
     })
 
+    test('should not delete equipment with a movimentation associated', async () => {
+      const now = Date.now()
+      const mockedResult: EquipmentDb[] = [
+      {
+          id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
+          tippingNumber: '123123',
+          serialNumber: '123',
+          type: Type.Nobreak,
+          situacao: Status.ACTIVE,
+          estado: Estado.Novo,
+          model: 'Xiaomi XT',
+          description: '',
+          initialUseDate: '2022-12-12',
+          acquisitionDate: new Date(now),
+          invoiceNumber: '123',
+          power: '220',
+          createdAt: new Date(now),
+          updatedAt: new Date(now)
+      }
+      ]
+  
+      equipmentRepository.genericFind
+      .mockResolvedValueOnce(mockedResult)
+      .mockResolvedValueOnce(mockedResult)
+      equipmentRepository.deleteOne.mockResolvedValueOnce(true)
+  
+      const data: DeleteEquipmentUseCaseData = {
+          id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896'
+        }
+      
+      const move: CreateMovementUseCaseData = {
+          userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
+          equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
+          type: 0,
+          destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
+          inchargename: 'José Matheus',
+          inchargerole: 'Sargento',
+          chiefname: 'Matheus Texeira',
+          chiefrole: 'Delegado'
+        }
+      
+      const moveResult = await createMovementUseCase.execute(move)
+  
+      const result = await deleteEquipmentUseCase.execute(data)
+  
+      expect(moveResult).toHaveProperty('isSuccess', true)
+      expect(moveResult.data).toHaveProperty('equipments',['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'])
+      expect(result).toHaveProperty('isSuccess', false)
+      expect(result).toHaveProperty('error')
+      expect(result.error).toBeInstanceOf(EquipmentMovedError)
+  })
+  
     test('should not delete equipment after 10 minutes of creation', async () => {
       const now = Date.now()
       const tenMinutes =  60 * 10 * 1000

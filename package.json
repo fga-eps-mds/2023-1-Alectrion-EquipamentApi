@@ -13,7 +13,9 @@
     "test:watch": "npm t -- --watch",
     "test:staged": "npm t -- --findRelatedTests",
     "test:all": "CI=true npm run test -- --coverage",
-    "test:integration": "npm t -- --config ./jest.integration.config.js"
+    "test:integration": "npm t -- --config ./jest.integration.config.js",
+    "lint": "eslint ./",
+    "lint:fix": "yarn lint --fix"
   },
   "repository": {
     "type": "git",

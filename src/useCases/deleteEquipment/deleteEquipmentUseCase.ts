@@ -2,6 +2,10 @@ import { Equipment } from '../../db/entities/equipment'
 
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
 
+import { MovementRepositoryProtocol } from '../../repository/protocol/movementRepositoryProtocol'
+
+import { Movement } from '../../domain/entities/movement'
+
 import { EquipmentRepositoryProtocol } from '../../repository/protocol/equipmentRepositoryProtocol'
 
 export type DeleteEquipmentUseCaseData = {
@@ -29,12 +33,20 @@ export class TimeLimitError extends Error {
   }
 }
 
+export class EquipmentMovedError extends Error {
+  constructor() {
+    super('Equipamento está em uma movimentação.')
+    this.name = 'EquipmentMovedError'
+  }
+}
+
 
 export class DeleteEquipmentUseCase
   implements UseCase<DeleteEquipmentUseCaseData, boolean>
 {
   constructor(
-    private readonly equipmentRepository: EquipmentRepositoryProtocol
+    private readonly equipmentRepository: EquipmentRepositoryProtocol,
+    private readonly movementRepository: MovementRepositoryProtocol
   ) {}
 
   private areFieldsNull(data: DeleteEquipmentUseCaseData): boolean {
@@ -60,8 +72,19 @@ export class DeleteEquipmentUseCase
       error: new InvalidEquipmentError()
     }
     
-    const now = new Date()
+    const movements: Movement[] = await this.movementRepository.genericFind({
+      equipmentId: data.id,
+      page: 0,
+      resultQuantity: 0
+    })
     
+    if (movements.length > 0)
+    return {
+      isSuccess: false,
+      error: new EquipmentMovedError()
+    }
+    
+    const now = new Date()
     const timeLimit = 60 * 10 * 1000// 10 minutes
 
     if ((now as any) - (result.createdAt as any) > timeLimit)
