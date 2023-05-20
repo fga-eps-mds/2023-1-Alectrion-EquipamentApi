@@ -14,6 +14,8 @@ import { makeFindOneEquipmentController } from './factories/controllers/find-one
 import { makeUpdateOrderController } from './factories/controllers/update-order-service'
 import { makeCreateMovementController } from './factories/controllers/createMovement'
 import { makeFindMovementsController } from './factories/controllers/findMovements'
+import { makeDeleteMovementController } from './factories/controllers/deleteMovement'
+import { makeUpdateEquipmentController } from './factories/controllers/update-equipment'
 
 const routes = Router()
 
@@ -25,7 +27,7 @@ routes.post(
 routes.get('/find', adapt(makeGetEquipmentController()))
 routes.post('/createEquipment', adapt(makeCreateEquipmentController()))
 routes.delete(
-  '/deleteEquipment', 
+  '/deleteEquipment',
   checkAdminAccessToken,
   adapt(makeDeleteEquipmentController())
 )
@@ -37,5 +39,7 @@ routes.get('/listOne', adapt(makeFindOneEquipmentController()))
 routes.put('/updateOrderService', adapt(makeUpdateOrderController()))
 routes.post('/createMovement', adapt(makeCreateMovementController()))
 routes.get('/findMovements', adapt(makeFindMovementsController()))
+routes.delete('/deleteMovement', adapt(makeDeleteMovementController()))
+routes.put('/updateEquipment', adapt(makeUpdateEquipmentController()))
 
 export default routes

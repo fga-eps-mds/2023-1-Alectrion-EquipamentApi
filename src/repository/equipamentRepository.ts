@@ -34,7 +34,16 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
 
   async genericFind(query: any): Promise<Equipment[]> {
     console.log('Query repository: ', query)
+    
+    const take = query.take
+    const skip = query.skip
+    
+    delete query.take
+    delete query.skip
+
     const equipments = await this.equipmentRepository.find({
+      take: take,
+      skip: skip,
       relations: {
         brand: true,
         acquisition: true,

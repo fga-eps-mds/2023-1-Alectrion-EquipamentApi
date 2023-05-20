@@ -11,8 +11,7 @@ export const makeOrderService = () => {
   const updateEquipmentRepository = new UpdateEquipmentTypeorm()
   const listOneUnitRepository = new ListOneUnitTypeormRepository()
   const createHistoryRepository = new CreateHistoryTypeOrmRepository()
-  const updateOrderServiceTypeOrmRepository =
-    new UpdateOrderServiceTypeorm()
+  const updateOrderServiceTypeOrmRepository = new UpdateOrderServiceTypeorm()
   const listOrderServiceRepository = new ListOrderServiceRepository()
   return new UpdateOrderServiceUseCase(
     listOneEquipmentRepository,

@@ -6,7 +6,7 @@ import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
-import { Type } from '../../domain/entities/equipamentEnum/type'
+import { Type, generalTypes } from '../../domain/entities/equipamentEnum/type'
 import { Equipment } from '../../domain/entities/equipment'
 import AcquisitionRepositoryProtocol from '../../repository/protocol/acquisitionRepositoryProtocol'
 import { BrandRepositoryProtocol } from '../../repository/protocol/brandRepositoryProtocol'
@@ -236,7 +236,7 @@ export class CreateEquipmentUseCase
         equipment.screenSize = equipmentData.screenSize ?? ''
         break
 
-      case Type.Webcam:
+      case generalTypes.find((item) => item === equipmentData.type):
         break
       case Type.Nobreak:
         if (!this.validOthersFields(equipmentData)) {
@@ -253,8 +253,7 @@ export class CreateEquipmentUseCase
         }
         equipment.power = equipmentData.power ?? ''
         break
-      case Type.Escaneador:
-        break
+
       case Type.Estabilizador:
         if (!equipmentData.power) {
           return {
