@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { adaptExpressRoute as adapt } from './adapters/express-router'
 import { makeCreateOrderController } from './factories/controllers/create-order-service'
 import { makeCreateEquipmentController } from './factories/controllers/createEquipment'
+import { makeDeleteEquipmentController } from './factories/controllers/deleteEquipment'
 import { makeFindAllAcquisitionsController } from './factories/controllers/findAllAcquisitions'
 import { makeFindAllBrandsController } from './factories/controllers/findAllBrands'
 import { makeFindAllUnitsController } from './factories/controllers/findAllUnits'
@@ -24,6 +25,7 @@ routes.post(
 )
 routes.get('/find', adapt(makeGetEquipmentController()))
 routes.post('/createEquipment', adapt(makeCreateEquipmentController()))
+routes.delete('/deleteEquipment', adapt(makeDeleteEquipmentController()))
 routes.get('/getAllUnits', adapt(makeFindAllUnitsController()))
 routes.get('/getAllBrands', adapt(makeFindAllBrandsController()))
 routes.get('/getAllAcquisitions', adapt(makeFindAllAcquisitionsController()))

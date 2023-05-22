@@ -68,4 +68,14 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     })
     return result
   }
+  async deleteOne(id: string): Promise<boolean> {
+    const equipament: Equipment[] = await this.genericFind({
+      id
+    })
+
+    const result = await this.equipmentRepository.delete(id)
+
+    if (result.affected === 1) return true
+    return false
+  }
 }
