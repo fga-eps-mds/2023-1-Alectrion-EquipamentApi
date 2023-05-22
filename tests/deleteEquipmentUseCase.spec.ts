@@ -203,12 +203,6 @@ describe('Delete equipments use case', () => {
     equipmentRepository.deleteOne.mockResolvedValueOnce(Promise.resolve(false))
 
     const moveResult = await createMovementUseCase.execute(move)
-
-    
-    console.log('moveResult error:', moveResult.error)
-    console.log('moveResult isSucess:', moveResult.isSuccess)
-    console.log('moveResult data:', moveResult.data)
-    
     
     expect(moveResult).toHaveProperty('isSuccess', true)
     expect(moveResult.data).toHaveProperty('equipments')

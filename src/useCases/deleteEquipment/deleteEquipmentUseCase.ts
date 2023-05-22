@@ -80,7 +80,7 @@ implements UseCase<DeleteEquipmentUseCaseData, boolean>
       resultQuantity: 0
     })
     
-    if (movements.length > 0)
+    if (movements != null && movements != undefined)
     return {
       isSuccess: false,
       error: new EquipmentMovedError()
