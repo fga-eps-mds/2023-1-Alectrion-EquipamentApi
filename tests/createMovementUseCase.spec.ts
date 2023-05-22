@@ -1,7 +1,7 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 
 import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
-import { UnitRepositoryProcol as UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
+import { UnitRepositoryProtocol as UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
 import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
 
 import {

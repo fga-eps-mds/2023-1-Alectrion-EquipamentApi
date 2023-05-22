@@ -14,7 +14,6 @@ import { makeUpdateOrderController } from './factories/controllers/update-order-
 import { makeCreateMovementController } from './factories/controllers/createMovement'
 import { makeFindMovementsController } from './factories/controllers/findMovements'
 import { makeDeleteMovementController } from './factories/controllers/deleteMovement'
-import { makeDeleteEquipmentController } from './factories/controllers/deleteEquipment'
 import { makeUpdateEquipmentController } from './factories/controllers/update-equipment'
 
 const routes = Router()
