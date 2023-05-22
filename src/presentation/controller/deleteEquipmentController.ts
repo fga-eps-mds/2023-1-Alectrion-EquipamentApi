@@ -3,7 +3,8 @@ import {
   DeleteEquipmentUseCaseData,
   InvalidEquipmentError,
   NullFieldsError,
-  TimeLimitError
+  TimeLimitError,
+  EquipmentMovedError
 } from '../../useCases/deleteEquipment/deleteEquipmentUseCase'
 
 import { Controller } from '../protocols/controller'
@@ -37,7 +38,8 @@ export class DeleteEquipmentController extends Controller {
       return badRequest(response.error)
     if (response.error instanceof InvalidEquipmentError)
       return notFound(response.error)
-    if (response.error instanceof TimeLimitError) return unauthorized()
+    if(response.error instanceof TimeLimitError || response.error instanceof EquipmentMovedError) 
+    return unauthorized(response.error)
     return serverError(response.error)
   }
 }
