@@ -5,7 +5,7 @@ import { Status as EquipmentStatus } from '../../domain/entities/equipamentEnum/
 import { UseCase, UseCaseReponse } from './../protocol/useCase'
 
 import { EquipmentRepositoryProtocol } from '../../repository/protocol/equipmentRepositoryProtocol'
-import { UnitRepositoryProcol as UnitRepositoryProtocol } from '../../repository/protocol/unitRepositoryProtocol'
+import { UnitRepositoryProtocol as UnitRepositoryProtocol } from '../../repository/protocol/unitRepositoryProtocol'
 import { MovementRepositoryProtocol } from '../../repository/protocol/movementRepositoryProtocol'
 
 export type CreateMovementUseCaseData = {

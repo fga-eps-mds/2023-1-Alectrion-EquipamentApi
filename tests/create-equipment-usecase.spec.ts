@@ -7,7 +7,7 @@ import { Unit } from '../src/domain/entities/unit'
 import AcquisitionRepositoryProtocol from '../src/repository/protocol/acquisitionRepositoryProtocol'
 import { BrandRepositoryProtocol } from '../src/repository/protocol/brandRepositoryProtocol'
 import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
-import { UnitRepositoryProcol } from '../src/repository/protocol/unitRepositoryProtocol'
+import { UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
 import {
   CreateEquipmentUseCase,
   CreateEquipmentInterface,
@@ -22,7 +22,7 @@ import { ScreenType } from '../src/domain/entities/equipamentEnum/screenType'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
-  let unitRepository: MockProxy<UnitRepositoryProcol>
+  let unitRepository: MockProxy<UnitRepositoryProtocol>
   let brandRepository: MockProxy<BrandRepositoryProtocol>
   let acquisitionRepository: MockProxy<AcquisitionRepositoryProtocol>
   let createEquipmentUseCase: CreateEquipmentUseCase

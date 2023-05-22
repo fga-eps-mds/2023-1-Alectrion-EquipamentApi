@@ -35,6 +35,7 @@ routes.put('/updateOrderService', adapt(makeUpdateOrderController()))
 routes.post('/createMovement', adapt(makeCreateMovementController()))
 routes.get('/findMovements', adapt(makeFindMovementsController()))
 routes.delete('/deleteMovement', adapt(makeDeleteMovementController()))
+routes.delete('/deleteEquipment', adapt(makeDeleteEquipmentController()))
 routes.put('/updateEquipment', adapt(makeUpdateEquipmentController()))
 
 export default routes

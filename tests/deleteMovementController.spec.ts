@@ -85,7 +85,7 @@ describe('Delete movement controller', () => {
 
     expect(response).toHaveProperty('statusCode', 401)
     expect(response).toHaveProperty('data')
-    expect(response.data).toBeInstanceOf(UnauthorizedError)
+    expect(response.data).toBeInstanceOf(TimeLimitError)
   })
 
   test('should return server error response', async () => {
