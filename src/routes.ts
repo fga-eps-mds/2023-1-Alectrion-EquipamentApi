@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { adaptExpressRoute as adapt } from './adapters/express-router'
 import { makeCreateOrderController } from './factories/controllers/create-order-service'
 import { makeCreateEquipmentController } from './factories/controllers/createEquipment'
+import { makeDeleteEquipmentController } from './factories/controllers/deleteEquipment'
 import { makeFindAllAcquisitionsController } from './factories/controllers/findAllAcquisitions'
 import { makeFindAllBrandsController } from './factories/controllers/findAllBrands'
 import { makeFindAllUnitsController } from './factories/controllers/findAllUnits'
@@ -14,6 +15,7 @@ import { makeCreateMovementController } from './factories/controllers/createMove
 import { makeFindMovementsController } from './factories/controllers/findMovements'
 import { makeDeleteMovementController } from './factories/controllers/deleteMovement'
 import { makeDeleteEquipmentController } from './factories/controllers/deleteEquipment'
+import { makeUpdateEquipmentController } from './factories/controllers/update-equipment'
 
 const routes = Router()
 
@@ -24,6 +26,7 @@ routes.post(
 )
 routes.get('/find', adapt(makeGetEquipmentController()))
 routes.post('/createEquipment', adapt(makeCreateEquipmentController()))
+routes.delete('/deleteEquipment', adapt(makeDeleteEquipmentController()))
 routes.get('/getAllUnits', adapt(makeFindAllUnitsController()))
 routes.get('/getAllBrands', adapt(makeFindAllBrandsController()))
 routes.get('/getAllAcquisitions', adapt(makeFindAllAcquisitionsController()))
@@ -34,5 +37,6 @@ routes.post('/createMovement', adapt(makeCreateMovementController()))
 routes.get('/findMovements', adapt(makeFindMovementsController()))
 routes.delete('/deleteMovement', adapt(makeDeleteMovementController()))
 routes.delete('/deleteEquipment', adapt(makeDeleteEquipmentController()))
+routes.put('/updateEquipment', adapt(makeUpdateEquipmentController()))
 
 export default routes

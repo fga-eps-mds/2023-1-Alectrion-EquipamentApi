@@ -30,16 +30,15 @@ export class TimeLimitError extends Error {
   constructor() {
     super('Tempo limite para operação excedido.')
     this.name = 'TimeLimitError'
-  }''
+  }
 }
 
 export class EquipmentMovedError extends Error {
   constructor() {
     super('Equipamento está em uma movimentação.')
     this.name = 'EquipmentMovedError'
-  }''
+  }
 }
-
 
 export class DeleteEquipmentUseCase
   implements UseCase<DeleteEquipmentUseCaseData, boolean>
@@ -62,24 +61,22 @@ export class DeleteEquipmentUseCase
         error: new NullFieldsError()
       }
 
-    const timeLimit = 60 * 10 * 1000// 10 minutes
+    const result: Equipment = await this.equipmentRepository.findOne(
+      data.id
+    )
 
-    const result: Equipment[] = await this.equipmentRepository.genericFind({
-      id: data.id
-    })
+    if (result == null)
+      return {
+        isSuccess: false,
+        error: new InvalidEquipmentError()
+      }
 
     const movements: Movement[] = await this.movementRepository.genericFind({
       equipmentId: data.id,
       page: 0,
       resultQuantity: 0
     })
-
-    if (result.length < 1)
-      return {
-        isSuccess: false,
-        error: new InvalidEquipmentError()
-      }
-
+      
     if (movements.length > 0)
     return {
       isSuccess: false,
@@ -89,8 +86,13 @@ export class DeleteEquipmentUseCase
     const equipment: Equipment = result[0]
 
     const now = new Date()
+    const timeLimit = 60 * 10 * 1000// 10 minutes
 
     if ((now as any) - (equipment.createdAt as any) > timeLimit)
+
+    const now = new Date()
+
+    if ((now as any) - (result.createdAt as any) > timeLimit)
       return {
         isSuccess: false,
         error: new TimeLimitError()

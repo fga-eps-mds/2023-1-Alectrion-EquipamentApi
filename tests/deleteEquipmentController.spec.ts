@@ -105,3 +105,4 @@ describe('Delete equipment controller', () => {
     expect(response.data).toBeInstanceOf(ServerError)
   })
 })
+

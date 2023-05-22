@@ -34,7 +34,16 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
 
   async genericFind(query: any): Promise<Equipment[]> {
     console.log('Query repository: ', query)
+    
+    const take = query.take
+    const skip = query.skip
+    
+    delete query.take
+    delete query.skip
+
     const equipments = await this.equipmentRepository.find({
+      take: take,
+      skip: skip,
       relations: {
         brand: true,
         acquisition: true,
@@ -66,5 +75,15 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       tippingNumber
     })
     return result
+  }
+  async deleteOne(id: string): Promise<boolean> {
+    const equipament: Equipment[] = await this.genericFind({
+      id
+    })
+
+    const result = await this.equipmentRepository.delete(id)
+
+    if (result.affected === 1) return true
+    return false
   }
 }
