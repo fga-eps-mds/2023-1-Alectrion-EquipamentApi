@@ -22,7 +22,7 @@ export const badRequest = (error: Error): HttpResponse<Error> => ({
 
 export const unauthorized = (error: Error): HttpResponse<Error> => ({
   statusCode: 401,
-  data: error,
+  data: error
 })
 
 export const forbidden = (): HttpResponse<Error> => ({
