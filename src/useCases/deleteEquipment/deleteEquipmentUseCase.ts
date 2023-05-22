@@ -80,10 +80,12 @@ implements UseCase<DeleteEquipmentUseCaseData, boolean>
       resultQuantity: 0
     })
     
-    if (movements != null && movements != undefined)
-    return {
-      isSuccess: false,
-      error: new EquipmentMovedError()
+    if (movements != null && movements != undefined) {
+      if (movements.length > 0) 
+        return {
+          isSuccess: false,
+          error: new EquipmentMovedError()
+        }
     }
 
     const now = new Date()
