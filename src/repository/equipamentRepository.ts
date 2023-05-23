@@ -1,6 +1,7 @@
+import { MoreThanOrEqual } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Equipment } from '../db/entities/equipment'
-import { EquipmentRepositoryProtocol } from './protocol/equipmentRepositoryProtocol'
+import { EquipmentRepositoryProtocol, Query } from './protocol/equipmentRepositoryProtocol'
 
 export class EquipmentRepository implements EquipmentRepositoryProtocol {
   private readonly equipmentRepository
@@ -32,7 +33,7 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     return equipment
   }
 
-  async genericFind(query: any): Promise<Equipment[]> {
+  async genericFind(query: Query): Promise<Equipment[]> {
     console.log('Query repository: ', query)
     
     const take = query.take
@@ -46,11 +47,27 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       skip: skip,
       relations: {
         brand: true,
-        acquisition: true,
         unit: true
       },
+      order: {
+        updatedAt: 'DESC'
+      },
       where: {
-        ...query
+        type: query.type,
+        unit: query.location
+        ? {
+            id: query.location
+          }
+        : undefined,
+        brand: query.brand
+        ? {
+            id: query.brand
+          }
+        : undefined,
+        updatedAt: query.updatedAt
+        ? MoreThanOrEqual(query.updatedAt)
+        : undefined,
+        model: query.model
       }
     })
     return equipments

@@ -1,5 +1,16 @@
 import { Equipment } from '../../db/entities/equipment'
 
+export type Query = {
+  type?: string
+  location?: string
+  situation?: string
+  updatedAt?: string
+  brand?: string
+  model?: string
+  take?: number
+  skip?: number
+}
+
 export interface EquipmentRepositoryProtocol {
   create(equipment: Equipment): Promise<Equipment>
   updateOne(equipmentData: any): Promise<boolean>
