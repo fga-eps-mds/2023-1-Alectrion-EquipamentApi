@@ -54,11 +54,12 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       },
       where: {
         type: query.type,
-        unit: query.location
+        unit: query.unit
         ? {
-            id: query.location
-          }
+          id: query.unit
+        }
         : undefined,
+        situacao: query.situation,
         brand: query.brand
         ? {
             id: query.brand

@@ -1,10 +1,11 @@
 import { Equipment } from '../../db/entities/equipment'
+import { Status } from '../../domain/entities/equipamentEnum/status'
 
 export type Query = {
   type?: string
-  location?: string
+  unit?: string
   situation?: string
-  updatedAt?: string
+  updatedAt?: Date
   brand?: string
   model?: string
   take?: number
