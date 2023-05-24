@@ -1,11 +1,4 @@
-import {
-  MoreThanOrEqual,
-  LessThanOrEqual,
-  And,
-  ILike,
-  Not,
-  IsNull
-} from 'typeorm'
+import { MoreThanOrEqual, LessThanOrEqual, And, ILike } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Movement as MovementEntity } from '../db/entities/movement'
 import { Equipment as EquipmentEntity } from '../db/entities/equipment'
@@ -127,24 +120,27 @@ export class MovementRepository implements MovementRepositoryProtocol {
         : undefined
     }
 
-    const whereConditions = [
-      {
-        inChargeName: ILike(`%${searchTerm}%`),
-        ...defaultConditions
-      },
-      {
-        inChargeRole: ILike(`%${searchTerm}%`),
-        ...defaultConditions
-      },
-      {
-        chiefName: ILike(`%${searchTerm}%`),
-        ...defaultConditions
-      },
-      {
-        chiefRole: ILike(`%${searchTerm}%`),
-        ...defaultConditions
-      }
-    ]
+    const whereConditions =
+      typeof searchTerm !== 'undefined'
+        ? [
+            {
+              inChargeName: ILike(`%${searchTerm}%`),
+              ...defaultConditions
+            },
+            {
+              inChargeRole: ILike(`%${searchTerm}%`),
+              ...defaultConditions
+            },
+            {
+              chiefName: ILike(`%${searchTerm}%`),
+              ...defaultConditions
+            },
+            {
+              chiefRole: ILike(`%${searchTerm}%`),
+              ...defaultConditions
+            }
+          ]
+        : defaultConditions
 
     const allFieldsUndefined = Object.values(rest).every(
       (value) => typeof value === 'undefined'
