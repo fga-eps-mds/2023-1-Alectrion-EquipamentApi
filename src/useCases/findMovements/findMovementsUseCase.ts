@@ -19,6 +19,7 @@ export type FindMovementsUseCaseData = {
   higherDate?: Date
   page?: number
   resultquantity?: number
+  searchTerm?: string
 }
 
 export class InvalidDateError extends Error {
@@ -66,6 +67,7 @@ export class FindMovementsUseCase
       inChargeName: data.inChargeName,
       lowerDate: data.lowerDate,
       higherDate: data.higherDate,
+      searchTerm: data.searchTerm,
       page,
       resultQuantity
     }

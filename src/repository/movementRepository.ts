@@ -1,4 +1,11 @@
-import { MoreThanOrEqual, LessThanOrEqual, And } from 'typeorm'
+import {
+  MoreThanOrEqual,
+  LessThanOrEqual,
+  And,
+  ILike,
+  Not,
+  IsNull
+} from 'typeorm'
 import { dataSource } from '../db/config'
 import { Movement as MovementEntity } from '../db/entities/movement'
 import { Equipment as EquipmentEntity } from '../db/entities/equipment'
@@ -96,39 +103,62 @@ export class MovementRepository implements MovementRepositoryProtocol {
   }
 
   async genericFind(query: Query): Promise<Movement[]> {
+    const {
+      id,
+      userId,
+      type,
+      searchTerm,
+      equipmentId,
+      destination,
+      lowerDate,
+      higherDate
+    } = query
+
+    const { resultQuantity, page, ...rest } = query
+
+    const defaultConditions = {
+      id,
+      userId,
+      type,
+      equipments: equipmentId ? { id: equipmentId } : undefined,
+      destination: destination ? { id: destination } : undefined,
+      date: lowerDate
+        ? And(MoreThanOrEqual(lowerDate), LessThanOrEqual(higherDate))
+        : undefined
+    }
+
+    const whereConditions = [
+      {
+        inChargeName: ILike(`%${searchTerm}%`),
+        ...defaultConditions
+      },
+      {
+        inChargeRole: ILike(`%${searchTerm}%`),
+        ...defaultConditions
+      },
+      {
+        chiefName: ILike(`%${searchTerm}%`),
+        ...defaultConditions
+      },
+      {
+        chiefRole: ILike(`%${searchTerm}%`),
+        ...defaultConditions
+      }
+    ]
+
+    const allFieldsUndefined = Object.values(rest).every(
+      (value) => typeof value === 'undefined'
+    )
+
     const queryResult = await this.movementRepository.find({
       relations: [
         'equipments',
         'equipments.brand',
         'equipments.unit',
         'destination'
-
       ],
-      order: {
-        date: 'DESC'
-      },
-      where: {
-        id: query.id,
-        userId: query.userId,
-        type: query.type,
-        inChargeName: query.inChargeName,
-        equipments: query.equipmentId
-          ? {
-              id: query.equipmentId
-            }
-          : undefined,
-          destination: query.destination
-          ? {
-              id: query.destination
-            }
-          : undefined,
-          date:query.lowerDate
-          ? And(
-             MoreThanOrEqual(query.lowerDate),
-             LessThanOrEqual(query.higherDate)
-           )
-          : undefined
-       },
+      order: { date: 'DESC' },
+      where: allFieldsUndefined ? undefined : whereConditions,
       take: query.resultQuantity,
       skip: query.page * query.resultQuantity
     })

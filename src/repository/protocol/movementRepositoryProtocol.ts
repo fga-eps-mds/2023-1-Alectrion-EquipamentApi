@@ -6,13 +6,14 @@ export type Query = {
   id?: string
   destination?: string
   userId?: string
-  inChargeName?:string
+  inChargeName?: string
   equipmentId?: string
   type?: number
   lowerDate?: Date
   higherDate?: Date
   page: number
   resultQuantity: number
+  searchTerm?: string
 }
 
 export interface MovementRepositoryProtocol {
