@@ -23,13 +23,8 @@ import {
   EquipmentMovedError
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
 
-import { MovementRepository } from '../src/repository/movementRepository'
 import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
 import { UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
-import { CreateOrderServiceTypeOrmRepository } from '../src/db/repositories/order-service/create-order-service-typeorm-repository'
-import { UnitRepository } from '../src/repository/unitRepository'
-import { Unit } from '../src/domain/entities/unit'
-import { Movement } from '../src/domain/entities/movement'
 
 describe('Delete equipments use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
@@ -39,15 +34,6 @@ describe('Delete equipments use case', () => {
   let deleteEquipmentUseCase: DeleteEquipmentUseCase
   let createMovementUseCase: CreateMovementUseCase
 
-<<<<<<< HEAD
-  const mockedUnitOne: Unit = {
-    id: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
-    name: 'Conselho Superior da Polícia Civil',
-    localization: 'Goiânia'
-  }
-
-=======
->>>>>>> 5a2b967 (#77 feat: testes na delecao de equipamento)
   beforeEach(() => {
     equipmentRepository = mock()
     movementRepository = mock()
@@ -110,40 +96,6 @@ describe('Delete equipments use case', () => {
     const data: DeleteEquipmentUseCaseData = {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896'
     }
-<<<<<<< HEAD
-    equipmentRepository.findOne
-      .mockResolvedValueOnce(mockedResult)
-      .mockResolvedValueOnce(mockedResult)
-    equipmentRepository.deleteOne.mockReturnValueOnce(Promise.resolve(false))
-
-    const result = await deleteEquipmentUseCase.execute(data)
-    expect(result).toHaveProperty('isSuccess', false)
-    expect(result.error).toBeInstanceOf(Error)
-  })
-
-  test('should delete equipment', async () => {
-    const now = Date.now()
-    const mockedResult: EquipmentDb = {
-      id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
-      tippingNumber: '123123',
-      serialNumber: '123',
-      type: Type.Nobreak,
-      situacao: Status.ACTIVE,
-      estado: Estado.Novo,
-      model: 'Xiaomi XT',
-      description: '',
-      initialUseDate: '2022-12-12',
-      acquisitionDate: new Date('2022-12-12'),
-      invoiceNumber: '123',
-      power: '220',
-      createdAt: new Date(now),
-      updatedAt: new Date(now)
-    }
-
-    const data: DeleteEquipmentUseCaseData = {
-      id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896'
-    }
-=======
 
     const movementData: Movement[] = []
 
@@ -183,32 +135,22 @@ describe('Delete equipments use case', () => {
     }
 
     const movementData: Movement[] = []
->>>>>>> 5a2b967 (#77 feat: testes na delecao de equipamento)
 
     equipmentRepository.findOne
       .mockResolvedValueOnce(mockedResult)
       .mockResolvedValueOnce(mockedResult)
     equipmentRepository.deleteOne.mockResolvedValueOnce(true)
 
-<<<<<<< HEAD
-    const result = await deleteEquipmentUseCase.execute(data)
-
-=======
     movementRepository.genericFind.mockResolvedValueOnce(movementData)
 
     const result = await deleteEquipmentUseCase.execute(data)
 
->>>>>>> 5a2b967 (#77 feat: testes na delecao de equipamento)
     expect(result).toHaveProperty('isSuccess', true)
   })
 
   test('should not delete equipment with a movimentation associated', async () => {
     const now = Date.now()
-<<<<<<< HEAD
-    const mockedEquipment: EquipmentDb = {
-=======
     const mockedResult: EquipmentDb = {
->>>>>>> 5a2b967 (#77 feat: testes na delecao de equipamento)
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
       tippingNumber: '123123',
       serialNumber: '123',
@@ -218,71 +160,12 @@ describe('Delete equipments use case', () => {
       model: 'Xiaomi XT',
       description: '',
       initialUseDate: '2022-12-12',
-<<<<<<< HEAD
-      acquisitionDate: new Date('2022-12-12'),
-=======
       acquisitionDate: new Date(now),
->>>>>>> 5a2b967 (#77 feat: testes na delecao de equipamento)
       invoiceNumber: '123',
       power: '220',
       createdAt: new Date(now),
       updatedAt: new Date(now)
     }
-<<<<<<< HEAD
-
-    const mockedMovement: Movement = {
-      id: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-      date: new Date(),
-      userId: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-      equipments: [mockedEquipment],
-      type: 0,
-      destination: mockedUnitOne,
-      inChargeName: 'José Matheus',
-      inChargeRole: 'Sargento',
-      chiefName: 'Matheus Texeira',
-      chiefRole: 'Delegado'
-    }
-
-    const move: CreateMovementUseCaseData = {
-      userid: '7f5a508d-b6d4-4011-9553-d181e75e1b09',
-      equipments: ['c266c9d5-4e91-4c2e-9c38-fb8710d7e896'],
-      type: 0,
-      destination: 'f2cf114d-51f4-4ccc-9c8f-64fd97e6cfb2',
-      inchargename: 'José Matheus',
-      inchargerole: 'Sargento',
-      chiefname: 'Matheus Texeira',
-      chiefrole: 'Delegado'
-    }
-
-    const data: DeleteEquipmentUseCaseData = {
-      id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896'
-    }
-
-    equipmentRepository.findOne.mockResolvedValueOnce(mockedEquipment).mockResolvedValueOnce(mockedEquipment)
-    unitRepository.findOne.mockResolvedValueOnce(mockedUnitOne)
-    movementRepository.create.mockResolvedValueOnce(mockedMovement)
-    movementRepository.genericFind.mockResolvedValueOnce([mockedMovement])
-    equipmentRepository.deleteOne.mockResolvedValueOnce(Promise.resolve(false))
-
-    const moveResult = await createMovementUseCase.execute(move)
-    
-    expect(moveResult).toHaveProperty('isSuccess', true)
-    expect(moveResult.data).toHaveProperty('equipments')
-    expect(moveResult.data.equipments).toBeInstanceOf(Array)
-    expect(moveResult.data.equipments).toHaveLength(1)
-    
-    const result = await deleteEquipmentUseCase.execute(data)
-
-    expect(result).toHaveProperty('isSuccess', false)
-    expect(result).toHaveProperty('error')
-    expect(result.error).toBeInstanceOf(EquipmentMovedError)
-  })
-
-  test('should not delete equipment after 10 minutes of creation', async () => {
-    const now = Date.now()
-    const tenMinutes = 60 * 10 * 1000
-
-=======
 
     equipmentRepository.findOne
       .mockResolvedValueOnce(mockedResult)
@@ -319,7 +202,6 @@ describe('Delete equipments use case', () => {
     const now = Date.now()
     const tenMinutes = 60 * 10 * 1000
 
->>>>>>> 5a2b967 (#77 feat: testes na delecao de equipamento)
     const mockedResult: EquipmentDb = {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
       tippingNumber: '123123',
@@ -337,13 +219,10 @@ describe('Delete equipments use case', () => {
       updatedAt: new Date(now - tenMinutes - 1)
     }
 
-<<<<<<< HEAD
-=======
     const movementData: Movement[] = []
 
     movementRepository.genericFind.mockResolvedValueOnce(movementData)
 
->>>>>>> 5a2b967 (#77 feat: testes na delecao de equipamento)
     const data: DeleteEquipmentUseCaseData = {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896'
     }
