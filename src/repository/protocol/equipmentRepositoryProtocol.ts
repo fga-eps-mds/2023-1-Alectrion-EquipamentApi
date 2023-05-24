@@ -10,6 +10,7 @@ export type Query = {
   model?: string
   take?: number
   skip?: number
+  searchId?: string
 }
 
 export interface EquipmentRepositoryProtocol {

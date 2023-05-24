@@ -1,7 +1,8 @@
-import { MoreThanOrEqual } from 'typeorm'
+import { MoreThanOrEqual, ILike } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Equipment } from '../db/entities/equipment'
 import { EquipmentRepositoryProtocol, Query } from './protocol/equipmentRepositoryProtocol'
+
 
 export class EquipmentRepository implements EquipmentRepositoryProtocol {
   private readonly equipmentRepository
@@ -68,9 +69,11 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
         updatedAt: query.updatedAt
         ? MoreThanOrEqual(query.updatedAt)
         : undefined,
-        model: query.model
-      }
-    })
+        model: query.model,
+        tippingNumber: query.searchId? ILike( `%${query.searchId}%` ): undefined, 
+        serialNumber: query.searchId? ILike( `%${query.searchId}%` ):undefined,
+      },
+    });
     return equipments
   }
 
