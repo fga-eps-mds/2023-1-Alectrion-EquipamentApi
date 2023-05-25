@@ -1,8 +1,8 @@
 import { dataSource } from '../db/config'
 import { Unit } from '../db/entities/unit'
-import { UnitRepositoryProcol } from './protocol/unitRepositoryProtocol'
+import { UnitRepositoryProtocol } from './protocol/unitRepositoryProtocol'
 
-export class UnitRepository implements UnitRepositoryProcol {
+export class UnitRepository implements UnitRepositoryProtocol {
   private readonly unitRepository
   constructor() {
     this.unitRepository = dataSource.getRepository(Unit)
