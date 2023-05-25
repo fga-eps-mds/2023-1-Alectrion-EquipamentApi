@@ -1,4 +1,5 @@
 import { checkAccessToken } from './middlewares/auth-middleware'
+import { checkAdminAccessToken } from './middlewares/admin-auth-middleware'
 import { Router } from 'express'
 import { adaptExpressRoute as adapt } from './adapters/express-router'
 import { makeCreateOrderController } from './factories/controllers/create-order-service'
@@ -25,7 +26,11 @@ routes.post(
 )
 routes.get('/find', adapt(makeGetEquipmentController()))
 routes.post('/createEquipment', adapt(makeCreateEquipmentController()))
-routes.delete('/deleteEquipment', adapt(makeDeleteEquipmentController()))
+routes.delete(
+  '/deleteEquipment',
+  checkAdminAccessToken,
+  adapt(makeDeleteEquipmentController())
+)
 routes.get('/getAllUnits', adapt(makeFindAllUnitsController()))
 routes.get('/getAllBrands', adapt(makeFindAllBrandsController()))
 routes.get('/getAllAcquisitions', adapt(makeFindAllAcquisitionsController()))
@@ -35,7 +40,6 @@ routes.put('/updateOrderService', adapt(makeUpdateOrderController()))
 routes.post('/createMovement', adapt(makeCreateMovementController()))
 routes.get('/findMovements', adapt(makeFindMovementsController()))
 routes.delete('/deleteMovement', adapt(makeDeleteMovementController()))
-routes.delete('/deleteEquipment', adapt(makeDeleteEquipmentController()))
 routes.put('/updateEquipment', adapt(makeUpdateEquipmentController()))
 
 export default routes
