@@ -137,7 +137,7 @@ export class CreateEquipmentUseCase
     private readonly unitRepository: UnitRepositoryProtocol,
     private readonly brandRepository: BrandRepositoryProtocol,
     private readonly acquisitionRepository: AcquisitionRepositoryProtocol
-  ) {}
+  ) { }
 
   private validFixedFields(equipmentData: CreateEquipmentInterface): boolean {
     if (
@@ -236,7 +236,12 @@ export class CreateEquipmentUseCase
 
       unit: equipment.unit,
 
-      ram_size: equipment.ram_size
+      ram_size: equipment.ram_size,
+
+      createdAt: equipment.createdAt,
+
+      updatedAt: equipment.updatedAt
+
     }
   }
 
