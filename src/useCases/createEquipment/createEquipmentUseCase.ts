@@ -57,6 +57,50 @@ export interface CreateEquipmentInterface {
   ram_size?: string
 }
 
+export interface EquipmentResource {
+  id: string
+
+  tippingNumber: string
+
+  serialNumber: string
+
+  type: string
+
+  situacao: string
+
+  estado: string
+
+  model: string
+
+  description?: string
+
+  initialUseDate: string
+
+  acquisitionDate: Date
+
+  screenSize?: string
+
+  invoiceNumber: string
+
+  power?: string
+
+  screenType?: string
+
+  processor?: string
+
+  storageType?: string
+
+  storageAmount?: string
+
+  brand: EquipmentBrand
+
+  acquisition: EquipmentAcquisition
+
+  unit: Unit
+
+  ram_size?: string
+}
+
 export class EquipmentTypeError extends Error {
   constructor() {
     super('Tipo de equipamento não encontrado.')
@@ -93,7 +137,7 @@ export class CreateEquipmentUseCase
     private readonly unitRepository: UnitRepositoryProtocol,
     private readonly brandRepository: BrandRepositoryProtocol,
     private readonly acquisitionRepository: AcquisitionRepositoryProtocol
-  ) {}
+  ) { }
 
   private validFixedFields(equipmentData: CreateEquipmentInterface): boolean {
     if (
@@ -150,9 +194,60 @@ export class CreateEquipmentUseCase
     }
   }
 
+  private mapEquipmentToEquipmentResource(equipment: Equipment) {
+    return {
+      id: equipment.id,
+
+      tippingNumber: equipment.tippingNumber,
+
+      serialNumber: equipment.serialNumber,
+
+      type: equipment.type,
+
+      situacao: equipment.situacao,
+
+      estado: equipment.estado,
+
+      model: equipment.model,
+
+      description: equipment.description,
+
+      initialUseDate: equipment.initialUseDate,
+
+      acquisitionDate: equipment.acquisitionDate,
+
+      screenSize: equipment.screenSize,
+
+      invoiceNumber: equipment.invoiceNumber,
+
+      power: equipment.power,
+
+      screenType: equipment.screenType,
+
+      processor: equipment.processor,
+
+      storageType: equipment.storageType,
+
+      storageAmount: equipment.storageAmount,
+
+      brand: equipment.brand,
+
+      acquisition: equipment.acquisition,
+
+      unit: equipment.unit,
+
+      ram_size: equipment.ram_size,
+
+      createdAt: equipment.createdAt,
+
+      updatedAt: equipment.updatedAt
+
+    }
+  }
+
   async execute(
     equipmentData: CreateEquipmentInterface
-  ): Promise<UseCaseReponse<Equipment>> {
+  ): Promise<UseCaseReponse<any>> {
     const equipment = new EquipmentEntity()
     if (!this.validFixedFields(equipmentData)) {
       return {
@@ -278,7 +373,7 @@ export class CreateEquipmentUseCase
 
     return {
       isSuccess: true,
-      data: equipment as unknown as Equipment
+      data: this.mapEquipmentToEquipmentResource(equipment)
     }
   }
 }
