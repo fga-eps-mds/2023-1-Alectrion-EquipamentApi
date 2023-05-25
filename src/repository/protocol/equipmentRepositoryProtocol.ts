@@ -1,4 +1,17 @@
 import { Equipment } from '../../db/entities/equipment'
+import { Status } from '../../domain/entities/equipamentEnum/status'
+
+export type Query = {
+  type?: string
+  unit?: string
+  situation?: string
+  updatedAt?: Date
+  brand?: string
+  search?: string
+  model?: string 
+  take?: number
+  skip?: number
+}
 
 export interface EquipmentRepositoryProtocol {
   create(equipment: Equipment): Promise<Equipment>

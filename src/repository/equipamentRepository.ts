@@ -1,6 +1,8 @@
+import { MoreThanOrEqual, ILike } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Equipment } from '../db/entities/equipment'
-import { EquipmentRepositoryProtocol } from './protocol/equipmentRepositoryProtocol'
+import { EquipmentRepositoryProtocol, Query } from './protocol/equipmentRepositoryProtocol'
+
 
 export class EquipmentRepository implements EquipmentRepositoryProtocol {
   private readonly equipmentRepository
@@ -32,29 +34,58 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     return equipment
   }
 
-  async genericFind(query: any): Promise<Equipment[]> {
-    console.log('Query repository: ', query)
-    
-    const take = query.take
-    const skip = query.skip
-    
-    delete query.take
-    delete query.skip
+  async genericFind(query: Query): Promise<Equipment[]> {    
+    const {
+      type,
+      unit,
+      situation,
+      updatedAt,
+      brand,
+      search,
+      take, 
+      skip,
+    } = query;
 
-    const equipments = await this.equipmentRepository.find({
-      take: take,
-      skip: skip,
+    const defaultConditions= {
+      type: type,
+      situacao: situation,
+      unit: unit? {id: unit} : undefined,
+      brand: brand ? { id: brand } : undefined,
+      updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
+    };
+  
+    const searchConditions =
+    typeof search !== 'undefined'
+      ? [
+        {
+          model: ILike(`%${search}%`),
+          ...defaultConditions
+        },
+        {
+          tippingNumber: ILike(`%${search}%`),
+          ...defaultConditions
+        },
+        {
+          serialNumber: ILike(`%${search}%`),
+          ...defaultConditions
+        },
+      ]: defaultConditions
+  
+  
+    const queryResult = await this.equipmentRepository.find({
       relations: {
         brand: true,
-        acquisition: true,
         unit: true
       },
-      where: {
-        ...query
-      }
-    })
-    return equipments
+      order: { updatedAt: 'DESC' },
+      where: searchConditions,
+      take: take,
+      skip: skip
+    });
+  
+    return queryResult;
   }
+    
 
   async findByTippingNumberOrSerialNumber(
     id: string
@@ -76,5 +107,4 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     })
     return result
   }
-  
 }

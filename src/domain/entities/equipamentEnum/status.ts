@@ -4,5 +4,6 @@ export enum Status {
   ACTIVE_LOAN = 'Ativo Empréstimo',
   DOWNGRADED = 'Baixado',
   MAINTENANCE = 'Manutenção',
-  TECHNICAL_RESERVE = 'Reserva Técnica'
+  TECHNICAL_RESERVE = 'Reserva Técnica',
+  STORAGE = 'Estoque'
 }
