@@ -190,8 +190,8 @@ describe('Find movements use case', () => {
 
     const query: FindMovementsUseCaseData = {
       type: 1,
-      lowerdate: new Date('2023-01-10T07:16:32.276Z'),
-      higherdate: new Date('2023-01-10T07:14:54.078Z')
+      lowerDate: new Date('2023-01-10T07:16:32.276Z'),
+      higherDate: new Date('2023-01-10T07:14:54.078Z')
     }
 
     movementRepository.genericFind.mockResolvedValueOnce(mockedResult)
@@ -236,7 +236,7 @@ describe('Find movements use case', () => {
 
     const query: FindMovementsUseCaseData = {
       type: 1,
-      lowerdate: new Date('2023-01-10T07:16:32.276Z')
+      lowerDate: new Date('2023-01-10T07:16:32.276Z')
     }
 
     movementRepository.genericFind.mockResolvedValueOnce(mockedResult)
