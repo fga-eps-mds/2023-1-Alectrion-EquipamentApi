@@ -7,10 +7,10 @@ export type Query = {
   situation?: string
   updatedAt?: Date
   brand?: string
-  model?: string
+  search?: string
+  model?: string 
   take?: number
   skip?: number
-  searchId?: string
 }
 
 export interface EquipmentRepositoryProtocol {

@@ -34,48 +34,58 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     return equipment
   }
 
-  async genericFind(query: Query): Promise<Equipment[]> {
-    console.log('Query repository: ', query)
-    
-    const take = query.take
-    const skip = query.skip
-    
-    delete query.take
-    delete query.skip
+  async genericFind(query: Query): Promise<Equipment[]> {    
+    const {
+      type,
+      unit,
+      situation,
+      updatedAt,
+      brand,
+      search,
+      take, 
+      skip,
+    } = query;
 
-    const equipments = await this.equipmentRepository.find({
-      take: take,
-      skip: skip,
+    const defaultConditions= {
+      type: type,
+      situacao: situation,
+      unit: unit? {id: unit} : undefined,
+      brand: brand ? { id: brand } : undefined,
+      updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
+    };
+  
+    const searchConditions =
+    typeof search !== 'undefined'
+      ? [
+        {
+          model: ILike(`%${search}%`),
+          ...defaultConditions
+        },
+        {
+          tippingNumber: ILike(`%${search}%`),
+          ...defaultConditions
+        },
+        {
+          serialNumber: ILike(`%${search}%`),
+          ...defaultConditions
+        },
+      ]: defaultConditions
+  
+  
+    const queryResult = await this.equipmentRepository.find({
       relations: {
         brand: true,
         unit: true
       },
-      order: {
-        updatedAt: 'DESC'
-      },
-      where: {
-        type: query.type,
-        unit: query.unit
-        ? {
-          id: query.unit
-        }
-        : undefined,
-        situacao: query.situation,
-        brand: query.brand
-        ? {
-            id: query.brand
-          }
-        : undefined,
-        updatedAt: query.updatedAt
-        ? MoreThanOrEqual(query.updatedAt)
-        : undefined,
-        model: query.model,
-        tippingNumber: query.searchId? ILike( `%${query.searchId}%` ): undefined, 
-        serialNumber: query.searchId? ILike( `%${query.searchId}%` ):undefined,
-      },
+      order: { updatedAt: 'DESC' },
+      where: searchConditions,
+      take: take,
+      skip: skip
     });
-    return equipments
+  
+    return queryResult;
   }
+    
 
   async findByTippingNumberOrSerialNumber(
     id: string
@@ -97,5 +107,4 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     })
     return result
   }
-  
 }
