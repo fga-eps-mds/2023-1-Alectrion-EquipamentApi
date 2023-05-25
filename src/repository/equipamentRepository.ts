@@ -13,9 +13,17 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     return equipment
   }
 
+  async deleteOne(equipmentId: string): Promise<boolean> {
+
+    const result = await this.equipmentRepository.delete(equipmentId)
+
+    if(result.affected === 1) return true
+    return false
+  }
+
   updateOne(equipmentData: any): Promise<boolean> {
     throw new Error('Method not implemented.')
-  }
+  } 
 
   async findOne(equipmentId: string): Promise<Equipment | null> {
     const equipment = await this.equipmentRepository.findOneBy({
@@ -26,7 +34,16 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
 
   async genericFind(query: any): Promise<Equipment[]> {
     console.log('Query repository: ', query)
+    
+    const take = query.take
+    const skip = query.skip
+    
+    delete query.take
+    delete query.skip
+
     const equipments = await this.equipmentRepository.find({
+      take: take,
+      skip: skip,
       relations: {
         brand: true,
         acquisition: true,
@@ -59,4 +76,5 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     })
     return result
   }
+  
 }

@@ -37,7 +37,7 @@ export class DeleteMovementController extends Controller {
       return badRequest(response.error)
     if (response.error instanceof InvalidMovementError)
       return notFound(response.error)
-    if (response.error instanceof TimeLimitError) return unauthorized()
+    if (response.error instanceof TimeLimitError) return unauthorized(response.error)
     return serverError(response.error)
   }
 }

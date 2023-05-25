@@ -9,7 +9,7 @@ export interface UnitInterface {
 
 export class NotUnitsFound extends Error {
   constructor() {
-    super('Não Encontrada unidades')
+    super('Não Encontrada unidades.')
     this.name = 'NotUnitsFound'
   }
 }

@@ -7,7 +7,7 @@ import { Unit } from '../src/domain/entities/unit'
 import AcquisitionRepositoryProtocol from '../src/repository/protocol/acquisitionRepositoryProtocol'
 import { BrandRepositoryProtocol } from '../src/repository/protocol/brandRepositoryProtocol'
 import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
-import { UnitRepositoryProcol } from '../src/repository/protocol/unitRepositoryProtocol'
+import { UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
 import {
   CreateEquipmentUseCase,
   CreateEquipmentInterface,
@@ -18,10 +18,11 @@ import {
 } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
+import { ScreenType } from '../src/domain/entities/equipamentEnum/screenType'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
-  let unitRepository: MockProxy<UnitRepositoryProcol>
+  let unitRepository: MockProxy<UnitRepositoryProtocol>
   let brandRepository: MockProxy<BrandRepositoryProtocol>
   let acquisitionRepository: MockProxy<AcquisitionRepositoryProtocol>
   let createEquipmentUseCase: CreateEquipmentUseCase
@@ -53,13 +54,27 @@ describe('Test create order use case', () => {
     processor: 'i7'
   }
 
+  const createGeneralEquipmentInterface = {
+    acquisitionDate: new Date('2023-01-20'),
+    situacao: Status.ACTIVE,
+    estado: Estado.Novo,
+    tippingNumber: 'any',
+    model: 'DELL G15',
+    serialNumber: 'any',
+    initialUseDate: new Date('2023-01-20').toISOString(),
+    invoiceNumber: 'any',
+    unitId: 'any_id',
+    acquisitionName: 'any_name',
+    brandName: 'brand_name'
+  }
+
   const equipment: Equipment = {
     id: 'id',
     acquisition: {
       id: '',
       name: ''
     },
-    acquisitionDate: createEquipmentInterface.acquisitionDate,    
+    acquisitionDate: createEquipmentInterface.acquisitionDate,
     createdAt: new Date('2023-01-20'),
     updatedAt: new Date('2023-01-20'),
     situacao: Status.ACTIVE,
@@ -125,6 +140,20 @@ describe('Test create order use case', () => {
     expect(unitRepository.findOne).toBeCalledTimes(1)
   })
 
+  test('should call brandRepository with no params', async () => {
+    const { brandName, ...rest } = createEquipmentInterface
+
+    await createEquipmentUseCase.execute({
+      ...rest,
+      brandName: undefined
+    })
+
+    expect(
+      brandRepository.findOneByName.mockResolvedValue(null)
+    ).toBeCalledWith(undefined)
+    expect(unitRepository.findOne).toBeCalledTimes(1)
+  })
+
   test('should return NotFoundUnit if no unit found', async () => {
     unitRepository.findOne.mockResolvedValueOnce(undefined)
 
@@ -157,6 +186,20 @@ describe('Test create order use case', () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
       initialUseDate: null
+    })
+
+    expect(result).toEqual({
+      isSuccess: false,
+      error: new NullFields()
+    })
+  })
+
+  test('should return NullFields if pass wrong screen type for monitor', async () => {
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Monitor,
+      screenSize: '40pol',
+      screenType: 'CRT'
     })
 
     expect(result).toEqual({
@@ -206,8 +249,8 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass required info for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createEquipmentInterface,
-      type: 'Nobreak',
-      power: undefined
+      type: 'Nobreak'
+      // power: undefined
     })
 
     expect(result).toEqual({
@@ -229,12 +272,213 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create equipment', async () => {
+  test('should create monitor', async () => {
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Monitor,
+      screenType: ScreenType.LED,
+      screenSize: '40pol'
+    })
+
+    const equipmentDB = new EquipmentDb()
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
+    equipmentDB.acquisitionDate = equipment.acquisitionDate
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
+    equipmentDB.description = ''
+    equipmentDB.initialUseDate = equipment.initialUseDate
+    equipmentDB.type = Type.Monitor
+    equipmentDB.invoiceNumber = equipment.invoiceNumber
+    equipmentDB.model = equipment.model
+    equipmentDB.serialNumber = equipment.serialNumber
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
+    equipmentDB.tippingNumber = equipment.tippingNumber
+    equipmentDB.screenType = ScreenType.LED
+    equipmentDB.screenSize = '40pol'
+
+    expect(result).toEqual({
+      isSuccess: true,
+      data: equipmentDB
+    })
+  })
+
+  test('should create noBreak', async () => {
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Nobreak,
+      power: '220'
+    })
+
+    const equipmentDB = new EquipmentDb()
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
+    equipmentDB.acquisitionDate = equipment.acquisitionDate
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
+    equipmentDB.description = ''
+    equipmentDB.initialUseDate = equipment.initialUseDate
+    equipmentDB.type = Type?.Nobreak
+    equipmentDB.power = '220'
+    equipmentDB.invoiceNumber = equipment.invoiceNumber
+    equipmentDB.model = equipment.model
+    equipmentDB.serialNumber = equipment.serialNumber
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
+    equipmentDB.tippingNumber = equipment.tippingNumber
+
+    expect(result).toEqual({
+      isSuccess: true,
+      data: equipmentDB
+    })
+  })
+
+  test('should create "estabilizador"', async () => {
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Estabilizador,
+      power: '220'
+    })
+
+    const equipmentDB = new EquipmentDb()
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
+    equipmentDB.acquisitionDate = equipment.acquisitionDate
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
+    equipmentDB.description = ''
+    equipmentDB.initialUseDate = equipment.initialUseDate
+    equipmentDB.type = Type?.Estabilizador
+    equipmentDB.power = '220'
+    equipmentDB.invoiceNumber = equipment.invoiceNumber
+    equipmentDB.model = equipment.model
+    equipmentDB.serialNumber = equipment.serialNumber
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
+    equipmentDB.tippingNumber = equipment.tippingNumber
+
+    expect(result).toEqual({
+      isSuccess: true,
+      data: equipmentDB
+    })
+  })
+
+  test('should create webcam', async () => {
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Webcam
+    })
+
+    const equipmentDB = new EquipmentDb()
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
+    equipmentDB.acquisitionDate = equipment.acquisitionDate
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
+    equipmentDB.description = ''
+    equipmentDB.initialUseDate = equipment.initialUseDate
+    equipmentDB.type = Type?.Webcam
+    equipmentDB.invoiceNumber = equipment.invoiceNumber
+    equipmentDB.model = equipment.model
+    equipmentDB.serialNumber = equipment.serialNumber
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
+    equipmentDB.tippingNumber = equipment.tippingNumber
+
+    expect(result).toEqual({
+      isSuccess: true,
+      data: equipmentDB
+    })
+  })
+
+  test('should create "escaneador"', async () => {
+    const result = await createEquipmentUseCase.execute({
+      ...createGeneralEquipmentInterface,
+      type: Type.Escaneador
+    })
+
+    const equipmentDB = new EquipmentDb()
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
+    equipmentDB.acquisitionDate = equipment.acquisitionDate
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: '',
+      name: 'brand'
+    }
+    equipmentDB.description = ''
+    equipmentDB.initialUseDate = equipment.initialUseDate
+    equipmentDB.type = Type?.Escaneador
+    equipmentDB.invoiceNumber = equipment.invoiceNumber
+    equipmentDB.model = equipment.model
+    equipmentDB.serialNumber = equipment.serialNumber
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
+    equipmentDB.tippingNumber = equipment.tippingNumber
+
+    expect(result).toEqual({
+      isSuccess: true,
+      data: equipmentDB
+    })
+  })
+
+  test('should create equipment (CPU)', async () => {
     const result = await createEquipmentUseCase.execute(
       createEquipmentInterface
     )
-
-    console.log(result.data)
 
     const equipmentDB = new EquipmentDb()
     equipmentDB.acquisition = {
