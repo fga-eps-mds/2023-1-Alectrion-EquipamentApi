@@ -6,16 +6,20 @@ import {
   MovementRepositoryProtocol,
   Query
 } from '../../repository/protocol/movementRepositoryProtocol'
+import { Unit } from '../../domain/entities/unit'
 
 export type FindMovementsUseCaseData = {
   id?: string
+  destinationId?: string
   userid?: string
   equipmentid?: string
+  inChargeName?: string
   type?: number
-  lowerdate?: Date
-  higherdate?: Date
+  lowerDate?: Date
+  higherDate?: Date
   page?: number
   resultquantity?: number
+  searchTerm?: string
 }
 
 export class InvalidDateError extends Error {
@@ -33,13 +37,12 @@ export class FindMovementsUseCase
   ) {}
 
   private areDatesInvalid(data: FindMovementsUseCaseData): boolean {
-    if (data.lowerdate || data.higherdate)
-      if (
-        !(data.lowerdate && data.higherdate) ||
-        data.higherdate < data.lowerdate
-      )
+    if (data.lowerDate) {
+      if (data.higherDate && data.higherDate < data.lowerDate) {
         return true
-    return false
+      }
+      return false
+    }
   }
 
   async execute(
@@ -56,11 +59,14 @@ export class FindMovementsUseCase
 
     const query: Query = {
       id: data.id,
+      destination: data.destinationId,
       userId: data.userid,
       equipmentId: data.equipmentid,
       type: data.type,
-      lowerDate: data.lowerdate,
-      higherDate: data.higherdate,
+      inChargeName: data.inChargeName,
+      lowerDate: data.lowerDate,
+      higherDate: data.higherDate,
+      searchTerm: data.searchTerm,
       page,
       resultQuantity
     }

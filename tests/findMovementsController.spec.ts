@@ -90,8 +90,8 @@ describe('Create movement controller', () => {
   test('should get a bad request response', async () => {
     const query: FindMovementsUseCaseData = {
       type: 1,
-      lowerdate: new Date('2023-01-10T07:16:32.276Z'),
-      higherdate: new Date('2023-01-10T07:14:54.078Z')
+      lowerDate: new Date('2023-01-10T07:16:32.276Z'),
+      higherDate: new Date('2023-01-10T07:14:54.078Z')
     }
 
     findMovementsUseCase.execute.mockResolvedValue({
@@ -109,8 +109,8 @@ describe('Create movement controller', () => {
   test('should return server error request response', async () => {
     const query: FindMovementsUseCaseData = {
       type: 1,
-      lowerdate: new Date('2023-01-10T07:16:32.276Z'),
-      higherdate: new Date('2023-01-10T07:14:54.078Z')
+      lowerDate: new Date('2023-01-10T07:16:32.276Z'),
+      higherDate: new Date('2023-01-10T07:14:54.078Z')
     }
 
     findMovementsUseCase.execute.mockResolvedValue({
