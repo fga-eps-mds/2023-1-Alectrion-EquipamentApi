@@ -37,13 +37,12 @@ export class FindMovementsUseCase
   ) {}
 
   private areDatesInvalid(data: FindMovementsUseCaseData): boolean {
-    if (data.lowerDate || data.higherDate)
-      if (
-        !(data.lowerDate && data.higherDate) ||
-        data.higherDate < data.lowerDate
-      )
+    if (data.lowerDate) {
+      if (data.higherDate && data.higherDate < data.lowerDate) {
         return true
-    return false
+      }
+      return false
+    }
   }
 
   async execute(

@@ -109,6 +109,14 @@ export class MovementRepository implements MovementRepositoryProtocol {
 
     const { resultQuantity, page, ...rest } = query
 
+    let formattedHigherDate = new Date(higherDate)
+
+    if (typeof higherDate === 'undefined' && typeof lowerDate !== 'undefined') {
+      formattedHigherDate = new Date()
+    } else if (typeof higherDate !== 'undefined') {
+      formattedHigherDate.setDate(formattedHigherDate.getDate() + 1)
+    }
+
     const defaultConditions = {
       id,
       userId,
@@ -116,7 +124,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
       equipments: equipmentId ? { id: equipmentId } : undefined,
       destination: destination ? { id: destination } : undefined,
       date: lowerDate
-        ? And(MoreThanOrEqual(lowerDate), LessThanOrEqual(higherDate))
+        ? And(MoreThanOrEqual(lowerDate), LessThanOrEqual(formattedHigherDate))
         : undefined
     }
 
