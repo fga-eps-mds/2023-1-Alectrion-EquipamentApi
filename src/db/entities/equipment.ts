@@ -151,7 +151,7 @@ export class Equipment {
     () => EquipmentAcquisition,
     (equipmentAcquisition) => equipmentAcquisition.equipment
   )
-  acquisition?: EquipmentBrand
+  acquisition?: EquipmentAcquisition
 
   @ManyToOne(() => Unit, (unit) => unit.equipments)
   @JoinTable()

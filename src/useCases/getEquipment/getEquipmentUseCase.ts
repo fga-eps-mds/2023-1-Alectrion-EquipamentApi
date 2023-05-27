@@ -12,7 +12,7 @@ export interface GetEquipmentInput {
 
   serialNumber?: string
 
-  acquision?: string
+  acquisition?: string
 
   type?: string
 

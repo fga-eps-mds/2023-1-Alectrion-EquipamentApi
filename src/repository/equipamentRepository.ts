@@ -75,7 +75,8 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     const queryResult = await this.equipmentRepository.find({
       relations: {
         brand: true,
-        unit: true
+        unit: true,
+        acquisition: true
       },
       order: { updatedAt: 'DESC' },
       where: searchConditions,
