@@ -1,4 +1,5 @@
 import { Equipment } from '../../db/entities/equipment'
+// eslint-disable-next-line no-unused-vars
 import { Status } from '../../domain/entities/equipamentEnum/status'
 
 export type Query = {
@@ -8,7 +9,8 @@ export type Query = {
   updatedAt?: Date
   brand?: string
   search?: string
-  model?: string 
+  model?: string
+  searchTipping?: string
   take?: number
   skip?: number
 }
