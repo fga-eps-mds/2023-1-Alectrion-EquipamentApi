@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { MoreThanOrEqual, ILike } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Equipment } from '../db/entities/equipment'
@@ -42,6 +43,7 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       updatedAt,
       brand,
       search,
+      searchTipping,
       take, 
       skip,
     } = query;
@@ -54,9 +56,10 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
     };
   
-    const searchConditions =
-    typeof search !== 'undefined'
-      ? [
+    let searchConditions;
+
+    if(typeof search !== 'undefined') {
+      searchConditions = [
         {
           model: ILike(`%${search}%`),
           ...defaultConditions
@@ -69,7 +72,15 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
           serialNumber: ILike(`%${search}%`),
           ...defaultConditions
         },
-      ]: defaultConditions
+      ]
+    } else if(typeof searchTipping !== 'undefined') {
+      searchConditions = [
+        {
+          tippingNumber: ILike(`${searchTipping}%`),
+        }
+      ]
+    } else 
+      searchConditions = defaultConditions;
   
   
     const queryResult = await this.equipmentRepository.find({
