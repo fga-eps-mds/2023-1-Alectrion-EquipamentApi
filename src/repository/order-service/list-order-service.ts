@@ -15,7 +15,15 @@ export class ListOrderServiceRepository
   ): Promise<OrderService[] | undefined> {
     delete query.userId
 
+    const take = query.take
+    const skip = query.skip
+
+    delete query.take
+    delete query.skip
+
     const os = await this.orderServiceRepository.find({
+      take: take,
+      skip: skip,
       relations: ['equipment'],
       where: {
         ...query

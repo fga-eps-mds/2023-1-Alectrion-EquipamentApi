@@ -21,6 +21,8 @@ export type FindOrderServiceUseCaseData = {
   serialNumber: string
   type: string
   situacao: string
+  take?: number
+  skip?: number
 }
 
 export class FindOrderService
@@ -40,7 +42,9 @@ export class FindOrderService
         serialNumber: query.serialNumber,
         type: query.type,
         situacao: query.situacao
-      }
+      },
+      take: query.take,
+      skip: query.skip
     }
     const ordersServices = await this.osReposiory.findOrderServiceGeneric(
       queryFormatted
