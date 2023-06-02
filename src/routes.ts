@@ -21,7 +21,7 @@ const routes = Router()
 
 routes.post(
   '/create-order-service/:equipmentId',
-  checkAccessToken,
+  // checkAccessToken,
   adapt(makeCreateOrderController())
 )
 routes.get('/find', adapt(makeGetEquipmentController()))
@@ -34,7 +34,7 @@ routes.delete(
 routes.get('/getAllUnits', adapt(makeFindAllUnitsController()))
 routes.get('/getAllBrands', adapt(makeFindAllBrandsController()))
 routes.get('/getAllAcquisitions', adapt(makeFindAllAcquisitionsController()))
-routes.get('/listOrderSerice', adapt(makeFindOrderServiceController()))
+routes.get('/listOrderService', adapt(makeFindOrderServiceController()))
 routes.get('/listOne', adapt(makeFindOneEquipmentController()))
 routes.put('/updateOrderService', adapt(makeUpdateOrderController()))
 routes.post('/createMovement', adapt(makeCreateMovementController()))
