@@ -24,7 +24,7 @@ export class ListOrderServiceRepository
     const os = await this.orderServiceRepository.find({
       take: take,
       skip: skip,
-      relations: ['equipment'],
+      relations: ['equipment', 'equipment.brand', 'equipment.unit'],
       where: {
         ...query
       }
