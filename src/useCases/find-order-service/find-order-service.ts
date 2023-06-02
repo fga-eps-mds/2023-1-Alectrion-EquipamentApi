@@ -1,6 +1,8 @@
+import { Query } from '../../repository/protocol/orderServiceRepositoryProtocol'
 import { OrderService } from '../../domain/entities/order-service'
 import { OrderServiceRepositoryProtocol } from '../../repository/protocol/orderServiceRepositoryProtocol'
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
+
 
 export class NotOSFoundError extends Error {
   constructor() {
@@ -24,26 +26,30 @@ export type FindOrderServiceUseCaseData = {
 }
 
 export class FindOrderService
-  implements UseCase<FindOrderServiceUseCaseData, OrderService[]>
+  implements UseCase<Query, OrderService[]>
 {
   constructor(private readonly osReposiory: OrderServiceRepositoryProtocol) {}
   async execute(
-    query: FindOrderServiceUseCaseData
+    query: Query
   ): Promise<UseCaseReponse<OrderService[]>> {
-    const queryFormatted = {
-      date: query.date,
-      receiverName: query.receiverName,
-      senderFunctionalNumber: query.senderFunctionalNumber,
-      sender: query.sender,
-      equipment: {
-        tippingNumber: query.tippingNumber,
-        serialNumber: query.serialNumber,
-        type: query.type,
-        situacao: query.situacao
-      }
+
+    const page = query.page ? query.page : 0
+    const resultQuantity = query.resultQuantity ? query.resultQuantity : 50
+
+    const newQuery: Query = {
+      resultQuantity,
+      page,
+      type: query.type,
+      unit: query.unit,
+      updatedAt: query.updatedAt,
+      brand: query.brand,
+      search: query.search,
+      model: query.model, 
+      status: query.status
     }
+
     const ordersServices = await this.osReposiory.findOrderServiceGeneric(
-      queryFormatted
+      newQuery
     )
     if (ordersServices !== null) {
       return {
