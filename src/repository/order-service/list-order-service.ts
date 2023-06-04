@@ -1,8 +1,10 @@
 import { ILike, MoreThanOrEqual } from 'typeorm'
 import { dataSource } from '../../db/config'
 import { OrderService } from '../../db/entities/order-service'
-import { OrderServiceRepositoryProtocol, Query } from '../protocol/orderServiceRepositoryProtocol'
-import { Equipment } from '../../db/entities/equipment'
+import {
+  OrderServiceRepositoryProtocol,
+  FindOrderServiceUseCaseDataQuery
+} from '../protocol/orderServiceRepositoryProtocol'
 
 export class ListOrderServiceRepository
   implements OrderServiceRepositoryProtocol
@@ -12,67 +14,56 @@ export class ListOrderServiceRepository
     this.orderServiceRepository = dataSource.getRepository(OrderService)
   }
 
-async findOrderServiceGeneric(query: Query): Promise<OrderService[]> {
-  const {
-    type,
-    unit,
-    updatedAt,
-    brand,
-    model,
-    search,
-    status,
-  } = query
+  async findOrderServiceGeneric(
+    query: FindOrderServiceUseCaseDataQuery
+  ): Promise<OrderService[]> {
+    const { type, unit, date, brand, model, search, status, skip, take } = query
 
-  const {...rest } = query
+    let newDate
+    if (date != null) {
+      newDate = new Date(date)
+    }
+    const defaultConditions = {
+      status,
+      date: newDate ? MoreThanOrEqual(newDate) : undefined,
+      equipment: {
+        unit: unit ? { id: unit } : undefined,
+        brand: brand ? { id: brand } : undefined,
+        type,
+        model
+      }
+    }
 
-  let formattedHigherDate = new Date(updatedAt)
+    const searchConditions =
+      typeof search !== 'undefined'
+        ? [
+            {
+              equipment: {
+                serialNumber: ILike(`%${search}%`),
+                ...defaultConditions.equipment
+              },
+              status: defaultConditions.status,
+              date: defaultConditions.date
+            },
+            {
+              equipment: {
+                tippingNumber: ILike(`%${search}%`),
+                ...defaultConditions.equipment
+              },
+              status: defaultConditions.status,
+              date: defaultConditions.date
+            }
+          ]
+        : defaultConditions
 
-  const defaultConditions = {
-    status,
-    updatedAt,
-    equipment: {
-      unit:unit ? { id: unit } : undefined,
-      brand:brand ? { name: brand } : undefined,
-      type:type,
-      model:model
-    },
-    
+    const queryResult = await this.orderServiceRepository.find({
+      relations: ['equipment', 'equipment.brand', 'equipment.unit'],
+      order: { updatedAt: 'DESC' },
+      where: searchConditions,
+      take,
+      skip
+    })
+
+    return queryResult
   }
-
-  const whereConditions =
-    typeof search !== 'undefined'
-      ? [
-          {
-            equipment:{
-              tippingNumber: ILike(`%${search}%`),
-            ...defaultConditions
-            }
-          },
-          {
-            equipment:{
-              serialNumber: ILike(`%${search}%`),
-            ...defaultConditions
-            }
-          },
-        ]
-      : defaultConditions
-
-  const allFieldsUndefined = Object.values(rest).every(
-    (value) => typeof value === 'undefined'
-  )
-
-  const queryResult = await this.orderServiceRepository.find({
-    relations: [
-      'equipment',
-      'equipment.brand',
-      'equipment.unit',
-    ],
-    order: { date: 'DESC' },
-    where: allFieldsUndefined ? undefined : whereConditions,
-    take: query.resultQuantity,
-    skip: query.page * query.resultQuantity
-  })
-
-  return queryResult
-}
 }

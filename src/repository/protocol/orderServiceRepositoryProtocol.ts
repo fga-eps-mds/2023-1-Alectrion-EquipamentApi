@@ -1,16 +1,15 @@
-import { EquipmentBrand } from '../../domain/entities/brand';
 import { OrderService } from '../../domain/entities/order-service'
 
-export type Query = {
-  resultQuantity: number
+export type FindOrderServiceUseCaseDataQuery = {
   type?: string
   unit?: string
-  updatedAt?: string
+  date?: string
   brand?: string
   search?: string
-  model?: string 
+  model?: string
   status?: string
-  page?: number
+  skip: number
+  take: number
 }
 
 export interface OrderServiceRepositoryProtocol {
