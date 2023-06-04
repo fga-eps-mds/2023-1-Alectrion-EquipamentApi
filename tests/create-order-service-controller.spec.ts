@@ -77,7 +77,8 @@ const request: CreateOrderServiceHttpRequest = {
   senderFunctionalNumber: '',
   senderName: '',
   userId: '',
-  recieverFunctionalNumber: ''
+  receiverFunctionalNumber: '',
+  senderPhone: ''
 }
 
 const useCaseParam: CreateOrderServiceUseCaseData = {
@@ -89,7 +90,8 @@ const useCaseParam: CreateOrderServiceUseCaseData = {
   date: request.date,
   description: request.description,
   receiverName: request.receiverName,
-  reciverFunctionalNumber: request.recieverFunctionalNumber
+  receiverFunctionalNumber: request.receiverFunctionalNumber,
+  senderPhone: request.senderPhone
 }
 
 describe('Should test CreateOrderServiceController', () => {
