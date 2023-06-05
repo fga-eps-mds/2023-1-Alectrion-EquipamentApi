@@ -5,9 +5,6 @@ import { Status } from './serviceOrderEnum/status'
 export type OrderService = {
   id: string
 
-
-  senderPhone?: string
-
   date: Date
 
   description?: string
@@ -39,5 +36,6 @@ export type OrderService = {
   receiverDate?: Date
 
   authorFunctionalNumber: string
-  
+
+  senderPhone?: string
 }
