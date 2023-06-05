@@ -82,6 +82,7 @@ export class CreateOrderServiceUseCase
 
     if (this.history !== null) {
       const orderService = await this.createOrderServiceRepository.create({
+        senderPhone : data.senderPhone,
         authorId: data.authorId,
         receiverName: data.receiverName,
         authorFunctionalNumber: data.authorFunctionalNumber,
