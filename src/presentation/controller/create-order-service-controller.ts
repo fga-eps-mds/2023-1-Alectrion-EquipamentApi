@@ -17,10 +17,10 @@ export type CreateOrderServiceHttpRequest = {
   authorFunctionalNumber: string
   senderName: string
   senderFunctionalNumber: string
-  description: string
+  description?: string
   date: string
   receiverFunctionalNumber: string
-  senderPhone: string
+  senderPhone?: string
 }
 
 export class CreateOrderServiceController extends Controller {

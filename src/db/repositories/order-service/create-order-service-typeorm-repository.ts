@@ -22,7 +22,8 @@ export class CreateOrderServiceTypeOrmRepository  implements CreateOrderServiceR
       receiverFunctionalNumber: data.receiverFunctionalNumber,
       status: data.status,
       technicians: data.technicians,
-      receiverDate: data.receiverDate
+      receiverDate: data.receiverDate,
+      senderPhone: data.senderPhone
     })
 
     await this.historyRepository.save(result)
