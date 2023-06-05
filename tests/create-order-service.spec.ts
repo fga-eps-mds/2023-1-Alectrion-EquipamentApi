@@ -78,7 +78,8 @@ describe('Test create order use case', () => {
       updatedAt: new Date()
     },
     receiverFunctionalNumber: 'any_number',
-    status: 'MAINTENANCE' as OSStatus
+    status: 'MAINTENANCE' as OSStatus,
+    authorFunctionalNumber: '123456'
   }
 
   beforeEach(() => {

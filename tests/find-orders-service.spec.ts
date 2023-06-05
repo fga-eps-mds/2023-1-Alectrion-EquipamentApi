@@ -49,7 +49,8 @@ const orderService: OrderService = {
     createdAt: new Date(),
     id: 'any_id',
     updatedAt: new Date()
-  }
+  },
+  authorFunctionalNumber: '123456'
 }
 
 const request: FindOrderServiceUseCaseData = {
