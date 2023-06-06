@@ -23,6 +23,9 @@ export class ListOrderServiceRepository
     if (date != null) {
       newDate = new Date(date)
     }
+    
+    const moment = require('moment');
+
     const defaultConditions = {
       status,
       date: newDate ? MoreThanOrEqual(newDate) : undefined,
@@ -43,7 +46,7 @@ export class ListOrderServiceRepository
                 ...defaultConditions.equipment
               },
               status: defaultConditions.status,
-              date: defaultConditions.date
+              date: moment(defaultConditions.date, 'M/D/YYYY').format('YYYY-MM-DD')
             },
             {
               equipment: {
@@ -51,7 +54,7 @@ export class ListOrderServiceRepository
                 ...defaultConditions.equipment
               },
               status: defaultConditions.status,
-              date: defaultConditions.date
+              date: moment(defaultConditions.date, 'M/D/YYYY').format('YYYY-MM-DD')
             }
           ]
         : defaultConditions
