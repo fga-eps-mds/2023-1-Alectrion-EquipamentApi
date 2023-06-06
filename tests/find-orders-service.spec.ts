@@ -53,17 +53,13 @@ const orderService: OrderService = {
 }
 
 const request: FindOrderServiceUseCaseData = {
-  authorFunctionalNumber: '',
-  authorId: '',
+  type: '',
+  unit: '',
   date: '',
-  equipmentId: '',
-  receiverName: '',
-  sender: '',
-  senderFunctionalNumber: '',
-  serialNumber: '',
-  situacao: '',
-  tippingNumber: '',
-  type: ''
+  brand: '',
+  search: '',
+  model: '',
+  status: ''
 }
 
 describe('Should test CreateEquipmentController', () => {

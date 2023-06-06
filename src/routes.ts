@@ -19,11 +19,7 @@ import { makeUpdateEquipmentController } from './factories/controllers/update-eq
 
 const routes = Router()
 
-routes.post(
-  '/create-order-service/:equipmentId',
-  checkAccessToken,
-  adapt(makeCreateOrderController())
-)
+routes.post('/create-order-service', adapt(makeCreateOrderController()))
 routes.get('/find', adapt(makeGetEquipmentController()))
 routes.post('/createEquipment', adapt(makeCreateEquipmentController()))
 routes.delete(

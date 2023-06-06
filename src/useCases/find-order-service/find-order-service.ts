@@ -1,5 +1,8 @@
+import {
+  FindOrderServiceUseCaseDataQuery,
+  OrderServiceRepositoryProtocol
+} from '../../repository/protocol/orderServiceRepositoryProtocol'
 import { OrderService } from '../../domain/entities/order-service'
-import { OrderServiceRepositoryProtocol } from '../../repository/protocol/orderServiceRepositoryProtocol'
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
 
 export class NotOSFoundError extends Error {
@@ -9,18 +12,14 @@ export class NotOSFoundError extends Error {
   }
 }
 
-export type FindOrderServiceUseCaseData = {
-  receiverName: string
-  equipmentId: string
-  authorId: string
-  authorFunctionalNumber: string
-  sender: string
-  senderFunctionalNumber: string
-  date: string
-  tippingNumber: string
-  serialNumber: string
-  type: string
-  situacao: string
+export interface FindOrderServiceUseCaseData {
+  type?: string
+  unit?: string
+  date?: string
+  brand?: string
+  search?: string
+  model?: string
+  status?: string
   take?: number
   skip?: number
 }
@@ -29,25 +28,28 @@ export class FindOrderService
   implements UseCase<FindOrderServiceUseCaseData, OrderService[]>
 {
   constructor(private readonly osReposiory: OrderServiceRepositoryProtocol) {}
+
   async execute(
     query: FindOrderServiceUseCaseData
   ): Promise<UseCaseReponse<OrderService[]>> {
-    const queryFormatted = {
+    if (query.take === undefined) query.take = 0
+
+    if (query.skip === undefined) query.skip = 0
+
+    const newQuery: FindOrderServiceUseCaseDataQuery = {
+      type: query.type,
+      unit: query.unit,
       date: query.date,
-      receiverName: query.receiverName,
-      senderFunctionalNumber: query.senderFunctionalNumber,
-      sender: query.sender,
-      equipment: {
-        tippingNumber: query.tippingNumber,
-        serialNumber: query.serialNumber,
-        type: query.type,
-        situacao: query.situacao
-      },
+      brand: query.brand,
+      search: query.search,
+      model: query.model,
+      status: query.status,
       take: query.take,
       skip: query.skip
     }
+
     const ordersServices = await this.osReposiory.findOrderServiceGeneric(
-      queryFormatted
+      newQuery
     )
     if (ordersServices !== null) {
       return {
