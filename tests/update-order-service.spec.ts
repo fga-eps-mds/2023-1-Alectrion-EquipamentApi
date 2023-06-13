@@ -43,8 +43,6 @@ describe('Test update order use case', () => {
     model: 'DELL G15',
     serialNumber: 'any',
     type: Type.CPU,
-    initialUseDate: new Date().toISOString(),
-    invoiceNumber: 'any'
   }
 
   const data: UpdateOrderServiceUseCaseData = {

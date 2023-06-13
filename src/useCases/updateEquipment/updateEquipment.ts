@@ -21,10 +21,8 @@ export type UpdateEquipmentUseCaseData = {
   estado: string
   model: string
   description?: string
-  initialUseDate: string
   acquisitionDate?: Date
   screenSize?: string
-  invoiceNumber: string
   power?: string
   screenType?: string
   processor?: string
@@ -85,9 +83,7 @@ export class UpdateEquipmentUseCase
       estado: data.estado,
       model: data.model,
       description: data.description,
-      initialUseDate: data.initialUseDate,
       acquisitionDate: data.acquisitionDate,
-      invoiceNumber: data.invoiceNumber,
       power: data.power,
       screenType: data.screenType as ScreenType,
       processor: data.processor,

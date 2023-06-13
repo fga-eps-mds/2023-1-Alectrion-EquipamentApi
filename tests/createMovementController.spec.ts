@@ -38,9 +38,7 @@ describe('Create movement controller', () => {
       estado: Estado.Novo,
       model: 'Xiaomi XT',
       description: '',
-      initialUseDate: '2022-12-12',
       acquisitionDate: new Date('2022-12-12'),
-      invoiceNumber: '123',
       power: '220',
       createdAt: new Date('2023-01-09T21:31:56.015Z'),
       updatedAt: new Date('2023-01-09T21:49:26.057Z')

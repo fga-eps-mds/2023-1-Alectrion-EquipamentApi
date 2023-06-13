@@ -41,9 +41,7 @@ describe('Test create order use case', () => {
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
-    type: Type.CPU,
-    initialUseDate: new Date().toISOString(),
-    invoiceNumber: 'any'
+    type: Type.CPU
   }
 
   const data: CreateOrderServiceUseCaseData = {

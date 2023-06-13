@@ -41,9 +41,7 @@ const equipment: Equipment = {
   tippingNumber: 'any',
   model: 'DELL G15',
   serialNumber: 'any',
-  type: Type.CPU,
-  initialUseDate: new Date().toISOString(),
-  invoiceNumber: 'any'
+  type: Type.CPU
 }
 
 const orderService: OrderService = {

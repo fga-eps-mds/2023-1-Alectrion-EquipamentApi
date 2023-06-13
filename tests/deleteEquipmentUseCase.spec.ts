@@ -85,9 +85,7 @@ describe('Delete equipments use case', () => {
       estado: Estado.Novo,
       model: 'Xiaomi XT',
       description: '',
-      initialUseDate: '2022-12-12',
       acquisitionDate: new Date('2022-12-12'),
-      invoiceNumber: '123',
       power: '220',
       createdAt: new Date(now),
       updatedAt: new Date(now)
@@ -122,9 +120,7 @@ describe('Delete equipments use case', () => {
       estado: Estado.Novo,
       model: 'Xiaomi XT',
       description: '',
-      initialUseDate: '2022-12-12',
       acquisitionDate: new Date('2022-12-12'),
-      invoiceNumber: '123',
       power: '220',
       createdAt: new Date(now),
       updatedAt: new Date(now)
@@ -159,9 +155,7 @@ describe('Delete equipments use case', () => {
       estado: Estado.Novo,
       model: 'Xiaomi XT',
       description: '',
-      initialUseDate: '2022-12-12',
       acquisitionDate: new Date(now),
-      invoiceNumber: '123',
       power: '220',
       createdAt: new Date(now),
       updatedAt: new Date(now)
@@ -211,9 +205,7 @@ describe('Delete equipments use case', () => {
       estado: Estado.Novo,
       model: 'Xiaomi XT',
       description: '',
-      initialUseDate: '2022-12-12',
       acquisitionDate: new Date(now - tenMinutes),
-      invoiceNumber: '123',
       power: '220',
       createdAt: new Date(now - tenMinutes - 1),
       updatedAt: new Date(now - tenMinutes - 1)

@@ -30,13 +30,9 @@ export interface CreateEquipmentInterface {
 
   description?: string
 
-  initialUseDate: string
-
   acquisitionDate: Date
 
   screenSize?: string
-
-  invoiceNumber: string
 
   power?: string
 
@@ -74,13 +70,9 @@ export interface EquipmentResource {
 
   description?: string
 
-  initialUseDate: string
-
   acquisitionDate: Date
 
   screenSize?: string
-
-  invoiceNumber: string
 
   power?: string
 
@@ -144,7 +136,6 @@ export class CreateEquipmentUseCase
       equipmentData.tippingNumber.trim().length > 0 &&
       equipmentData.serialNumber.trim().length > 0 &&
       equipmentData.model.trim().length > 0 &&
-      equipmentData.initialUseDate !== null &&
       equipmentData.type.trim().length > 0 &&
       equipmentData.estado.trim().length > 0
     ) {
@@ -212,13 +203,9 @@ export class CreateEquipmentUseCase
 
       description: equipment.description,
 
-      initialUseDate: equipment.initialUseDate,
-
       acquisitionDate: equipment.acquisitionDate,
 
       screenSize: equipment.screenSize,
-
-      invoiceNumber: equipment.invoiceNumber,
 
       power: equipment.power,
 
@@ -302,9 +289,7 @@ export class CreateEquipmentUseCase
     equipment.estado = equipmentData.estado as Estado
     equipment.model = equipmentData.model
     equipment.description = equipmentData.description ?? ''
-    equipment.initialUseDate = equipmentData.initialUseDate
     equipment.acquisitionDate = equipmentData.acquisitionDate
-    equipment.invoiceNumber = equipmentData.invoiceNumber
     equipment.type = equipmentData.type as Type
 
     switch (equipmentData.type) {
