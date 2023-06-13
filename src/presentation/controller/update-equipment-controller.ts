@@ -18,10 +18,8 @@ export type UpdateEquipmentHttpRequest = {
   estado: string
   model: string
   description: string
-  initialUseDate: string
   acquisitionDate: Date
   screenSize: string
-  invoiceNumber: string
   power: string
   screenType: string
   processor: string
@@ -48,10 +46,8 @@ export class UpdateEquipmentController extends Controller {
       estado: params.estado,
       model: params.model,
       description: params.description,
-      initialUseDate: params.initialUseDate,
       acquisitionDate:params.acquisitionDate,
       screenSize: params.screenSize,
-      invoiceNumber: params.invoiceNumber,
       power: params.power,
       screenType: params.screenType,
       processor: params.processor,

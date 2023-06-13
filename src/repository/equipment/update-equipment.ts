@@ -14,10 +14,8 @@ export type EditPayload = {
   estado?: string
   model?: string
   description?: string
-  initialUseDate?: string
   acquisitionDate?: Date
   screenSize?: string
-  invoiceNumber?: string
   power?: string
   screenType?: ScreenType
   processor?: string

@@ -34,17 +34,13 @@ const mockedEquipment: Equipment = {
   tippingNumber: 'any',
   model: 'DELL G15',
   serialNumber: 'any',
-  type: Type.CPU,
-  initialUseDate: new Date().toISOString(),
-  invoiceNumber: 'any'
+  type: Type.CPU
 }
 
 const request: CreateEquipmentHttpRequest = {
   acquisitionDate: new Date(),
   acquisitionName: 'any_acquisition',
   brandName: 'any_brand_name',
-  initialUseDate: new Date().toISOString(),
-  invoiceNumber: 'any_invoice',
   model: 'any_model',
   serialNumber: '12345678',
   situacao: Status.ACTIVE,

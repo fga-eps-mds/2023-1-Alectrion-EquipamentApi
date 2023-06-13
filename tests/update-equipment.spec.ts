@@ -31,9 +31,7 @@ describe('Test create order use case', () => {
     model: 'DELL G15',
     serialNumber: 'any',
     type: Type.CPU,
-    initialUseDate: new Date('2023-01-20').toISOString(),
     acquisitionDate: new Date('2023-01-20'),
-    invoiceNumber: 'any',
     unitId: 'any_id',
     acquisitionName: 'any_name',
     brandName: 'brand_name',
@@ -64,8 +62,6 @@ describe('Test create order use case', () => {
     model: updateEquipmentInterface.model,
     serialNumber: updateEquipmentInterface.serialNumber,
     type: updateEquipmentInterface.type as Type,
-    initialUseDate: updateEquipmentInterface.initialUseDate,
-    invoiceNumber: updateEquipmentInterface.invoiceNumber,
     ram_size: '16',
     storageAmount: '256',
     storageType: 'SSD' as StorageType,
@@ -132,12 +128,10 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = equipment.type
     equipmentDB.processor = equipment.processor
     equipmentDB.storageType = equipment.storageType
     equipmentDB.storageAmount = equipment.storageAmount
-    equipmentDB.invoiceNumber = equipment.invoiceNumber
     equipmentDB.model = equipment.model
     equipmentDB.ram_size = equipment.ram_size
     equipmentDB.serialNumber = equipment.serialNumber
