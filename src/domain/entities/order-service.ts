@@ -34,4 +34,8 @@ export type OrderService = {
   status: Status
 
   receiverDate?: Date
+
+  authorFunctionalNumber: string
+
+  senderPhone?: string
 }

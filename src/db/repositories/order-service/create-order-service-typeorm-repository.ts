@@ -1,8 +1,13 @@
 import { OrderService } from './../../entities/order-service'
-import { CreateOrderServiceData, CreateOrderServiceRepository } from './../../../repository/order-service/create-order-service'
+import {
+  CreateOrderServiceData,
+  CreateOrderServiceRepository
+} from './../../../repository/order-service/create-order-service'
 import { dataSource } from '../../config'
 
-export class CreateOrderServiceTypeOrmRepository  implements CreateOrderServiceRepository{
+export class CreateOrderServiceTypeOrmRepository
+  implements CreateOrderServiceRepository
+{
   private readonly historyRepository
   constructor() {
     this.historyRepository = dataSource.getRepository(OrderService)
@@ -22,7 +27,8 @@ export class CreateOrderServiceTypeOrmRepository  implements CreateOrderServiceR
       receiverFunctionalNumber: data.receiverFunctionalNumber,
       status: data.status,
       technicians: data.technicians,
-      receiverDate: data.receiverDate
+      receiverDate: data.receiverDate,
+      senderPhone: data.senderPhone
     })
 
     await this.historyRepository.save(result)

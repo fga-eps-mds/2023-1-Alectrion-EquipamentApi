@@ -18,6 +18,7 @@ export type CreateOrderServiceData = {
   status: Status
   technicians: string[]
   receiverDate?: Date
+  senderPhone?: string
 }
 
 export interface CreateOrderServiceRepository {

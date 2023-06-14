@@ -78,6 +78,12 @@ export class OrderService {
   senderFunctionalNumber: string
 
   @Column({
+    type: 'varchar',
+    name: 'sender_phone'
+  })
+  senderPhone?: string
+
+  @Column({
     type: 'enum',
     enum: Status
   })

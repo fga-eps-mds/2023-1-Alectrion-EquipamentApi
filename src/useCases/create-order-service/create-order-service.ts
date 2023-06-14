@@ -25,7 +25,8 @@ export type CreateOrderServiceUseCaseData = {
   senderName: string
   senderFunctionalNumber: string
   date: string
-  reciverFunctionalNumber: string
+  receiverFunctionalNumber: string
+  senderPhone: string
 }
 
 export class CreateOrderServiceUseCase
@@ -91,10 +92,11 @@ export class CreateOrderServiceUseCase
         senderName: data.senderName,
         senderFunctionalNumber: data.senderFunctionalNumber,
         date: new Date(data.date),
-        receiverFunctionalNumber: data.reciverFunctionalNumber,
+        receiverFunctionalNumber: data.receiverFunctionalNumber,
         status: 'MAINTENANCE' as OStatus,
         technicians: [],
-        receiverDate: null
+        receiverDate: null,
+        senderPhone: data.senderPhone
       })
 
       await this.updateEquipmentRepository.updateEquipment(equipment.id, {
