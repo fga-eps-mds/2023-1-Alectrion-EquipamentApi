@@ -24,11 +24,7 @@ export interface GetEquipmentInput {
 
   brand?: string
 
-  initialUseDate?: string
-
   screenSize?: string
-
-  invoiceNumber?: string
 
   power?: string
 

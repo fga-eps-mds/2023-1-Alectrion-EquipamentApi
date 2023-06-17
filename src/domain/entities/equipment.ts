@@ -26,13 +26,9 @@ export type Equipment = {
 
   description?: string
 
-  initialUseDate: string
-
   acquisitionDate: Date
 
   screenSize?: string
-
-  invoiceNumber: string
 
   power?: string
 

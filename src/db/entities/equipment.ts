@@ -66,12 +66,6 @@ export class Equipment {
   description?: string
 
   @Column({
-    name: 'initial_use_date',
-    type: 'varchar'
-  })
-  initialUseDate: string
-
-  @Column({
     name: 'acquisition_date',
     type: 'date'
   })
@@ -83,12 +77,6 @@ export class Equipment {
     nullable: true
   })
   screenSize?: string
-
-  @Column({
-    name: 'invoice_number',
-    type: 'varchar'
-  })
-  invoiceNumber: string
 
   @Column({
     type: 'varchar',

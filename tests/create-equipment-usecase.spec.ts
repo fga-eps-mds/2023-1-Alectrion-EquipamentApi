@@ -43,8 +43,6 @@ describe('Test create order use case', () => {
     model: 'DELL G15',
     serialNumber: 'any',
     type: Type.CPU,
-    initialUseDate: new Date('2023-01-20').toISOString(),
-    invoiceNumber: 'any',
     unitId: 'any_id',
     acquisitionName: 'any_name',
     brandName: 'brand_name',
@@ -61,8 +59,6 @@ describe('Test create order use case', () => {
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
-    initialUseDate: new Date('2023-01-20').toISOString(),
-    invoiceNumber: 'any',
     unitId: 'any_id',
     acquisitionName: 'any_name',
     brandName: 'brand_name'
@@ -83,8 +79,6 @@ describe('Test create order use case', () => {
     model: createEquipmentInterface.model,
     serialNumber: createEquipmentInterface.serialNumber,
     type: createEquipmentInterface.type as Type,
-    initialUseDate: createEquipmentInterface.initialUseDate,
-    invoiceNumber: createEquipmentInterface.invoiceNumber,
     ram_size: '16',
     storageAmount: '256',
     storageType: 'SSD' as StorageType,
@@ -179,18 +173,6 @@ describe('Test create order use case', () => {
     expect(result).toEqual({
       isSuccess: false,
       error: new InvalidTippingNumber()
-    })
-  })
-
-  test('should return NullFields if pass nullable fields', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      initialUseDate: null
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new NullFields()
     })
   })
 
@@ -298,9 +280,7 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = Type.Monitor
-    equipmentDB.invoiceNumber = equipment.invoiceNumber
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
@@ -340,10 +320,8 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = Type?.Nobreak
     equipmentDB.power = '220'
-    equipmentDB.invoiceNumber = equipment.invoiceNumber
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
@@ -381,10 +359,8 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = Type?.Estabilizador
     equipmentDB.power = '220'
-    equipmentDB.invoiceNumber = equipment.invoiceNumber
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
@@ -421,9 +397,7 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = Type?.Webcam
-    equipmentDB.invoiceNumber = equipment.invoiceNumber
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
@@ -460,9 +434,7 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = Type?.Escaneador
-    equipmentDB.invoiceNumber = equipment.invoiceNumber
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
@@ -498,12 +470,10 @@ describe('Test create order use case', () => {
       name: 'brand'
     }
     equipmentDB.description = ''
-    equipmentDB.initialUseDate = equipment.initialUseDate
     equipmentDB.type = equipment.type
     equipmentDB.processor = equipment.processor
     equipmentDB.storageType = equipment.storageType
     equipmentDB.storageAmount = equipment.storageAmount
-    equipmentDB.invoiceNumber = equipment.invoiceNumber
     equipmentDB.model = equipment.model
     equipmentDB.ram_size = equipment.ram_size
     equipmentDB.serialNumber = equipment.serialNumber
