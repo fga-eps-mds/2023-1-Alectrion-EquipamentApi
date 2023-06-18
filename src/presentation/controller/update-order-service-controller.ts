@@ -10,19 +10,17 @@ import { notFound, ok, badRequest, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
 
 export type UpdateOrderServiceHttpRequest = {
-  id: string
+  id: number
   equipmentId: string
-  userId: string
-  receiverName: string
-  authorFunctionalNumber: string
-  senderName: string
-  senderFunctionalNumber: string
   description: string
-  date: string
-  recieverFunctionalNumber: string
+  seiProcess: string
+  senderPhone: string
+  technicianId: string
+  technicianName: string
+  withdrawalName: string
+  withdrawalDocument: string
+  finishDate: string
   status: string
-  techinicias: []
-  recieverDate: string
 }
 
 export class UpdateOrderServiceController extends Controller {
@@ -34,17 +32,15 @@ export class UpdateOrderServiceController extends Controller {
     const response = await this.updateOrderServiceUseCase.execute({
       id: params.id,
       equipmentId: params.equipmentId,
-      authorId: params.userId,
-      authorFunctionalNumber: params.authorFunctionalNumber,
-      senderName: params.senderName,
-      senderFunctionalNumber: params.senderFunctionalNumber,
-      date: params.date,
       description: params.description,
-      receiverName: params.receiverName,
-      reciverFunctionalNumber: params.recieverFunctionalNumber,
-      status: params.status,
-      techinicias: params.techinicias,
-      receiverDate: params.recieverDate
+      seiProcess: params.seiProcess,
+      senderPhone: params.senderPhone,
+      technicianId: params.technicianId,
+      technicianName: params.technicianName,
+      withdrawalName: params.withdrawalName,
+      withdrawalDocument: params.withdrawalDocument,
+      finishDate: params.finishDate,
+      status: params.status
     })
 
     if (

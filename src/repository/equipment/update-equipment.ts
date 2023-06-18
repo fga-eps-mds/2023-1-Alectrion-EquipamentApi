@@ -5,7 +5,6 @@ import { Unit } from '../../domain/entities/unit'
 import { Type } from '../../domain/entities/equipamentEnum/type'
 import { EquipmentBrand } from '../../domain/entities/brand'
 import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
-import { Equipment } from '../../domain/entities/equipment'
 
 export type EditPayload = {
   serialNumber?: string
@@ -30,8 +29,5 @@ export type EditPayload = {
 }
 
 export interface UpdateEquipmentRepository {
-  updateEquipment(
-    equipmentId: string,
-    editPayload: EditPayload
-  ): Promise<Equipment | undefined>
+  updateEquipment(equipmentId: string, editPayload: EditPayload): Promise<void>
 }

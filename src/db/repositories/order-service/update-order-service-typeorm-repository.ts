@@ -12,9 +12,9 @@ export class UpdateOrderServiceTypeorm implements UpdateOrderServiceRepository {
   }
 
   async updateOrderSevice(
-    orderServiceId: string,
+    orderServiceId: number,
     editPayload: EditPayload
   ): Promise<void> {
-    await this.orderServiceRepository.update(orderServiceId, { ...editPayload }) 
+    await this.orderServiceRepository.update(orderServiceId, { ...editPayload })
   }
 }

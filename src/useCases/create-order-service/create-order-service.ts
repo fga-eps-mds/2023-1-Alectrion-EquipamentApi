@@ -5,27 +5,22 @@ import { OrderService } from '../../domain/entities/order-service'
 import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
 import { CreateHistoryRepository } from '../../repository/history/create-history-repository'
 import { CreateOrderServiceRepository } from '../../repository/order-service/create-order-service'
-import { ListOneUnitRepository } from '../../repository/unit/list-one-unit'
 import { ListOneEquipmentRepository } from './../../repository/equipment/list-one-equipment'
 import { UseCase } from './../protocol/useCase'
 import {
   EquipmentNotFoundError,
   InvalidAuthorError,
   InvalidSenderError,
-  CreateOrderServiceError,
-  InvalidDateError
+  CreateOrderServiceError
 } from './errors'
 
 export type CreateOrderServiceUseCaseData = {
   equipmentId: string
-  description: string
   authorId: string
-  receiverName: string
-  authorFunctionalNumber: string
+  seiProcess: string
+  description: string
   senderName: string
-  senderFunctionalNumber: string
-  date: string
-  receiverFunctionalNumber: string
+  senderDocument: string
   senderPhone: string
 }
 
@@ -37,27 +32,19 @@ export class CreateOrderServiceUseCase
   constructor(
     private readonly equipmentRepository: ListOneEquipmentRepository,
     private readonly updateEquipmentRepository: UpdateEquipmentRepository,
-    private readonly unitRepository: ListOneUnitRepository,
     private readonly historyRepository: CreateHistoryRepository,
     private readonly createOrderServiceRepository: CreateOrderServiceRepository
   ) {}
 
   async execute(data: CreateOrderServiceUseCaseData) {
-    if (!data.authorFunctionalNumber || !data.receiverName) {
+    if (!data.authorId) {
       return {
         isSuccess: false,
         error: new InvalidAuthorError()
       }
     }
 
-    if (!data.date || !Date.parse(data.date)) {
-      return {
-        isSuccess: false,
-        error: new InvalidDateError()
-      }
-    }
-
-    if (!data.senderName || !data.senderFunctionalNumber) {
+    if (!data.senderName || !data.senderDocument) {
       return {
         isSuccess: false,
         error: new InvalidSenderError()
@@ -82,21 +69,14 @@ export class CreateOrderServiceUseCase
 
     if (this.history !== null) {
       const orderService = await this.createOrderServiceRepository.create({
-        authorId: data.authorId,
-        receiverName: data.receiverName,
-        authorFunctionalNumber: data.authorFunctionalNumber,
-        description: data.description,
         equipment,
-        history: this.history,
-        equipmentSnapshot: equipment,
+        authorId: data.authorId,
+        seiProcess: data.seiProcess,
+        description: data.description,
         senderName: data.senderName,
-        senderFunctionalNumber: data.senderFunctionalNumber,
-        date: new Date(data.date),
-        receiverFunctionalNumber: data.receiverFunctionalNumber,
-        status: 'MAINTENANCE' as OStatus,
-        technicians: [],
-        receiverDate: null,
-        senderPhone: data.senderPhone
+        senderDocument: data.senderDocument,
+        senderPhone: data.senderPhone,
+        status: 'MAINTENANCE' as OStatus
       })
 
       await this.updateEquipmentRepository.updateEquipment(equipment.id, {

@@ -1,4 +1,3 @@
-import { checkAccessToken } from './middlewares/auth-middleware'
 import { checkAdminAccessToken } from './middlewares/admin-auth-middleware'
 import { Router } from 'express'
 import { adaptExpressRoute as adapt } from './adapters/express-router'
@@ -19,11 +18,7 @@ import { makeUpdateEquipmentController } from './factories/controllers/update-eq
 
 const routes = Router()
 
-routes.post(
-  '/create-order-service/:equipmentId',
-  // checkAccessToken,
-  adapt(makeCreateOrderController())
-)
+routes.post('/create-order-service', adapt(makeCreateOrderController()))
 routes.get('/find', adapt(makeGetEquipmentController()))
 routes.post('/createEquipment', adapt(makeCreateEquipmentController()))
 routes.delete(

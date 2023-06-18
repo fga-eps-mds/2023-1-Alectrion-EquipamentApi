@@ -23,7 +23,24 @@ export class default1674611694082 implements MigrationInterface {
       `CREATE TYPE "public"."order_service_type_enum" AS ENUM('MAINTENANCE', 'WARRANTY', 'CONCLUDED', 'CANCELED')`
     )
     await queryRunner.query(
-      `CREATE TABLE "order_service" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(),"sender_phone" character varying, "date" date NOT NULL, "description" character varying, "author_id" uuid, "author_functional_number" character varying, "receiver_name" character varying NOT NULL, "sender" character varying NOT NULL, "equipment_snapshot" jsonb NOT NULL, "sender_functional_number" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "equipmentId" uuid, "historyId" uuid, "receiver_functional_number" character varying, "status" "public"."order_service_type_enum", "technicians" character varying [], "receiver_date" date,  CONSTRAINT "PK_d33d62cc4f08f6bd10dd7a68f65" PRIMARY KEY ("id"))`
+      `CREATE TABLE "order_service" (
+        "id" SERIAL NOT NULL,
+        "author_id" character varying,
+        "sei_process" character varying,
+        "description" character varying,
+        "sender_name" character varying,
+        "sender_document" character varying,
+        "sender_phone" character varying,
+        "technician_id" character varying,
+        "technician_name" character varying,
+        "withdrawal_name" character varying,
+        "withdrawal_document" character varying,
+        "finish_date" TIMESTAMP,
+        "status" "public"."order_service_type_enum",
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), 
+        "equipmentId" uuid,
+        CONSTRAINT "PK_d33d62cc4f08f6bd10dd7a68f65" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TYPE "public"."equipment_type_enum" AS ENUM('CPU', 'Escaneador', 'Estabilizador', 'Monitor', 'Nobreak', 'Webcam', 'Hub', 'Switch', 'Notebook', 'Datashow', 'Scanner', 'Impressora', 'Roteador', 'Tablet', 'Tv', 'Fax', 'Telefone', 'Smartphone', 'Projetor', 'Tela de Projeção', 'Camera', 'Caixa de som', 'Impressora térmica', 'Leitor de codigo de barras', 'Mesa Digitalizadora', 'Leitor biométrico', 'Receptor', 'Extrator de dados', 'Transformador', 'Coletor de Assinatura', 'Kit cenário', 'Dispositivo de biometria facial', 'Servidor de rede', 'Hd Externo', 'Protetor eletrônico')`
@@ -63,9 +80,6 @@ export class default1674611694082 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "order_service" ADD CONSTRAINT "FK_ee907a13181fa865e143f945271" FOREIGN KEY ("equipmentId") REFERENCES "equipment"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "order_service" ADD CONSTRAINT "FK_7dcf9045e5d2c98d16d2835a932" FOREIGN KEY ("historyId") REFERENCES "history"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
       `ALTER TABLE "equipment" ADD CONSTRAINT "FK_8ff24b5f8b355f88ae94b7e1a22" FOREIGN KEY ("brandId") REFERENCES "equipment_brand"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
