@@ -28,7 +28,9 @@ export class CreateOrderServiceTypeOrmRepository
       status: data.status,
       technicians: data.technicians,
       receiverDate: data.receiverDate,
-      senderPhone: data.senderPhone
+      senderPhone: data.senderPhone,
+      seiProcess: data.seiProcess,
+      senderDocument: data.senderDocument
     })
 
     await this.historyRepository.save(result)
