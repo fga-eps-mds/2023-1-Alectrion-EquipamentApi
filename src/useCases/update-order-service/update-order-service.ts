@@ -19,6 +19,7 @@ export type UpdateOrderServiceUseCaseData = {
   description?: string
   seiProcess?: string
   senderPhone?: string
+  senderDocument: string
   technicianId?: string
   technicianName?: string
   withdrawalName?: string
@@ -61,6 +62,7 @@ export class UpdateOrderServiceUseCase
         seiProcess: data.seiProcess,
         description: data.description,
         senderPhone: data.senderPhone,
+        senderDocument: data.senderDocument,
         technicianId: data.technicianId,
         technicianName: data.technicianName,
         withdrawalName: data.withdrawalName,

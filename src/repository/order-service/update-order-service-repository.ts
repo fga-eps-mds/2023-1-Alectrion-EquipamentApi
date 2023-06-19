@@ -1,6 +1,7 @@
 import { Status } from '../../domain/entities/serviceOrderEnum/status'
 
 export type EditPayload = {
+  senderDocument: string
   seiProcess?: string
   description?: string
   senderPhone?: string

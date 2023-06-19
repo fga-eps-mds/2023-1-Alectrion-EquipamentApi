@@ -15,6 +15,7 @@ export type UpdateOrderServiceHttpRequest = {
   description: string
   seiProcess: string
   senderPhone: string
+  senderDocument: string
   technicianId: string
   technicianName: string
   withdrawalName: string
@@ -35,6 +36,7 @@ export class UpdateOrderServiceController extends Controller {
       description: params.description,
       seiProcess: params.seiProcess,
       senderPhone: params.senderPhone,
+      senderDocument: params.senderDocument,
       technicianId: params.technicianId,
       technicianName: params.technicianName,
       withdrawalName: params.withdrawalName,
