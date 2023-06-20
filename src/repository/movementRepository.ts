@@ -60,36 +60,27 @@ export class MovementRepository implements MovementRepositoryProtocol {
 
     let savedMovementEntity
 
-    switch (movement.type) {
-      case MovementTypes.Borrow: {
-        const destination = await this.unitRepository.findOneBy({
-          id: movement.destination.id
-        })
+    if (movement.type == 0) {
+      const destination = await this.unitRepository.findOneBy({
+        id: movement.destination.id
+      })
 
-        movementEntity.destination = destination
+      movementEntity.destination = destination
 
-        savedMovementEntity = await this.movementRepository.save(movementEntity)
-        await this.updateEquipments(equipments, EquipmentStatus.ACTIVE_LOAN)
-        break
-      }
+      savedMovementEntity = await this.movementRepository.save(movementEntity)
+      await this.updateEquipments(equipments, EquipmentStatus.ACTIVE_LOAN)
+    } else if (movement.type == 1) {
+      savedMovementEntity = await this.movementRepository.save(movementEntity)
+      await this.updateEquipments(equipments, EquipmentStatus.DOWNGRADED)
+    } else {
+      const destination = await this.unitRepository.findOneBy({
+        id: movement.destination.id
+      })
 
-      case MovementTypes.Dismiss: {
-        savedMovementEntity = await this.movementRepository.save(movementEntity)
-        await this.updateEquipments(equipments, equipmentStatus)
-        break
-      }
+      movementEntity.destination = destination
 
-      default: {
-        const destination = await this.unitRepository.findOneBy({
-          id: movement.destination.id
-        })
-
-        movementEntity.destination = destination
-
-        savedMovementEntity = await this.movementRepository.save(movementEntity)
-        await this.updateEquipments(equipments, EquipmentStatus.ACTIVE)
-        break
-      }
+      savedMovementEntity = await this.movementRepository.save(movementEntity)
+      await this.updateEquipments(equipments, EquipmentStatus.ACTIVE)
     }
 
     return { ...movement, equipments, id: savedMovementEntity.id }
