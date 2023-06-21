@@ -1,5 +1,7 @@
 /* eslint-disable no-use-before-define */
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -7,6 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
+import moment from 'moment'
+import 'moment-timezone'
 import { Equipment } from './equipment'
 import { Status } from '../../domain/entities/serviceOrderEnum/status'
 
@@ -88,14 +92,31 @@ export class OrderService {
   })
   status: Status
 
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   @CreateDateColumn()
   createdAt: Date
 
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   @UpdateDateColumn()
   updatedAt: Date
 
   @ManyToOne(() => Equipment, (equipment) => equipment.orderServices)
   equipment: Equipment
+
+  @BeforeInsert()
+  insertCreated() {
+    this.createdAt = new Date(
+      moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss')
+    )
+    this.updatedAt = new Date(
+      moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss')
+    )
+  }
+
+  @BeforeUpdate()
+  insertUpdated() {
+    this.updatedAt = new Date(
+      moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss')
+    )
+  }
 }
