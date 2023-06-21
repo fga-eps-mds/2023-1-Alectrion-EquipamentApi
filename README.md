@@ -45,7 +45,7 @@ Para contribuir com esse projeto é importante seguir nosso [Guia de Contribuiç
 
 ## Ambientes
 
-- [Pages]()
+- [Pages](https://fga-eps-mds.github.io/2023-1-Alectrion-DOC/)
 
 - [Documentação](https://github.com/fga-eps-mds/2023-1-Alectrion-DOC)
 
@@ -72,7 +72,6 @@ Para contribuir com esse projeto é importante seguir nosso [Guia de Contribuiç
 |EPS|180074741|Caio Martins|[linktocaio](https://github.com/linktocaio)|caio@wgo.com.br|
 |EPS|180020251|João Vitor Lopes de Farias|[JoaoVitorFarias ](https://github.com/JoaoVitorFarias )|jvlopesfarias@gmail.com|
 |MDS|200024949|Matheus Ferreira Diogo|[matferreira1](https://github.com/matferreira1)|ferreira123matheus@hotmail.com|
-|MDS|211061716|Felipe Santos Verissimo|[Verissimoo](https://github.com/Verissimoo)|felipeverissimo2013@gmail.com|
 |MDS|200062166|Leonardo Ferreira Borges|[Leofbrgs](https://github.com/Leofbrgs)|leonardo81733@icloud.com|
 |MDS|200062620|Pedro Augusto Dourado Izarias|[Izarias](https://github.com/Izarias)|pedroaugustoizarias@gmail.com|
 |MDS|200025791|Pablo Guilherme de Jesus Batista Silva|[PabloGJBS](https://github.com/PabloGJBS)|plabo.jbs@gmail.com|
