@@ -18,8 +18,6 @@ import {
 import {
   EquipmentNotFoundError,
   CreateOrderServiceError,
-  InvalidAuthorError,
-  InvalidDateError,
   InvalidSenderError
 } from '../src/useCases/create-order-service/errors'
 
@@ -45,39 +43,29 @@ describe('Test create order use case', () => {
   }
 
   const data: CreateOrderServiceUseCaseData = {
-    authorFunctionalNumber: 'author_name',
-    authorId: 'author_id',
-    date: new Date().toISOString(),
-    description: 'any_description',
     equipmentId: 'equipment_id',
-    receiverName: 'any_receiver',
-    senderFunctionalNumber: 'functional_number',
-    senderName: 'any_sender',
-    receiverFunctionalNumber: 'any-number',
-    senderPhone: '34093145'
+    authorId: 'author_id',
+    seiProcess: '123456489',
+    description: 'any_description',
+    senderName: 'any-sender',
+    senderDocument: '123456789456',
+    senderPhone: '61992809831'
   }
 
   const orderService: OrderService = {
+    id: 2,
+    equipment,
+    description: 'any_description',
+    seiProcess: '123456789',
+    senderPhone: '61992809831',
+    senderDocument: '12345678910',
+    technicianId: '123456',
+    technicianName: 'Pessoa',
     createdAt: new Date(),
     updatedAt: new Date(),
-    date: new Date(),
-    id: 'any_id',
-    equipment,
-    authorId: 'any_author',
-    receiverName: '',
-    equipmentSnapshot: equipment,
-    sender: 'any_sender',
-    senderFunctionalNumber: 'any_sender_number',
-    history: {
-      equipmentSnapshot: {},
-      equipment,
-      createdAt: new Date(),
-      id: 'any_id',
-      updatedAt: new Date()
-    },
-    receiverFunctionalNumber: 'any_number',
-    status: 'MAINTENANCE' as OSStatus,
-    authorFunctionalNumber: '123456'
+    status: OSStatus.MAINTENANCE,
+    authorId: '123456789',
+    senderName: 'Pessoa 2'
   }
 
   beforeEach(() => {
@@ -89,7 +77,6 @@ describe('Test create order use case', () => {
     createOrderServiceUseCase = new CreateOrderServiceUseCase(
       equipmentRepository,
       updateEquipmentRepository,
-      unitRepository,
       historyRepository,
       createOrderServiceRepository
     )
@@ -204,30 +191,6 @@ describe('Test create order use case', () => {
     expect(result).toEqual({
       isSuccess: false,
       error: new CreateOrderServiceError()
-    })
-  })
-
-  test('should return InvalidAuthorError if receiverName equals undefined', async () => {
-    const result = await createOrderServiceUseCase.execute({
-      ...data,
-      receiverName: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new InvalidAuthorError()
-    })
-  })
-
-  test('should return InvalidDateError if date was undefined', async () => {
-    const result = await createOrderServiceUseCase.execute({
-      ...data,
-      date: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new InvalidDateError()
     })
   })
 

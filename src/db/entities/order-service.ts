@@ -1,5 +1,7 @@
 /* eslint-disable no-use-before-define */
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -7,81 +9,82 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
+import moment from 'moment'
+import 'moment-timezone'
 import { Equipment } from './equipment'
-import { History } from './history'
 import { Status } from '../../domain/entities/serviceOrderEnum/status'
 
 @Entity()
 export class OrderService {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
+  @PrimaryGeneratedColumn()
+  id: number
 
   @Column({
-    name: 'date',
-    type: 'date'
-  })
-  date: Date
-
-  @Column({
-    name: 'description',
     type: 'varchar',
-    nullable: true
-  })
-  description?: string
-
-  @Column({
-    type: 'uuid',
     name: 'author_id'
   })
   authorId: string
 
   @Column({
     type: 'varchar',
-    name: 'author_functional_number'
+    name: 'sei_process'
   })
-  authorFunctionalNumber: string
+  seiProcess: string
+
+  @Column({
+    name: 'description',
+    type: 'varchar',
+    nullable: true
+  })
+  description: string
 
   @Column({
     type: 'varchar',
-    name: 'receiver_name'
+    name: 'sender_name'
   })
-  receiverName: string
+  senderName: string
 
   @Column({
     type: 'varchar',
-    name: 'receiver_functional_number'
+    name: 'sender_document'
   })
-  receiverFunctionalNumber: string
-
-  @Column({
-    name: 'receiver_date',
-    type: 'date'
-  })
-  receiverDate: Date
-
-  @Column({
-    type: 'varchar',
-    name: 'sender'
-  })
-  senderName?: string
-
-  @Column({
-    type: 'jsonb',
-    name: 'equipment_snapshot'
-  })
-  equipmentSnapshot: any
-
-  @Column({
-    type: 'varchar',
-    name: 'sender_functional_number'
-  })
-  senderFunctionalNumber: string
+  senderDocument: string
 
   @Column({
     type: 'varchar',
     name: 'sender_phone'
   })
-  senderPhone?: string
+  senderPhone: string
+
+  @Column({
+    type: 'varchar',
+    name: 'technician_id'
+  })
+  technicianId: string
+
+  @Column({
+    type: 'varchar',
+    name: 'technician_name'
+  })
+  technicianName: string
+
+  @Column({
+    type: 'varchar',
+    name: 'withdrawal_name'
+  })
+  withdrawalName: string
+
+  @Column({
+    type: 'varchar',
+    name: 'withdrawal_document'
+  })
+  withdrawalDocument: string
+
+  @Column({
+    name: 'finish_date',
+    type: 'timestamptz'
+  })
+  finishDate: Date
 
   @Column({
     type: 'enum',
@@ -89,24 +92,31 @@ export class OrderService {
   })
   status: Status
 
-  @Column({
-    type: 'varchar',
-    array: true,
-    name: 'technicians'
-  })
-  technicians: string[]
-
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   @CreateDateColumn()
   createdAt: Date
 
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   @UpdateDateColumn()
   updatedAt: Date
 
   @ManyToOne(() => Equipment, (equipment) => equipment.orderServices)
   equipment: Equipment
 
-  @ManyToOne(() => History, (history) => history.orderServices)
-  history: History
+  @BeforeInsert()
+  insertCreated() {
+    this.createdAt = new Date(
+      moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss')
+    )
+    this.updatedAt = new Date(
+      moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss')
+    )
+  }
+
+  @BeforeUpdate()
+  insertUpdated() {
+    this.updatedAt = new Date(
+      moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss')
+    )
+  }
 }

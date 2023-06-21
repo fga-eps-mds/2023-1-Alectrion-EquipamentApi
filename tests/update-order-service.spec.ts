@@ -16,12 +16,8 @@ import {
 } from '../src/useCases/update-order-service/update-order-service'
 import {
   EquipmentNotFoundError,
-  InvalidAuthorError,
-  InvalidDateError,
-  InvalidSenderError,
   UpdateOrderServiceError
 } from '../src/useCases/create-order-service/errors'
-import { ListOrderServiceRepository } from '../src/repository/order-service/list-order-service'
 
 describe('Test update order use case', () => {
   let equipmentRepository: MockProxy<ListOneEquipmentRepository>
@@ -29,7 +25,6 @@ describe('Test update order use case', () => {
   let unitRepository: MockProxy<ListOneUnitRepository>
   let historyRepository: MockProxy<CreateHistoryRepository>
   let updateOrderServiceRepository: MockProxy<UpdateOrderServiceRepository>
-  let listOrderServiceRepository: MockProxy<ListOrderServiceRepository>
   let updateOrderServiceUseCase: UpdateOrderServiceUseCase
 
   const equipment: Equipment = {
@@ -42,55 +37,43 @@ describe('Test update order use case', () => {
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
-    type: Type.CPU,
+    type: Type.CPU
   }
 
   const data: UpdateOrderServiceUseCaseData = {
-    authorFunctionalNumber: 'author_name',
-    authorId: 'author_id',
-    date: new Date().toISOString(),
-    description: 'any_description',
+    id: 2,
     equipmentId: 'equipment_id',
-    receiverName: 'any_receiver',
-    senderFunctionalNumber: 'functional_number',
-    senderName: 'any_sender',
-    reciverFunctionalNumber: 'any-number',
-    id: 'any_id',
-    status: 'MAINTENANCE' as OSStatus,
-    techinicias: [],
-    receiverDate: null
+    description: 'any_description',
+    seiProcess: '123456789',
+    senderPhone: '61992809831',
+    senderDocument: '12345678910',
+    technicianId: '123456',
+    technicianName: 'Pessoa',
+    status: 'MAINTENANCE' as OSStatus
   }
 
   const dataConcluded: UpdateOrderServiceUseCaseData = {
-    authorFunctionalNumber: 'author_name',
-    authorId: 'author_id',
-    date: new Date().toISOString(),
-    description: 'any_description',
+    id: 2,
     equipmentId: 'equipment_id',
-    receiverName: 'any_receiver',
-    senderFunctionalNumber: 'functional_number',
-    senderName: 'any_sender',
-    reciverFunctionalNumber: 'any-number',
-    id: 'any_id',
-    status: 'CONCLUDED' as OSStatus,
-    techinicias: [],
-    receiverDate: null
+    description: 'any_description',
+    seiProcess: '123456789',
+    senderPhone: '61992809831',
+    senderDocument: '12345678910',
+    technicianId: '123456',
+    technicianName: 'Pessoa',
+    status: 'CONCLUDED' as OSStatus
   }
 
   const dataCanceled: UpdateOrderServiceUseCaseData = {
-    authorFunctionalNumber: 'author_name',
-    authorId: 'author_id',
-    date: new Date().toISOString(),
-    description: 'any_description',
+    id: 2,
     equipmentId: 'equipment_id',
-    receiverName: 'any_receiver',
-    senderFunctionalNumber: 'functional_number',
-    senderName: 'any_sender',
-    reciverFunctionalNumber: 'any-number',
-    id: 'any_id',
-    status: 'CANCELED' as OSStatus,
-    techinicias: [],
-    receiverDate: null
+    description: 'any_description',
+    seiProcess: '123456789',
+    senderPhone: '61992809831',
+    senderDocument: '12345678910',
+    technicianId: '123456',
+    technicianName: 'Pessoa',
+    status: 'CANCELED' as OSStatus
   }
 
   beforeEach(() => {
@@ -102,10 +85,8 @@ describe('Test update order use case', () => {
     updateOrderServiceUseCase = new UpdateOrderServiceUseCase(
       equipmentRepository,
       updateEquipmentRepository,
-      unitRepository,
       historyRepository,
-      updateOrderServiceRepository,
-      listOrderServiceRepository
+      updateOrderServiceRepository
     )
 
     equipmentRepository.listOne.mockResolvedValue(equipment)
@@ -247,42 +228,6 @@ describe('Test update order use case', () => {
     expect(result).toEqual({
       isSuccess: false,
       error: new UpdateOrderServiceError()
-    })
-  })
-
-  test('should return InvalidAuthorError if receiverName equals undefined', async () => {
-    const result = await updateOrderServiceUseCase.execute({
-      ...data,
-      receiverName: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new InvalidAuthorError()
-    })
-  })
-
-  test('should return InvalidDateError if date was undefined', async () => {
-    const result = await updateOrderServiceUseCase.execute({
-      ...data,
-      date: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new InvalidDateError()
-    })
-  })
-
-  test('should return InvalidSenderError if senderName was undefined', async () => {
-    const result = await updateOrderServiceUseCase.execute({
-      ...data,
-      senderName: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new InvalidSenderError()
     })
   })
 })

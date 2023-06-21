@@ -45,51 +45,38 @@ const equipment: Equipment = {
 }
 
 const orderService: OrderService = {
-  receiverName: '',
+  id: 2,
+  equipment,
+  description: 'any_description',
+  seiProcess: '123456789',
+  senderPhone: '61992809831',
+  senderDocument: '12345678910',
+  technicianId: '123456',
+  technicianName: 'Pessoa',
   createdAt: new Date(),
   updatedAt: new Date(),
-  date: new Date(),
-  id: 'any_id',
-  receiverFunctionalNumber: 'any',
-  status: 'MAINTENANCE' as OSStatus,
-  equipment,
-  authorId: 'any_author',
-  equipmentSnapshot: equipment,
-  sender: 'any_sender',
-  senderFunctionalNumber: 'any_sender_number',
-  history: {
-    equipment,
-    equipmentSnapshot: {},
-    createdAt: new Date(),
-    id: 'any_id',
-    updatedAt: new Date()
-  },
-  authorFunctionalNumber: '123456'
+  status: OSStatus.MAINTENANCE,
+  authorId: '123456789',
+  senderName: 'Pessoa 2'
 }
 
 const request: CreateOrderServiceHttpRequest = {
-  authorFunctionalNumber: 'any',
-  date: new Date().toISOString(),
-  description: '',
-  equipmentId: '',
-  receiverName: '',
-  senderFunctionalNumber: '',
-  senderName: '',
-  userId: '',
-  receiverFunctionalNumber: '',
-  senderPhone: ''
+  equipmentId: 'equipment_id',
+  authorId: 'author_id',
+  seiProcess: '123456489',
+  description: 'any_description',
+  senderName: 'any-sender',
+  senderDocument: '123456789456',
+  senderPhone: '61992809831'
 }
 
 const useCaseParam: CreateOrderServiceUseCaseData = {
   equipmentId: request.equipmentId,
-  authorId: request.userId,
-  authorFunctionalNumber: request.authorFunctionalNumber,
-  senderName: request.senderName,
-  senderFunctionalNumber: request.senderFunctionalNumber,
-  date: request.date,
+  authorId: request.authorId,
+  seiProcess: request.seiProcess,
   description: request.description,
-  receiverName: request.receiverName,
-  receiverFunctionalNumber: request.receiverFunctionalNumber,
+  senderName: request.senderName,
+  senderDocument: request.senderDocument,
   senderPhone: request.senderPhone
 }
 
