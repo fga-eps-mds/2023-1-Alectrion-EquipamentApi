@@ -60,6 +60,13 @@ export class CreateOrderServiceUseCase
       }
     }
 
+    if (equipment.situacao === Status.MAINTENANCE) {
+      return {
+        isSuccess: false,
+        error: new CreateOrderServiceError()
+      }
+    }
+
     if (!equipment.history) {
       this.history = await this.historyRepository.create({
         equipment,
