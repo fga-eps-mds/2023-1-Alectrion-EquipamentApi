@@ -29,26 +29,19 @@ const mockedEquipment: Equipment = {
 }
 
 const orderService: OrderService = {
+  id: 2,
+  equipment: mockedEquipment,
+  description: 'any_description',
+  seiProcess: '123456789',
+  senderPhone: '61992809831',
+  senderDocument: '12345678910',
+  technicianId: '123456',
+  technicianName: 'Pessoa',
   createdAt: new Date(),
   updatedAt: new Date(),
-  date: new Date(),
-  id: 'any_id',
-  receiverName: '',
-  equipment: mockedEquipment,
-  authorId: 'any_author',
-  receiverFunctionalNumber: '123456789',
   status: OSStatus.MAINTENANCE,
-  equipmentSnapshot: mockedEquipment,
-  sender: 'any_sender',
-  senderFunctionalNumber: 'any_sender_number',
-  history: {
-    equipment: mockedEquipment,
-    equipmentSnapshot: {},
-    createdAt: new Date(),
-    id: 'any_id',
-    updatedAt: new Date()
-  },
-  authorFunctionalNumber: '123456'
+  authorId: '123456789',
+  senderName: 'Pessoa 2'
 }
 
 const request: FindOrderServiceUseCaseData = {

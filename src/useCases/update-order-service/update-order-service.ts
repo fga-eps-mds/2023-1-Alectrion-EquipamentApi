@@ -19,7 +19,7 @@ export type UpdateOrderServiceUseCaseData = {
   description?: string
   seiProcess?: string
   senderPhone?: string
-  senderDocument: string
+  senderDocument?: string
   technicianId?: string
   technicianName?: string
   withdrawalName?: string

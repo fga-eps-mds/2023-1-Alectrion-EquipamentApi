@@ -20,35 +20,27 @@ const updateOrderServiceController = new UpdateOrderServiceController(
   updateOrderServiceUseCaseMocked
 )
 const request: UpdateOrderServiceHttpRequest = {
-  id: 'any_id',
-  status: 'CANCELED',
-  techinicias: [],
-  recieverDate: new Date().toISOString(),
-  authorFunctionalNumber: 'any',
-  date: new Date().toISOString(),
-  description: '',
-  equipmentId: '',
-  receiverName: '',
-  senderFunctionalNumber: '',
-  senderName: '',
-  userId: '',
-  recieverFunctionalNumber: ''
+  id: 2,
+  equipmentId: 'equipment_id',
+  description: 'any_description',
+  seiProcess: '123456789',
+  senderPhone: '61992809831',
+  senderDocument: '12345678910',
+  technicianId: '123456',
+  technicianName: 'Pessoa',
+  status: 'CANCELED'
 }
 
 const useCaseParam: UpdateOrderServiceUseCaseData = {
-  equipmentId: request.equipmentId,
-  authorId: request.userId,
-  authorFunctionalNumber: request.authorFunctionalNumber,
-  senderName: request.senderName,
-  senderFunctionalNumber: request.senderFunctionalNumber,
-  date: request.date,
-  description: request.description,
-  receiverName: request.receiverName,
-  reciverFunctionalNumber: request.recieverFunctionalNumber,
   id: request.id,
-  status: request.status,
-  techinicias: request.techinicias,
-  receiverDate: request.recieverDate
+  equipmentId: request.equipmentId,
+  description: request.description,
+  seiProcess: request.seiProcess,
+  senderPhone: request.senderPhone,
+  senderDocument: request.senderDocument,
+  technicianId: request.technicianId,
+  technicianName: request.technicianName,
+  status: request.status
 }
 
 describe('Should test UpdateOrderServiceController', () => {

@@ -12,16 +12,16 @@ import { Controller } from '../protocols/controller'
 export type UpdateOrderServiceHttpRequest = {
   id: number
   equipmentId: string
-  description: string
-  seiProcess: string
-  senderPhone: string
-  senderDocument: string
-  technicianId: string
-  technicianName: string
-  withdrawalName: string
-  withdrawalDocument: string
-  finishDate: string
-  status: string
+  description?: string
+  seiProcess?: string
+  senderPhone?: string
+  senderDocument?: string
+  technicianId?: string
+  technicianName?: string
+  withdrawalName?: string
+  withdrawalDocument?: string
+  finishDate?: string
+  status?: string
 }
 
 export class UpdateOrderServiceController extends Controller {
