@@ -47,28 +47,13 @@ describe('Should test CreateReportUseCase', () => {
   test('should create report', async () => {
     createReportRepositoryMocked.create.mockResolvedValue(report)
 
-    const response = await createReportUseCase.execute(useCaseParam)
+    const result = await createReportUseCase.execute(useCaseParam)
 
-    expect(response.data.id).toEqual(report.id)
-    expect(response.data.authorId).toEqual(report.authorId)
-    expect(response.data.type).toEqual(report.type)
-    expect(response.data.createdAt).toEqual(report.createdAt)
-    expect(response.data.elements).toEqual(report.elements)
+    expect(result.data.id).toEqual(report.id)
+    expect(result.data.authorId).toEqual(report.authorId)
+    expect(result.data.type).toEqual(report.type)
+    expect(result.data.createdAt).toEqual(report.createdAt)
+    expect(result.data.elements).toEqual(report.elements)
     expect(createReportRepositoryMocked.create).toHaveBeenCalled()
   })
-
-  /*
-
-  test('should return notFound error if usecase returns ReportError', async () => {
-    createReportUSeCaseMocked.execute.mockResolvedValue({
-      isSuccess: false,
-      error: new ReportError()
-    })
-
-    const response = await createOrderServiceController.perform(request)
-
-    expect(response).toEqual(serverError(response.data))
-    expect(createReportUSeCaseMocked.execute).toHaveBeenCalled()
-    expect(createReportUSeCaseMocked.execute).toHaveBeenCalledWith(useCaseParam)
-  }) */
 })
