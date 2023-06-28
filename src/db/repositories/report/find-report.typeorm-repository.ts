@@ -10,7 +10,7 @@ export class FindReportTypeOrmRepository implements FindReportRepository {
     public readonly reportTypeormRepository = dataSource.getRepository(Report)
   ) {}
 
-  public async find(data: FindDataReport): Promise<Array<Report>> {
+  public async find(data: FindDataReport): Promise<Report[]> {
     return this.reportTypeormRepository.find({
       order: { createdAt: 'DESC' },
       where: {

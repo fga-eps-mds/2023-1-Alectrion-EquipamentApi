@@ -22,10 +22,7 @@ export class Report {
   })
   authorId: string
 
-  @Column({
-    array: true,
-    default: []
-  })
+  @Column(Object, { array: true })
   elements: Object[]
 
   @Column({ type: 'timestamptz' })

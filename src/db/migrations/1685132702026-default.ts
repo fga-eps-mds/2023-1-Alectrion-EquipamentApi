@@ -5,6 +5,13 @@ export class default1674611694082 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
+      `CREATE TYPE "public"."report_type_enum" 
+      AS ENUM('EQUIPMENT', 'MOVEMENT', 'ORDER_SERVICE')`
+    )
+    await queryRunner.query(
+      `CREATE TABLE "report" ("id" SERIAL NOT NULL, "type" "public"."report_type_enum" NOT NULL, "author_id" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_99e4d0bea58cba73c57f935a546" PRIMARY KEY ("id"))`
+    )
+    await queryRunner.query(
       `CREATE TABLE "equipment_brand" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, CONSTRAINT "PK_ba1f5659893d908eaabb38453a6" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(

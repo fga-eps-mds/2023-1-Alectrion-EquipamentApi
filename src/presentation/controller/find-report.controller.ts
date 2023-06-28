@@ -21,7 +21,7 @@ export class FindReportController extends Controller {
 
   public async perform(
     params: FindReportHttpRequest
-  ): Promise<HttpResponse<Array<Report> | Error>> {
+  ): Promise<HttpResponse<Report[] | Error>> {
     const response = await this.findReportUseCase.execute({
       id: params.id,
       type: params.type,
