@@ -2,7 +2,7 @@ import {
   CreateReportUseCase,
   ReportError
 } from '../../useCases/create-report/create-report.use-case'
-import { HttpResponse, notFound, ok, serverError } from '../helpers'
+import { HttpResponse, ok, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
 import { Report } from '../../domain/entities/report'
 
@@ -29,7 +29,7 @@ export class CreateReportController extends Controller {
     if (response.isSuccess && response.data) {
       return ok(response.data)
     } else if (!response.isSuccess && response.error instanceof ReportError) {
-      return notFound(response.error)
+      return serverError(response.error)
     } else return serverError()
   }
 }
