@@ -15,6 +15,8 @@ import { makeCreateMovementController } from './factories/controllers/createMove
 import { makeFindMovementsController } from './factories/controllers/findMovements'
 import { makeDeleteMovementController } from './factories/controllers/deleteMovement'
 import { makeUpdateEquipmentController } from './factories/controllers/update-equipment'
+import { makeCreateReportController } from './factories/controllers/create-report'
+import { makeFindReportController } from './factories/controllers/find-report'
 
 const routes = Router()
 
@@ -36,5 +38,7 @@ routes.post('/createMovement', adapt(makeCreateMovementController()))
 routes.get('/findMovements', adapt(makeFindMovementsController()))
 routes.delete('/deleteMovement', adapt(makeDeleteMovementController()))
 routes.put('/updateEquipment', adapt(makeUpdateEquipmentController()))
+routes.post('/report', adapt(makeCreateReportController()))
+routes.get('/report', adapt(makeFindReportController()))
 
 export default routes
