@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { decode } from 'jsonwebtoken'
 
-export const checkAdminAccessToken = (
+export const checkIfIsQueryUser = (
   req: Request,
   resp: Response,
   next: () => void
@@ -14,10 +14,10 @@ export const checkAdminAccessToken = (
 
   const { userId, role } = decode(token) as { userId: string; role: string }
 
-  if (role !== 'administrador') {
-    resp
-      .status(403)
-      .json({ error: 'Acesso negado. Você não é um administrador.' })
+  if (role === 'consulta') {
+    resp.status(403).json({
+      error: 'Usuários de consulta não têm acesso a essa funcionalidade'
+    })
     return
   }
 
