@@ -3,5 +3,6 @@ export enum Status {
   MAINTENANCE = 'Em manuntenção',
   WARRANTY = 'Garantia',
   CONCLUDED = 'Concluido',
+  FINISHED = 'Finalizado',
   CANCELED = 'Cancelado'
 }
