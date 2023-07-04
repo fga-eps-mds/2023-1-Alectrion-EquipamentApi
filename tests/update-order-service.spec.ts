@@ -64,6 +64,20 @@ describe('Test update order use case', () => {
     status: 'CONCLUDED' as OSStatus
   }
 
+  const dataFinished: UpdateOrderServiceUseCaseData = {
+    id: 2,
+    equipmentId: 'equipment_id',
+    description: 'any_description',
+    seiProcess: '123456789',
+    senderPhone: '61992809831',
+    senderDocument: '12345678910',
+    technicianId: '123456',
+    technicianName: 'Pessoa',
+    withdrawalName: 'Recebedor',
+    withdrawalDocument: '98765432198',
+    status: 'FINISHED' as OSStatus
+  }
+
   const dataCanceled: UpdateOrderServiceUseCaseData = {
     id: 2,
     equipmentId: 'equipment_id',
@@ -188,8 +202,8 @@ describe('Test update order use case', () => {
     })
   })
 
-  test('should call updateEquipmentRepository if order service status was updated to concluded', async () => {
-    const result = await updateOrderServiceUseCase.execute(dataConcluded)
+  test('should call updateEquipmentRepository if order service status was updated to finished', async () => {
+    const result = await updateOrderServiceUseCase.execute(dataFinished)
 
     expect(updateEquipmentRepository.updateEquipment).toBeCalledTimes(1)
     expect(updateEquipmentRepository.updateEquipment).toBeCalledWith(

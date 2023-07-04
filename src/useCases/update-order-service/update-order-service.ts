@@ -73,7 +73,7 @@ export class UpdateOrderServiceUseCase
       })
 
       if (
-        this.handleOSStatus(data.status) === OSStatus.FINESHED ||
+        this.handleOSStatus(data.status) === OSStatus.FINISHED ||
         this.handleOSStatus(data.status) === OSStatus.CANCELED
       ) {
         await this.updateEquipmentRepository.updateEquipment(equipment.id, {
@@ -107,7 +107,7 @@ export class UpdateOrderServiceUseCase
         return OSStatus.CONCLUDED
       }
       case 'FINISHED': {
-        return OSStatus.FINESHED
+        return OSStatus.FINISHED
       }
       case 'CANCELED': {
         return OSStatus.CANCELED
