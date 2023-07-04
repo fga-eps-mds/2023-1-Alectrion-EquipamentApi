@@ -28,7 +28,7 @@ export class ListOrderServiceRepository
       date: newDate ? MoreThanOrEqual(newDate) : undefined,
       equipment: {
         unit: unit ? { id: unit } : undefined,
-        brand: brand ? { id: brand } : undefined,
+        brand: brand ? { name: brand } : undefined,
         type,
         model
       }
