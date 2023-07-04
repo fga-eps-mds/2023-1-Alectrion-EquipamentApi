@@ -20,7 +20,7 @@ export class default1674611694082 implements MigrationInterface {
       `CREATE TABLE "unit" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "localization" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_4252c4be609041e559f0c80f58a" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TYPE "public"."order_service_type_enum" AS ENUM('MAINTENANCE', 'WARRANTY', 'CONCLUDED', 'CANCELED')`
+      `CREATE TYPE "public"."order_service_type_enum" AS ENUM('MAINTENANCE', 'WARRANTY', 'CONCLUDED', 'FINISHED','CANCELED')`
     )
     await queryRunner.query(
       `CREATE TABLE "order_service" (
