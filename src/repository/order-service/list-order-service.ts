@@ -1,4 +1,4 @@
-import { ILike, MoreThanOrEqual } from 'typeorm'
+import { ILike, LessThanOrEqual, MoreThanOrEqual } from 'typeorm'
 import { dataSource } from '../../db/config'
 import { OrderService } from '../../db/entities/order-service'
 import {
@@ -20,7 +20,9 @@ export class ListOrderServiceRepository
     const {
       type,
       unit,
-      date,
+      createdAt,
+      updatedAt,
+      finishDate,
       brand,
       model,
       search,
@@ -32,13 +34,25 @@ export class ListOrderServiceRepository
       senderName
     } = query
 
-    let newDate
-    if (date != null) {
-      newDate = new Date(date)
+    let newCreatedAt
+    if (createdAt != null) {
+      newCreatedAt = new Date(createdAt)
+    }
+
+    let newFinishDate
+    if (finishDate != null) {
+      newFinishDate= new Date(finishDate)
+    }
+
+    let newUpdatedAt
+    if (updatedAt != null) {
+      newUpdatedAt = new Date(updatedAt)
     }
     const defaultConditions = {
       status,
-      date: newDate ? MoreThanOrEqual(newDate) : undefined,
+      createdAt: newCreatedAt ? MoreThanOrEqual(newCreatedAt) : undefined,
+      finishDate: newFinishDate ? LessThanOrEqual(newFinishDate) : undefined,
+      updatedAt: newUpdatedAt ? MoreThanOrEqual(newUpdatedAt) : undefined,
       senderName,
       technicianName,
       withdrawalName,
@@ -60,7 +74,9 @@ export class ListOrderServiceRepository
                 ...defaultConditions.equipment
               },
               status: defaultConditions.status,
-              date: defaultConditions.date,
+              createdAt: defaultConditions.createdAt,
+              updatedAt: defaultConditions.updatedAt,
+              finishDate: defaultConditions.finishDate,
               senderName: defaultConditions.senderName,
               technicianName: defaultConditions.technicianName,
               withdrawalName: defaultConditions.withdrawalName
@@ -71,7 +87,9 @@ export class ListOrderServiceRepository
                 ...defaultConditions.equipment
               },
               status: defaultConditions.status,
-              date: defaultConditions.date,
+              createdAt: defaultConditions.createdAt,
+              updatedAt: defaultConditions.updatedAt,
+              finishDate: defaultConditions.finishDate,
               senderName: defaultConditions.senderName,
               technicianName: defaultConditions.technicianName,
               withdrawalName: defaultConditions.withdrawalName

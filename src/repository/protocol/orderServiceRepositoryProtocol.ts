@@ -3,7 +3,9 @@ import { OrderService } from '../../domain/entities/order-service'
 export type FindOrderServiceUseCaseDataQuery = {
   type?: string
   unit?: string
-  date?: string
+  createdAt?: string
+  updatedAt?: string
+  finishDate?: string
   brand?: string
   search?: string
   model?: string

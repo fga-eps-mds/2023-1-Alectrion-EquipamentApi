@@ -15,7 +15,9 @@ export class NotOSFoundError extends Error {
 export interface FindOrderServiceUseCaseData {
   type?: string
   unit?: string
-  date?: string
+  createdAt?: string
+  updatedAt?: string
+  finishDate?: string
   brand?: string
   search?: string
   model?: string
@@ -42,7 +44,9 @@ export class FindOrderService
     const newQuery: FindOrderServiceUseCaseDataQuery = {
       type: query.type,
       unit: query.unit,
-      date: query.date,
+      createdAt: query.createdAt,
+      updatedAt: query.updatedAt,
+      finishDate: query.finishDate,
       brand: query.brand,
       search: query.search,
       model: query.model,
