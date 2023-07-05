@@ -39,9 +39,10 @@ export class ListOrderServiceRepository
     const defaultConditions = {
       status,
       date: newDate ? MoreThanOrEqual(newDate) : undefined,
-      senderName,
-      technicianName,
-      withdrawalName,
+      senderName: senderName ? ILike(`%${senderName}%`) : undefined,
+      technicianName: technicianName? ILike(`%${technicianName}%`): undefined,
+      withdrawalName: withdrawalName ? ILike(`%${withdrawalName}%`) : undefined,
+      
       equipment: {
         unit: unit ? { id: unit } : undefined,
         brand: brand ? { name: brand } : undefined,

@@ -22,6 +22,9 @@ export interface FindOrderServiceUseCaseData {
   status?: string
   take?: number
   skip?: number
+  withdrawalName?: string
+  technicianName?: string
+  senderName?: string
 }
 
 export class FindOrderService
@@ -45,7 +48,10 @@ export class FindOrderService
       model: query.model,
       status: query.status,
       take: query.take,
-      skip: query.skip
+      skip: query.skip,
+      withdrawalName: query.withdrawalName,
+      technicianName: query.technicianName,
+      senderName: query.senderName
     }
 
     const ordersServices = await this.osReposiory.findOrderServiceGeneric(
