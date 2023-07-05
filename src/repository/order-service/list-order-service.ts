@@ -17,7 +17,20 @@ export class ListOrderServiceRepository
   async findOrderServiceGeneric(
     query: FindOrderServiceUseCaseDataQuery
   ): Promise<OrderService[]> {
-    const { type, unit, date, brand, model, search, status, skip, take } = query
+    const {
+      type,
+      unit,
+      date,
+      brand,
+      model,
+      search,
+      status,
+      skip,
+      take,
+      withdrawalName,
+      technicianName,
+      senderName
+    } = query
 
     let newDate
     if (date != null) {
@@ -26,6 +39,9 @@ export class ListOrderServiceRepository
     const defaultConditions = {
       status,
       date: newDate ? MoreThanOrEqual(newDate) : undefined,
+      senderName,
+      technicianName,
+      withdrawalName,
       equipment: {
         unit: unit ? { id: unit } : undefined,
         brand: brand ? { name: brand } : undefined,
@@ -43,7 +59,10 @@ export class ListOrderServiceRepository
                 ...defaultConditions.equipment
               },
               status: defaultConditions.status,
-              date: defaultConditions.date
+              date: defaultConditions.date,
+              senderName: defaultConditions.senderName,
+              technicianName: defaultConditions.technicianName,
+              withdrawalName: defaultConditions.withdrawalName
             },
             {
               equipment: {
@@ -51,7 +70,10 @@ export class ListOrderServiceRepository
                 ...defaultConditions.equipment
               },
               status: defaultConditions.status,
-              date: defaultConditions.date
+              date: defaultConditions.date,
+              senderName: defaultConditions.senderName,
+              technicianName: defaultConditions.technicianName,
+              withdrawalName: defaultConditions.withdrawalName
             }
           ]
         : defaultConditions

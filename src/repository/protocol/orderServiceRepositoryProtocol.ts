@@ -10,6 +10,9 @@ export type FindOrderServiceUseCaseDataQuery = {
   status?: string
   skip: number
   take: number
+  withdrawalName?: string
+  technicianName?: string
+  senderName?: string
 }
 
 export interface OrderServiceRepositoryProtocol {
