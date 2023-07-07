@@ -6,14 +6,14 @@ import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { Estado } from '../../domain/entities/equipamentEnum/estado'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
-import { Type, generalTypes } from '../../domain/entities/equipamentEnum/type'
 import { Equipment } from '../../domain/entities/equipment'
 import AcquisitionRepositoryProtocol from '../../repository/protocol/acquisitionRepositoryProtocol'
-import { BrandRepositoryProtocol } from '../../repository/protocol/brandRepositoryProtocol'
 import { EquipmentRepositoryProtocol } from '../../repository/protocol/equipmentRepositoryProtocol'
 import { UnitRepositoryProtocol } from '../../repository/protocol/unitRepositoryProtocol'
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
 import { Equipment as EquipmentEntity } from '../../db/entities/equipment'
+import { EquipmentBrandRepository } from '../../repository/equipment-brand/equipment-brand.repository'
+import { EquipmentTypeRepository } from '../../repository/equipment-type/equipment-type.repository'
 
 export interface CreateEquipmentInterface {
   tippingNumber: string
@@ -121,15 +121,30 @@ export class InvalidTippingNumber extends Error {
   }
 }
 
+export class InvalidEquipmentBrand extends Error {
+  constructor() {
+    super('Marca de equipamento invalida')
+    this.name = 'InvalidEquipmentBrand'
+  }
+}
+
+export class InvalidEquipmentType extends Error {
+  constructor() {
+    super('Tipo de equipamento invalida')
+    this.name = 'InvalidEquipmentType'
+  }
+}
+
 export class CreateEquipmentUseCase
   implements UseCase<CreateEquipmentInterface, Equipment>
 {
   constructor(
     private readonly equipmentRepository: EquipmentRepositoryProtocol,
     private readonly unitRepository: UnitRepositoryProtocol,
-    private readonly brandRepository: BrandRepositoryProtocol,
-    private readonly acquisitionRepository: AcquisitionRepositoryProtocol
-  ) { }
+    private readonly brandRepository: EquipmentBrandRepository,
+    private readonly acquisitionRepository: AcquisitionRepositoryProtocol,
+    private readonly typeRepository: EquipmentTypeRepository
+  ) {}
 
   private validFixedFields(equipmentData: CreateEquipmentInterface): boolean {
     if (
@@ -228,7 +243,6 @@ export class CreateEquipmentUseCase
       createdAt: equipment.createdAt,
 
       updatedAt: equipment.updatedAt
-
     }
   }
 
@@ -242,22 +256,26 @@ export class CreateEquipmentUseCase
         error: new NullFields()
       }
     }
-    const unit = await this.unitRepository.findOne(equipmentData.unitId)
 
-    let brand = await this.brandRepository.findOneByName(
-      equipmentData.brandName
-    )
+    const unit = await this.unitRepository.findOne(equipmentData.unitId)
+    if (!unit) {
+      return {
+        isSuccess: false,
+        error: new NotFoundUnit()
+      }
+    }
+
+    const brand = await this.brandRepository.findByName(equipmentData.brandName)
+    if (!brand) {
+      return {
+        isSuccess: false,
+        error: new InvalidEquipmentBrand()
+      }
+    }
 
     let acquisition = await this.acquisitionRepository.findOneByName(
       equipmentData.acquisitionName
     )
-
-    if (!brand) {
-      brand = await this.brandRepository.create({
-        name: equipmentData.brandName
-      })
-    }
-
     if (!acquisition) {
       acquisition = await this.acquisitionRepository.create({
         name: equipmentData.acquisitionName,
@@ -266,22 +284,24 @@ export class CreateEquipmentUseCase
       })
     }
 
-    if (!unit) {
+    const type = await this.typeRepository.findByName(equipmentData.type)
+    if (!type) {
       return {
         isSuccess: false,
-        error: new NotFoundUnit()
+        error: new InvalidEquipmentType()
       }
     }
+
     const tippingNumber = await this.equipmentRepository.findByTippingNumber(
       equipmentData.tippingNumber
     )
-
     if (tippingNumber) {
       return {
         isSuccess: false,
         error: new InvalidTippingNumber()
       }
     }
+
     equipment.tippingNumber = equipmentData.tippingNumber
     equipment.serialNumber = equipmentData.serialNumber
     equipment.situacao =
@@ -290,10 +310,10 @@ export class CreateEquipmentUseCase
     equipment.model = equipmentData.model
     equipment.description = equipmentData.description ?? ''
     equipment.acquisitionDate = equipmentData.acquisitionDate
-    equipment.type = equipmentData.type as Type
+    equipment.type = type
 
-    switch (equipmentData.type) {
-      case Type.CPU:
+    switch (type.name.toUpperCase()) {
+      case 'CPU':
         if (!this.validCpuFields(equipmentData)) {
           return {
             isSuccess: false,
@@ -305,7 +325,7 @@ export class CreateEquipmentUseCase
         equipment.storageType = equipmentData.storageType as StorageType
         equipment.ram_size = equipmentData.ram_size ?? ''
         break
-      case Type.Monitor:
+      case 'MONITOR':
         if (!this.validMonitorFields(equipmentData)) {
           return {
             isSuccess: false,
@@ -316,9 +336,7 @@ export class CreateEquipmentUseCase
         equipment.screenSize = equipmentData.screenSize ?? ''
         break
 
-      case generalTypes.find((item) => item === equipmentData.type):
-        break
-      case Type.Nobreak:
+      case 'NOBREAK':
         if (!this.validOthersFields(equipmentData)) {
           return {
             isSuccess: false,
@@ -334,7 +352,7 @@ export class CreateEquipmentUseCase
         equipment.power = equipmentData.power ?? ''
         break
 
-      case Type.Estabilizador:
+      case 'ESTABILIZADOR':
         if (!equipmentData.power) {
           return {
             isSuccess: false,
