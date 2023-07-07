@@ -1,11 +1,4 @@
-/* eslint-disable prettier/prettier */
 import { UpdateEquipmentUseCase } from '../../useCases/updateEquipment/updateEquipment'
-// import {
-//   EquipmentNotFoundError,
-//   InvalidAuthorError,
-//   InvalidDateError,  
-//   InvalidSenderError
-// } from '../../useCases/create-order-service/errors'
 import { notFound, ok, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
 
@@ -46,7 +39,7 @@ export class UpdateEquipmentController extends Controller {
       estado: params.estado,
       model: params.model,
       description: params.description,
-      acquisitionDate:params.acquisitionDate,
+      acquisitionDate: params.acquisitionDate,
       screenSize: params.screenSize,
       power: params.power,
       screenType: params.screenType,

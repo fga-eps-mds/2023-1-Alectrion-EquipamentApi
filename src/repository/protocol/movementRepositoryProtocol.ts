@@ -1,6 +1,5 @@
 import { Movement } from '../../domain/entities/movement'
 import { Status as EquipmentStatus } from '../../domain/entities/equipamentEnum/status'
-import { Unit } from '../../domain/entities/unit'
 
 export type Query = {
   id?: string

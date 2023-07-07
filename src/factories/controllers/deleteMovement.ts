@@ -2,5 +2,5 @@ import { DeleteMovementController } from '../../presentation/controller/deleteMo
 import { makeDeleteMovement } from '../useCases/deleteMovement'
 
 export const makeDeleteMovementController = () => {
-    return new DeleteMovementController(makeDeleteMovement())
+  return new DeleteMovementController(makeDeleteMovement())
 }

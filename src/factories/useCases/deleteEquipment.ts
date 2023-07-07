@@ -6,8 +6,5 @@ export const makeDeleteEquipment = () => {
   const equipmentRepository = new EquipmentRepository()
   const movementRepository = new MovementRepository()
 
-  return new DeleteEquipmentUseCase(
-    equipmentRepository,
-    movementRepository
-  )
+  return new DeleteEquipmentUseCase(equipmentRepository, movementRepository)
 }
