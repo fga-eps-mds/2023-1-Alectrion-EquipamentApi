@@ -2,5 +2,5 @@ import { FindMovementsController } from '../../presentation/controller/findMovem
 import { makeFindMovements } from '../useCases/findMovements'
 
 export const makeFindMovementsController = () => {
-    return new FindMovementsController(makeFindMovements())
+  return new FindMovementsController(makeFindMovements())
 }

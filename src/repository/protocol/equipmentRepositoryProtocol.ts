@@ -1,6 +1,4 @@
 import { Equipment } from '../../db/entities/equipment'
-// eslint-disable-next-line no-unused-vars
-import { Status } from '../../domain/entities/equipamentEnum/status'
 
 export type Query = {
   userId?: string
