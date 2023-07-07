@@ -57,17 +57,20 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       take, 
       skip,
     } = query;
-    console.log(query)
+
     const defaultConditions= {
       type: type,
       storageType: storageType,
       situacao: situation,
+      screenSize: screenSize,
+      screenType: screenType,
       processor: processador,
+      power: power,
       unit: unit? {id: unit} : undefined,
       brand: brand ? { id: brand } : undefined,
       ram_size: ram_size,
+      model: model,
       acquisition: acquisition ? {name: acquisition}: undefined,
-
       updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
       createdAt: undefined
     };
@@ -80,9 +83,7 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       defaultConditions.createdAt = LessThanOrEqual(finalDate)
     } 
     
-    console.log(defaultConditions)
     let searchConditions;
-
     if(typeof search !== 'undefined') {
       searchConditions = [
         {
