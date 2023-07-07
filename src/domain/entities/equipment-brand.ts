@@ -1,9 +1,9 @@
 import { Equipment } from './equipment'
 
-export class EquipmentBrand {
-  id: string
-
+export type EquipmentBrand = {
+  id: number
   name: string
-
+  createdAt: Date
+  updatedAt: Date
   equipment?: Equipment[]
 }

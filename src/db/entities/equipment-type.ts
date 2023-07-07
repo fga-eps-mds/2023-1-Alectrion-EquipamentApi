@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import {
   Column,
   CreateDateColumn,
@@ -10,7 +9,7 @@ import {
 import { Equipment } from './equipment'
 
 @Entity()
-export class EquipmentBrand {
+export class EquipmentType {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -28,6 +27,6 @@ export class EquipmentBrand {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @OneToMany(() => Equipment, (equipment) => equipment.brand)
+  @OneToMany(() => Equipment, (equipment) => equipment.type)
   equipment?: Equipment[]
 }

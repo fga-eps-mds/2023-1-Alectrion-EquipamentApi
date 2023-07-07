@@ -1,13 +1,13 @@
-import { EquipmentBrand } from './brand'
+import { EquipmentBrand } from './equipment-brand'
 import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
 import { ScreenType } from './equipamentEnum/screenType'
 import { Status } from './equipamentEnum/status'
 import { Estado } from './equipamentEnum/estado'
 import { StorageType } from './equipamentEnum/storageType'
-import { Type } from './equipamentEnum/type'
 import { History } from './history'
 import { OrderService } from './order-service'
 import { Unit } from './unit'
+import { EquipmentType } from './equipment-type'
 
 export type Equipment = {
   id: string
@@ -16,7 +16,7 @@ export type Equipment = {
 
   serialNumber: string
 
-  type: Type
+  type?: EquipmentType
 
   estado: Estado
 
