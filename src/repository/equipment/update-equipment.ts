@@ -2,14 +2,14 @@ import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
 import { Unit } from '../../domain/entities/unit'
-import { Type } from '../../domain/entities/equipamentEnum/type'
-import { EquipmentBrand } from '../../domain/entities/brand'
 import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
+import { EquipmentType } from '../../db/entities/equipment-type'
+import { EquipmentBrand } from '../../db/entities/equipment-brand'
 
 export type EditPayload = {
   serialNumber?: string
   tippingNumber?: string
-  type?: Type
+  type?: EquipmentType
   situacao?: Status
   estado?: string
   model?: string
