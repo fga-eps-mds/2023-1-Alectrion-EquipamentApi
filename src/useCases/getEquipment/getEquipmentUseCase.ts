@@ -40,6 +40,10 @@ export interface GetEquipmentInput {
 
   createdAt?: Date
 
+  initialDate?: Date
+
+  finalDate?: Date
+
   take?: number
 
   skip?: number

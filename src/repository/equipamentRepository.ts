@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { MoreThanOrEqual, ILike } from 'typeorm'
+import { MoreThanOrEqual, ILike, LessThanOrEqual, Between } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Equipment } from '../db/entities/equipment'
 import { EquipmentRepositoryProtocol, Query } from './protocol/equipmentRepositoryProtocol'
@@ -34,28 +34,53 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     })
     return equipment
   }
-
+  
   async genericFind(query: Query): Promise<Equipment[]> {    
     const {
       type,
+      storageType,
+      ram_size,
+      processador,
+      screenSize,
+      screenType,
+      power,
       unit,
       situation,
       updatedAt,
       brand,
+      model,
+      acquisition,
       search,
       searchTipping,
+      initialDate,
+      finalDate,
       take, 
       skip,
     } = query;
-
+    console.log(query)
     const defaultConditions= {
       type: type,
+      storageType: storageType,
       situacao: situation,
+      processor: processador,
       unit: unit? {id: unit} : undefined,
       brand: brand ? { id: brand } : undefined,
+      ram_size: ram_size,
+      acquisition: acquisition ? {name: acquisition}: undefined,
+
       updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
+      createdAt: undefined
     };
-  
+
+    if(initialDate && finalDate) {
+      defaultConditions.createdAt = Between(initialDate, finalDate)
+    } else if (initialDate) {
+      defaultConditions.createdAt = MoreThanOrEqual(initialDate)
+    } else if (finalDate) {
+      defaultConditions.createdAt = LessThanOrEqual(finalDate)
+    } 
+    
+    console.log(defaultConditions)
     let searchConditions;
 
     if(typeof search !== 'undefined') {
@@ -81,7 +106,7 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       ]
     } else 
       searchConditions = defaultConditions;
-  
+    
   
     const queryResult = await this.equipmentRepository.find({
       relations: {
@@ -94,7 +119,6 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       take: take,
       skip: skip
     });
-  
     return queryResult;
   }
     
