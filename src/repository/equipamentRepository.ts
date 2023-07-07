@@ -58,25 +58,19 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       skip,
       acquisitionYear,
     } = query;
-
+    console.log(query)
     const defaultConditions= {
       type: type,
       storageType: storageType,
       situacao: situation,
-      screenSize: screenSize,
-      screenType: screenType,
       processor: processador,
-      power: power,
       unit: unit? {id: unit} : undefined,
       brand: brand ? { id: brand } : undefined,
       ram_size: ram_size,
-      model: model,
       acquisition: acquisition ? {name: acquisition}: undefined,
+
       updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
-      createdAt: undefined,
-      acquisitionDate: acquisitionYear 
-      ? Between(new Date(Number(acquisitionYear), 0, 1), new Date(Number(acquisitionYear), 11, 31)) 
-      : undefined,
+      createdAt: undefined
     };
 
     if(initialDate && finalDate) {
@@ -87,7 +81,17 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       defaultConditions.createdAt = LessThanOrEqual(finalDate)
     } 
     
+    console.log(defaultConditions)
     let searchConditions;
+
+    if(initialDate && finalDate) {
+      defaultConditions.createdAt = Between(initialDate, finalDate)
+    } else if (initialDate) {
+      defaultConditions.createdAt = MoreThanOrEqual(initialDate)
+    } else if (finalDate) {
+      defaultConditions.createdAt = LessThanOrEqual(finalDate)
+    } 
+    
     if(typeof search !== 'undefined') {
       searchConditions = [
         {
