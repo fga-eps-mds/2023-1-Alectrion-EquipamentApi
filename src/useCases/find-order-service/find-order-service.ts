@@ -51,7 +51,7 @@ export class FindOrderService
     const ordersServices = await this.osReposiory.findOrderServiceGeneric(
       newQuery
     )
-    if (ordersServices !== null) {
+    if (ordersServices !== undefined) {
       return {
         isSuccess: true,
         data: ordersServices
