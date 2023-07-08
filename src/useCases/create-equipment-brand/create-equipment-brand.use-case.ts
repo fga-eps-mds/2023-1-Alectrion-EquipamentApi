@@ -31,16 +31,15 @@ export class CreateEquipmentBrandUseCase
   public async execute(
     data: CreateDataEquipmentBrand
   ): Promise<UseCaseReponse<EquipmentBrand>> {
-    this.brandRepository.findByName(data.name).then((it) => {
-      if (it !== undefined) {
-        return { isSuccess: false, error: new EquipmentBrandDuplicateError() }
-      }
-    })
+    const possibleBrand = await this.brandRepository.findByName(data.name)
+    if (possibleBrand) {
+      return { isSuccess: false, error: new EquipmentBrandDuplicateError() }
+    }
 
     const brand = new Brand()
     brand.name = data.name
 
-    return this.brandRepository
+    return await this.brandRepository
       .create(brand)
       .then((it) => {
         return { isSuccess: true, data: it }
