@@ -7,7 +7,7 @@
 Alectrion é um sistema de gerenciamento de inventário, ordens de serviços e movimentações de equipamentos de informática,
 feito para atender às demandas da DSTI (Divisão de Suporte Técnico Interno) da Polícia Civil do estado de Goiás.
 
-Aplicação disponível em: https://alectrion-2022.herokuapp.com
+Aplicação disponível em: https://alectrion-2023-1.herokuapp.com/
 
 ## Requisitos
 
@@ -22,7 +22,7 @@ Aplicação disponível em: https://alectrion-2022.herokuapp.com
 
 2. Entre na pasta do projeto
     
-    > cd 2022-2-Alectrion-EquipamentApi
+    > cd 2023-1-Alectrion-EquipamentApi
 
 3. Crie o arquivo .env e db.env utilizando como base os arquivo de exemplo(.env.example e o db.env.example).
 
