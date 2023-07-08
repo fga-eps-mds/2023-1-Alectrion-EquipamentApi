@@ -2,7 +2,7 @@ import { ListOneEquipmentRepository } from './../../repository/equipment/list-on
 import { Equipment } from './../../domain/entities/equipment'
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
 
-class EquipmentNotFoundError extends Error {
+export class EquipmentNotFoundError extends Error {
   constructor() {
     super('Equipment not found')
     this.name = 'EquipmentNotFoundError'
