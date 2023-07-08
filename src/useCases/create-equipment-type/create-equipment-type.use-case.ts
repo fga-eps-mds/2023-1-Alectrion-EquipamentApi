@@ -31,16 +31,15 @@ export class CreateEquipmentTypeUseCase
   public async execute(
     data: CreateDataEquipmentType
   ): Promise<UseCaseReponse<any>> {
-    this.typeRepository.findByName(data.name).then((it) => {
-      if (it !== undefined) {
-        return { isSuccess: false, error: new EquipmentTypeDuplicateError() }
-      }
-    })
+    const possibleType = await this.typeRepository.findByName(data.name)
+    if (possibleType) {
+      return { isSuccess: false, error: new EquipmentTypeDuplicateError() }
+    }
 
     const type = new Type()
     type.name = data.name
 
-    return this.typeRepository
+    return await this.typeRepository
       .create(type)
       .then((it) => {
         return { isSuccess: true, data: it }

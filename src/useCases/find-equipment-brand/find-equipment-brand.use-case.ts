@@ -23,7 +23,7 @@ export class FindEquipmentBrandUseCase
   public async execute(
     data: FindDataEquipmentBrand
   ): Promise<UseCaseReponse<EquipmentBrand[]>> {
-    return this.brandRepository
+    return await this.brandRepository
       .find(data.search)
       .then((it) => {
         return { isSuccess: true, data: it }

@@ -27,7 +27,7 @@ export class UpdateEquipmentBrandUseCase
     brand.id = data.id
     brand.name = data.name
 
-    return this.brandRepository
+    return await this.brandRepository
       .update(brand)
       .then((it) => {
         return { isSuccess: true, data: it }
