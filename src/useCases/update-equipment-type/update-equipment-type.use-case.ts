@@ -1,5 +1,6 @@
 import { EquipmentType } from '../../db/entities/equipment-type'
 import { EquipmentTypeRepository } from '../../repository/equipment-type/equipment-type.repository'
+import { EquipmentTypeDuplicateError } from '../create-equipment-type/create-equipment-type.use-case'
 import { UseCase, UseCaseReponse } from '../protocol/useCase'
 
 export class EquipmentTypeUpdateError extends Error {
@@ -23,6 +24,11 @@ export class UpdateEquipmentTypeUseCase
   public async execute(
     data: UpdateDataEquipmentType
   ): Promise<UseCaseReponse<void>> {
+    const possibleType = await this.typeRepository.findByName(data.name)
+    if (possibleType) {
+      return { isSuccess: false, error: new EquipmentTypeDuplicateError() }
+    }
+
     const brand = new EquipmentType()
     brand.id = data.id
     brand.name = data.name
