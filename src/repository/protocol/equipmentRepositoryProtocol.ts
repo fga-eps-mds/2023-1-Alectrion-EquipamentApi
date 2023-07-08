@@ -28,6 +28,7 @@ export type Query = {
   finalDate?: Date
   take?: number
   skip?: number
+  acquisitionYear?: string
 }
 
 export interface EquipmentRepositoryProtocol {

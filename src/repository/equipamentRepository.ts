@@ -56,6 +56,7 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       finalDate,
       take, 
       skip,
+      acquisitionYear,
     } = query;
 
     const defaultConditions= {
@@ -72,7 +73,10 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       model: model,
       acquisition: acquisition ? {name: acquisition}: undefined,
       updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
-      createdAt: undefined
+      createdAt: undefined,
+      acquisitionDate: acquisitionYear 
+      ? Between(new Date(Number(acquisitionYear), 0, 1), new Date(Number(acquisitionYear), 11, 31)) 
+      : undefined,
     };
 
     if(initialDate && finalDate) {
@@ -106,9 +110,8 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
         }
       ]
     } else 
-      searchConditions = defaultConditions;
+    searchConditions = defaultConditions;
     
-  
     const queryResult = await this.equipmentRepository.find({
       relations: {
         brand: true,
@@ -122,8 +125,7 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     });
     return queryResult;
   }
-    
-
+  
   async findByTippingNumberOrSerialNumber(
     id: string
   ): Promise<Equipment | null> {
