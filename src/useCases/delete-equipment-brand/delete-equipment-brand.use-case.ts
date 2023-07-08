@@ -22,7 +22,7 @@ export class DeleteEquipmentBrandUseCase
   public async execute(
     data: DeleteDataEquipmentBrand
   ): Promise<UseCaseReponse<void>> {
-    return this.brandRepository
+    return await this.brandRepository
       .delete(data.id)
       .then((it) => {
         return { isSuccess: true, data: it }
