@@ -57,7 +57,12 @@ export class ListOrderServiceRepository
         : defaultConditions
 
     const queryResult = await this.orderServiceRepository.find({
-      relations: ['equipment', 'equipment.brand', 'equipment.unit'],
+      relations: [
+        'equipment',
+        'equipment.brand',
+        'equipment.unit',
+        'equipment.type'
+      ],
       order: { updatedAt: 'DESC' },
       where: searchConditions,
       take,
