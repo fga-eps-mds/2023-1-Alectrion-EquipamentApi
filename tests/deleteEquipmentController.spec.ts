@@ -1,10 +1,8 @@
-//import  request from 'supertest'
-
 import { MockProxy, mock } from 'jest-mock-extended'
 import { DeleteEquipmentController } from '../src/presentation/controller/deleteEquipmentController'
 
 import { HttpResponse } from '../src/presentation/helpers/http'
-import { ServerError, UnauthorizedError } from '../src/presentation/errors'
+import { ServerError } from '../src/presentation/errors'
 import {
   DeleteEquipmentUseCase,
   DeleteEquipmentUseCaseData,
@@ -14,7 +12,7 @@ import {
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
 
 import { Request, Response } from 'express'
-import { sign} from 'jsonwebtoken'
+import { sign } from 'jsonwebtoken'
 import { checkAdminAccessToken } from '../src/middlewares/admin-auth-middleware'
 
 describe('Delete equipment controller', () => {
@@ -122,7 +120,7 @@ describe('Middleware - checkAdminAccessToken', () => {
     }
     mockResponse = {
       status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
+      json: jest.fn()
     }
     mockNext = jest.fn()
   })
@@ -132,48 +130,60 @@ describe('Middleware - checkAdminAccessToken', () => {
   })
 
   test('should return 401 if no token is given', () => {
-    checkAdminAccessToken(mockRequest as Request, mockResponse as Response, mockNext)
+    checkAdminAccessToken(
+      mockRequest as Request,
+      mockResponse as Response,
+      mockNext
+    )
 
     expect(mockResponse.status).toHaveBeenCalledWith(401)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
-      error: 'Token não informado',
+      error: 'Token não informado'
     })
   })
 
   test('should authenticate only admin', () => {
-    const payload = {userId: "admin", role: "administrador"}
-    const secret = "" + process.env.SECRET_JWT
+    const payload = { userId: 'admin', role: 'administrador' }
+    const secret = '' + process.env.SECRET_JWT
     const options = { expiresIn: 60 }
 
     const token = sign(payload, secret, options)
 
     mockRequest.headers = {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token}`
     }
 
-    checkAdminAccessToken(mockRequest as Request, mockResponse as Response, mockNext)
+    checkAdminAccessToken(
+      mockRequest as Request,
+      mockResponse as Response,
+      mockNext
+    )
 
     expect(mockNext).toHaveBeenCalled()
   })
 
   test('should not authenticate non-admin user', () => {
-    const payload = {userId: "non-admin", role: "gerente"}
-    const secret = "" + process.env.SECRET_JWT
+    const payload = { userId: 'non-admin', role: 'gerente' }
+    const secret = '' + process.env.SECRET_JWT
     const options = { expiresIn: 60 }
-    
+
     const token = sign(payload, secret, options)
 
     mockRequest.headers = {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token}`
     }
 
-    checkAdminAccessToken(mockRequest as Request, mockResponse as Response, mockNext)
+    checkAdminAccessToken(
+      mockRequest as Request,
+      mockResponse as Response,
+      mockNext
+    )
 
     expect(mockResponse.status).toHaveBeenCalledWith(403)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
-      error: 'Acesso negado. Você não é um administrador.',
+      error: 'Acesso negado. Você não é um administrador.'
     })
 
     expect(mockNext).not.toHaveBeenCalled()

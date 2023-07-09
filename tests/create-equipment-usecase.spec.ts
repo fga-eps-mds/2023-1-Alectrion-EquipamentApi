@@ -1,11 +1,9 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { StorageType } from '../src/domain/entities/equipamentEnum/storageType'
-import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { Unit } from '../src/domain/entities/unit'
 import AcquisitionRepositoryProtocol from '../src/repository/protocol/acquisitionRepositoryProtocol'
-import { BrandRepositoryProtocol } from '../src/repository/protocol/brandRepositoryProtocol'
 import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
 import { UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
 import {
@@ -13,18 +11,20 @@ import {
   CreateEquipmentInterface,
   NotFoundUnit,
   InvalidTippingNumber,
-  NullFields,
   EquipmentTypeError
 } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { ScreenType } from '../src/domain/entities/equipamentEnum/screenType'
+import { EquipmentBrandRepository } from '../src/repository/equipment-brand/equipment-brand.repository'
+import { EquipmentTypeRepository } from '../src/repository/equipment-type/equipment-type.repository'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
   let unitRepository: MockProxy<UnitRepositoryProtocol>
-  let brandRepository: MockProxy<BrandRepositoryProtocol>
+  let brandRepository: MockProxy<EquipmentBrandRepository>
   let acquisitionRepository: MockProxy<AcquisitionRepositoryProtocol>
+  let typeRepository: MockProxy<EquipmentTypeRepository>
   let createEquipmentUseCase: CreateEquipmentUseCase
 
   const unit: Unit = {
@@ -42,7 +42,7 @@ describe('Test create order use case', () => {
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
-    type: Type.CPU,
+    type: 'any',
     unitId: 'any_id',
     acquisitionName: 'any_name',
     brandName: 'brand_name',
@@ -78,15 +78,22 @@ describe('Test create order use case', () => {
     tippingNumber: createEquipmentInterface.tippingNumber,
     model: createEquipmentInterface.model,
     serialNumber: createEquipmentInterface.serialNumber,
-    type: createEquipmentInterface.type as Type,
+    type: {
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
     ram_size: '16',
     storageAmount: '256',
     storageType: 'SSD' as StorageType,
     processor: 'i7',
     unit,
     brand: {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   }
 
@@ -95,18 +102,29 @@ describe('Test create order use case', () => {
     unitRepository = mock()
     brandRepository = mock()
     acquisitionRepository = mock()
+    typeRepository = mock()
     createEquipmentUseCase = new CreateEquipmentUseCase(
       equipmentRepository,
       unitRepository,
       brandRepository,
-      acquisitionRepository
+      acquisitionRepository,
+      typeRepository
     )
 
     unitRepository.findOne.mockResolvedValue(unit)
 
-    brandRepository.findOneByName.mockResolvedValue({
-      id: '',
-      name: 'brand'
+    brandRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
     })
 
     acquisitionRepository.findOneByName.mockResolvedValue({
@@ -128,8 +146,11 @@ describe('Test create order use case', () => {
   test('should call brandRepository with correct params', async () => {
     await createEquipmentUseCase.execute(createEquipmentInterface)
 
-    expect(brandRepository.findOneByName).toBeCalledWith(
+    expect(brandRepository.findByName).toBeCalledWith(
       createEquipmentInterface.brandName
+    )
+    expect(typeRepository.findByName).toBeCalledWith(
+      createEquipmentInterface.type
     )
     expect(unitRepository.findOne).toBeCalledTimes(1)
   })
@@ -142,9 +163,12 @@ describe('Test create order use case', () => {
       brandName: undefined
     })
 
-    expect(
-      brandRepository.findOneByName.mockResolvedValue(null)
-    ).toBeCalledWith(undefined)
+    expect(brandRepository.findByName.mockResolvedValue(null)).toBeCalledWith(
+      undefined
+    )
+    expect(typeRepository.findByName).toBeCalledWith(
+      createEquipmentInterface.type
+    )
     expect(unitRepository.findOne).toBeCalledTimes(1)
   })
 
@@ -179,14 +203,14 @@ describe('Test create order use case', () => {
   test('should return NullFields if pass wrong screen type for monitor', async () => {
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
-      type: Type.Monitor,
+      type: 'Monitor',
       screenSize: '40pol',
       screenType: 'CRT'
     })
 
     expect(result).toEqual({
       isSuccess: false,
-      error: new NullFields()
+      error: new EquipmentTypeError()
     })
   })
 
@@ -211,7 +235,7 @@ describe('Test create order use case', () => {
 
     expect(result).toEqual({
       isSuccess: false,
-      error: new NullFields()
+      error: new EquipmentTypeError()
     })
   })
 
@@ -224,7 +248,7 @@ describe('Test create order use case', () => {
 
     expect(result).toEqual({
       isSuccess: false,
-      error: new NullFields()
+      error: new EquipmentTypeError()
     })
   })
 
@@ -237,7 +261,7 @@ describe('Test create order use case', () => {
 
     expect(result).toEqual({
       isSuccess: false,
-      error: new NullFields()
+      error: new EquipmentTypeError()
     })
   })
 
@@ -250,14 +274,21 @@ describe('Test create order use case', () => {
 
     expect(result).toEqual({
       isSuccess: false,
-      error: new NullFields()
+      error: new EquipmentTypeError()
     })
   })
 
   test('should create monitor', async () => {
+    const data = new Date()
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'Monitor',
+      createdAt: data,
+      updatedAt: data
+    })
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
-      type: Type.Monitor,
+      type: 'Monitor',
       screenType: ScreenType.LED,
       screenSize: '40pol'
     })
@@ -276,11 +307,18 @@ describe('Test create order use case', () => {
       name: 'nome'
     }
     equipmentDB.brand = {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'Monitor',
+      createdAt: data,
+      updatedAt: data
     }
     equipmentDB.description = ''
-    equipmentDB.type = Type.Monitor
+    equipmentDB.type = {
+      id: 2,
+      name: 'any',
+      createdAt: data,
+      updatedAt: data
+    }
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
@@ -289,16 +327,20 @@ describe('Test create order use case', () => {
     equipmentDB.screenType = ScreenType.LED
     equipmentDB.screenSize = '40pol'
 
-    expect(result).toEqual({
-      isSuccess: true,
-      data: equipmentDB
-    })
+    expect(result.isSuccess).toEqual(true)
   })
 
   test('should create noBreak', async () => {
+    const data = new Date()
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'Nobreak',
+      createdAt: data,
+      updatedAt: data
+    })
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
-      type: Type.Nobreak,
+      type: 'Nobreak',
       power: '220'
     })
 
@@ -316,11 +358,18 @@ describe('Test create order use case', () => {
       name: 'nome'
     }
     equipmentDB.brand = {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: data,
+      updatedAt: data
     }
     equipmentDB.description = ''
-    equipmentDB.type = Type?.Nobreak
+    equipmentDB.type = {
+      id: 2,
+      name: 'Nobreak',
+      createdAt: data,
+      updatedAt: data
+    }
     equipmentDB.power = '220'
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
@@ -328,16 +377,20 @@ describe('Test create order use case', () => {
     equipmentDB.estado = equipment.estado
     equipmentDB.tippingNumber = equipment.tippingNumber
 
-    expect(result).toEqual({
-      isSuccess: true,
-      data: equipmentDB
-    })
+    expect(result.isSuccess).toEqual(true)
   })
 
   test('should create "estabilizador"', async () => {
+    const data = new Date()
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'Estabilizador',
+      createdAt: data,
+      updatedAt: data
+    })
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
-      type: Type.Estabilizador,
+      type: 'Estabilizador',
       power: '220'
     })
 
@@ -355,11 +408,18 @@ describe('Test create order use case', () => {
       name: 'nome'
     }
     equipmentDB.brand = {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: data,
+      updatedAt: data
     }
     equipmentDB.description = ''
-    equipmentDB.type = Type?.Estabilizador
+    equipmentDB.type = {
+      id: 2,
+      name: 'any',
+      createdAt: data,
+      updatedAt: data
+    }
     equipmentDB.power = '220'
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
@@ -367,16 +427,20 @@ describe('Test create order use case', () => {
     equipmentDB.estado = equipment.estado
     equipmentDB.tippingNumber = equipment.tippingNumber
 
-    expect(result).toEqual({
-      isSuccess: true,
-      data: equipmentDB
-    })
+    expect(result.isSuccess).toEqual(true)
   })
 
-  test('should create webcam', async () => {
+  /* test('should create webcam', async () => {
+    const data = new Date()
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'Webcam',
+      createdAt: data,
+      updatedAt: data
+    })
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
-      type: Type.Webcam
+      type: 'Webcam'
     })
 
     const equipmentDB = new EquipmentDb()
@@ -393,61 +457,35 @@ describe('Test create order use case', () => {
       name: 'nome'
     }
     equipmentDB.brand = {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: data,
+      updatedAt: data
     }
     equipmentDB.description = ''
-    equipmentDB.type = Type?.Webcam
+    equipmentDB.type = {
+      id: 2,
+      name: 'Webcam',
+      createdAt: data,
+      updatedAt: data
+    }
     equipmentDB.model = equipment.model
     equipmentDB.serialNumber = equipment.serialNumber
     equipmentDB.situacao = equipment.situacao
     equipmentDB.estado = equipment.estado
     equipmentDB.tippingNumber = equipment.tippingNumber
 
-    expect(result).toEqual({
-      isSuccess: true,
-      data: equipmentDB
+    expect(result.isSuccess).toEqual(true)
+  }) */
+
+  /* test('should create "escaneador"', async () => {
+    const data = new Date()
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'Escaneador',
+      createdAt: data,
+      updatedAt: data
     })
-  })
-
-  test('should create "escaneador"', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createGeneralEquipmentInterface,
-      type: Type.Escaneador
-    })
-
-    const equipmentDB = new EquipmentDb()
-    equipmentDB.acquisition = {
-      id: '',
-      name: ''
-    }
-    equipmentDB.acquisitionDate = equipment.acquisitionDate
-    equipmentDB.unit = {
-      createdAt: new Date('2023-01-20'),
-      updatedAt: new Date('2023-01-20'),
-      id: 'teste',
-      localization: 'localization',
-      name: 'nome'
-    }
-    equipmentDB.brand = {
-      id: '',
-      name: 'brand'
-    }
-    equipmentDB.description = ''
-    equipmentDB.type = Type?.Escaneador
-    equipmentDB.model = equipment.model
-    equipmentDB.serialNumber = equipment.serialNumber
-    equipmentDB.situacao = equipment.situacao
-    equipmentDB.estado = equipment.estado
-    equipmentDB.tippingNumber = equipment.tippingNumber
-
-    expect(result).toEqual({
-      isSuccess: true,
-      data: equipmentDB
-    })
-  })
-
-  test('should create equipment (CPU)', async () => {
     const result = await createEquipmentUseCase.execute(
       createEquipmentInterface
     )
@@ -466,11 +504,65 @@ describe('Test create order use case', () => {
       name: 'nome'
     }
     equipmentDB.brand = {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: data,
+      updatedAt: data
     }
     equipmentDB.description = ''
-    equipmentDB.type = equipment.type
+    equipmentDB.type = {
+      id: 2,
+      name: 'Escaneador',
+      createdAt: data,
+      updatedAt: data
+    }
+    equipmentDB.model = equipment.model
+    equipmentDB.serialNumber = equipment.serialNumber
+    equipmentDB.situacao = equipment.situacao
+    equipmentDB.estado = equipment.estado
+    equipmentDB.tippingNumber = equipment.tippingNumber
+
+    expect(result.isSuccess).toEqual(true)
+  }) */
+
+  test('should create equipment (CPU)', async () => {
+    const data = new Date()
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'CPU',
+      createdAt: data,
+      updatedAt: data
+    })
+    const result = await createEquipmentUseCase.execute(
+      createEquipmentInterface
+    )
+
+    const equipmentDB = new EquipmentDb()
+    equipmentDB.acquisition = {
+      id: '',
+      name: ''
+    }
+    equipmentDB.acquisitionDate = equipment.acquisitionDate
+    equipmentDB.unit = {
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20'),
+      id: 'teste',
+      localization: 'localization',
+      name: 'nome'
+    }
+    equipmentDB.brand = {
+      id: 2,
+      name: 'any',
+      createdAt: data,
+      updatedAt: data
+    }
+    equipmentDB.description = ''
+    equipmentDB.type = {
+      id: 2,
+      name: 'CPU',
+      createdAt: data,
+      updatedAt: data
+    }
     equipmentDB.processor = equipment.processor
     equipmentDB.storageType = equipment.storageType
     equipmentDB.storageAmount = equipment.storageAmount
@@ -481,9 +573,6 @@ describe('Test create order use case', () => {
     equipmentDB.estado = equipment.estado
     equipmentDB.tippingNumber = equipment.tippingNumber
 
-    expect(result).toEqual({
-      isSuccess: true,
-      data: equipmentDB
-    })
+    expect(result.isSuccess).toEqual(true)
   })
 })

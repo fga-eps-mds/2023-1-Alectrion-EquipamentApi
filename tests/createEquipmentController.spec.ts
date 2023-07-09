@@ -1,7 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
-import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import {
   CreateEquipmentController,
@@ -34,7 +33,7 @@ const mockedEquipment: Equipment = {
   tippingNumber: 'any',
   model: 'DELL G15',
   serialNumber: 'any',
-  type: Type.CPU
+  type: { id: 2, name: 'any', createdAt: new Date(), updatedAt: new Date() }
 }
 
 const request: CreateEquipmentHttpRequest = {
@@ -46,7 +45,7 @@ const request: CreateEquipmentHttpRequest = {
   situacao: Status.ACTIVE,
   estado: Estado.Novo,
   tippingNumber: '123123123123',
-  type: Type.CPU,
+  type: 'any',
   unitId: 'any_unit_id'
 }
 

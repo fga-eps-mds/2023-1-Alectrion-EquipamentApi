@@ -2,17 +2,9 @@ import { MockProxy, mock } from 'jest-mock-extended'
 
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
-import { Type } from '../src/domain/entities/equipamentEnum/type'
-
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
 import { Movement } from '../src/db/entities/movement'
-
 import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
-
-import {
-  CreateMovementUseCase,
-  CreateMovementUseCaseData
-} from '../src/useCases/createMovement/createMovementUseCase'
 
 import {
   DeleteEquipmentUseCase,
@@ -24,28 +16,19 @@ import {
 } from '../src/useCases/deleteEquipment/deleteEquipmentUseCase'
 
 import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
-import { UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
 
 describe('Delete equipments use case', () => {
   let equipmentRepository: MockProxy<EquipmentRepositoryProtocol>
   let movementRepository: MockProxy<MovementRepositoryProtocol>
-  let unitRepository: MockProxy<UnitRepositoryProtocol>
 
   let deleteEquipmentUseCase: DeleteEquipmentUseCase
-  let createMovementUseCase: CreateMovementUseCase
 
   beforeEach(() => {
     equipmentRepository = mock()
     movementRepository = mock()
-    unitRepository = mock()
 
     deleteEquipmentUseCase = new DeleteEquipmentUseCase(
       equipmentRepository,
-      movementRepository
-    )
-    createMovementUseCase = new CreateMovementUseCase(
-      equipmentRepository,
-      unitRepository,
       movementRepository
     )
   })
@@ -80,7 +63,12 @@ describe('Delete equipments use case', () => {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
       tippingNumber: '123123',
       serialNumber: '123',
-      type: Type.Nobreak,
+      type: {
+        id: 2,
+        name: 'any',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
       situacao: Status.ACTIVE,
       estado: Estado.Novo,
       model: 'Xiaomi XT',
@@ -115,7 +103,12 @@ describe('Delete equipments use case', () => {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
       tippingNumber: '123123',
       serialNumber: '123',
-      type: Type.Nobreak,
+      type: {
+        id: 2,
+        name: 'any',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
       situacao: Status.ACTIVE,
       estado: Estado.Novo,
       model: 'Xiaomi XT',
@@ -150,7 +143,12 @@ describe('Delete equipments use case', () => {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
       tippingNumber: '123123',
       serialNumber: '123',
-      type: Type.Nobreak,
+      type: {
+        id: 2,
+        name: 'any',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
       situacao: Status.ACTIVE,
       estado: Estado.Novo,
       model: 'Xiaomi XT',
@@ -200,7 +198,12 @@ describe('Delete equipments use case', () => {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
       tippingNumber: '123123',
       serialNumber: '123',
-      type: Type.Nobreak,
+      type: {
+        id: 2,
+        name: 'any',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
       situacao: Status.ACTIVE,
       estado: Estado.Novo,
       model: 'Xiaomi XT',

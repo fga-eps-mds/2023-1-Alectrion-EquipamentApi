@@ -1,7 +1,7 @@
 import { MockProxy, mock } from 'jest-mock-extended'
 
 import { EquipmentRepositoryProtocol } from '../src/repository/protocol/equipmentRepositoryProtocol'
-import { UnitRepositoryProtocol as UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
+import { UnitRepositoryProtocol } from '../src/repository/protocol/unitRepositoryProtocol'
 import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
 
 import {
@@ -14,7 +14,6 @@ import {
   NullFieldsError
 } from '../src/useCases/createMovement/createMovementUseCase'
 
-import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Unit } from '../src/domain/entities/unit'
 import { Movement } from '../src/domain/entities/movement'
@@ -39,7 +38,12 @@ describe('Create movement use case', () => {
       id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
       tippingNumber: '123123',
       serialNumber: '123',
-      type: Type.Nobreak,
+      type: {
+        id: 2,
+        name: 'any',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
       situacao: Status.ACTIVE,
       estado: 'Novo',
       model: 'Xiaomi XT',
