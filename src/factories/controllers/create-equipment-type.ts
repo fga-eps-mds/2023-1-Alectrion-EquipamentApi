@@ -1,6 +1,6 @@
-import { CreateEquimentTypeController } from '../../presentation/controller/create-equipment-type.controller'
+import { CreateEquipmentTypeController } from '../../presentation/controller/create-equipment-type.controller'
 import { makeCreateEquipmentType } from '../useCases/create-equipment-type'
 
 export const makeCreateEquipmentTypeController = () => {
-  return new CreateEquimentTypeController(makeCreateEquipmentType())
+  return new CreateEquipmentTypeController(makeCreateEquipmentType())
 }

@@ -9,7 +9,7 @@ export class EquipmentTypeDeleteError extends Error {
 }
 
 export type DeleteDataEquipmentType = {
-  id: string
+  id: number
 }
 
 export class DeleteEquipmentTypeUseCase

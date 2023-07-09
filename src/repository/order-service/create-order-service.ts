@@ -3,7 +3,6 @@ import { OrderService } from '../../domain/entities/order-service'
 import { Status } from '../../domain/entities/serviceOrderEnum/status'
 
 export type CreateOrderServiceData = {
-  receiverName: any
   equipment: Equipment
   authorId: string
   seiProcess: string

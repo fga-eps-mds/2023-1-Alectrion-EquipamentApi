@@ -58,6 +58,6 @@ export class UpdateEquipmentController extends Controller {
 
     if (response.isSuccess) {
       return ok(response)
-    } else return serverError()
+    } else return serverError(response.error)
   }
 }

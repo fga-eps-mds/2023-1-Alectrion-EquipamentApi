@@ -5,10 +5,10 @@ import { Controller } from '../protocols/controller'
 type Model = Error | void
 
 type HttpRequest = {
-  id: string
+  id: number
 }
 
-export class DeleteEquimentTypeController extends Controller {
+export class DeleteEquipmentTypeController extends Controller {
   constructor(
     private readonly equipmentTypeUseCase: DeleteEquipmentTypeUseCase
   ) {

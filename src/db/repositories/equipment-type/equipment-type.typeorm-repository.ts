@@ -43,7 +43,7 @@ export class EquipmentTypeTypeormRepository implements EquipmentTypeRepository {
     })
   }
 
-  public async delete(typeId: string): Promise<void> {
+  public async delete(typeId: number): Promise<void> {
     await this.typeRepository.delete(typeId)
   }
 }
