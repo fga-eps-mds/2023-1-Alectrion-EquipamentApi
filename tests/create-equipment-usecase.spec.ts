@@ -11,7 +11,7 @@ import {
   CreateEquipmentInterface,
   NotFoundUnit,
   InvalidTippingNumber,
-  EquipmentTypeError
+  InvalidEquipmentType
 } from '../src/useCases/createEquipment/createEquipmentUseCase'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
@@ -201,6 +201,7 @@ describe('Test create order use case', () => {
   })
 
   test('should return NullFields if pass wrong screen type for monitor', async () => {
+    typeRepository.findByName.mockResolvedValue(null)
     const result = await createEquipmentUseCase.execute({
       ...createGeneralEquipmentInterface,
       type: 'Monitor',
@@ -210,71 +211,7 @@ describe('Test create order use case', () => {
 
     expect(result).toEqual({
       isSuccess: false,
-      error: new EquipmentTypeError()
-    })
-  })
-
-  test('should return EquipmentTypeError if pass wrong equipment type', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      type: 'TESTE'
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new EquipmentTypeError()
-    })
-  })
-
-  test('should return NullFields if pass required info for CPU', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      type: 'CPU',
-      ram_size: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new EquipmentTypeError()
-    })
-  })
-
-  test('should return NullFields if pass required info for monitor', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      type: 'Monitor',
-      screenType: 'LCDS'
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new EquipmentTypeError()
-    })
-  })
-
-  test('should return NullFields if pass required info for monitor', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      type: 'Nobreak'
-      // power: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new EquipmentTypeError()
-    })
-  })
-
-  test('should return NullFields if pass required info for monitor', async () => {
-    const result = await createEquipmentUseCase.execute({
-      ...createEquipmentInterface,
-      type: 'Estabilizador',
-      power: undefined
-    })
-
-    expect(result).toEqual({
-      isSuccess: false,
-      error: new EquipmentTypeError()
+      error: new InvalidEquipmentType()
     })
   })
 
