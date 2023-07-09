@@ -159,6 +159,7 @@ export class MovementRepository implements MovementRepositoryProtocol {
         'equipments',
         'equipments.brand',
         'equipments.unit',
+        'equipments.type',
         'destination'
       ],
       order: { date: 'DESC' },
