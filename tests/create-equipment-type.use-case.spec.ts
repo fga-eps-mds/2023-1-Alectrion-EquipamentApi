@@ -2,7 +2,9 @@ import { mock } from 'jest-mock-extended'
 import { EquipmentTypeTypeormRepository } from '../src/db/repositories/equipment-type/equipment-type.typeorm-repository'
 import {
   CreateDataEquipmentType,
-  CreateEquipmentTypeUseCase
+  CreateEquipmentTypeUseCase,
+  EquipmentTypeDuplicateError,
+  EquipmentTypeError
 } from '../src/useCases/create-equipment-type/create-equipment-type.use-case'
 import { EquipmentType } from '../src/db/entities/equipment-type'
 
@@ -33,5 +35,28 @@ describe('Should test CreateEquipmentTypeUSeCase', () => {
     expect(result.data.createdAt).toEqual(type.createdAt)
     expect(result.data.updatedAt).toEqual(type.updatedAt)
     expect(equipmentTypeRepositoryMocked.create).toHaveBeenCalled()
+  })
+
+  test('should return error for duplicate type', async () => {
+    equipmentTypeRepositoryMocked.findByName.mockResolvedValue(type)
+
+    const result = await createEquipmentBrandUseCase.execute(useCaseParam)
+
+    expect(result).toEqual({
+      isSuccess: false,
+      error: new EquipmentTypeDuplicateError()
+    })
+  })
+
+  test('should return error', async () => {
+    equipmentTypeRepositoryMocked.findByName.mockResolvedValue(undefined)
+    equipmentTypeRepositoryMocked.create.mockRejectedValue(type)
+
+    const result = await createEquipmentBrandUseCase.execute(useCaseParam)
+
+    expect(result).toEqual({
+      isSuccess: false,
+      error: new EquipmentTypeError()
+    })
   })
 })

@@ -15,7 +15,6 @@ import {
   InvalidEquipmentType
 } from '../createEquipment/createEquipmentUseCase'
 import { EquipmentTypeRepository } from '../../repository/equipment-type/equipment-type.repository'
-import { EquipmentType } from '../../db/entities/equipment-type'
 
 export type UpdateEquipmentUseCaseData = {
   id: string
@@ -92,7 +91,7 @@ export class UpdateEquipmentUseCase
     await this.updateEquipmentRepository.updateEquipment(data.id, {
       serialNumber: data.serialNumber,
       tippingNumber: data.tippingNumber,
-      type: type as EquipmentType,
+      type,
       situacao: data.situacao as Status,
       estado: data.estado,
       model: data.model,
