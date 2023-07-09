@@ -1,6 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { EquipmentBrandTypeormRepository } from '../src/db/repositories/equipment-brand/equipment-brand.typeorm-repository'
 import {
+  EquipmentBrandFindError,
   FindDataEquipmentBrand,
   FindEquipmentBrandUseCase
 } from '../src/useCases/find-equipment-brand/find-equipment-brand.use-case'
@@ -33,5 +34,16 @@ describe('Should test FindEquipmentBrandUSeCase', () => {
     expect(result.data[0].createdAt).toEqual(brand.createdAt)
     expect(result.data[0].updatedAt).toEqual(brand.updatedAt)
     expect(equipmentBrandRepositoryMocked.find).toHaveBeenCalled()
+  })
+
+  test('should return error', async () => {
+    equipmentBrandRepositoryMocked.find.mockRejectedValue([brand])
+
+    const result = await findEquipmentBrandUseCase.execute(useCaseParam)
+
+    expect(result).toEqual({
+      isSuccess: false,
+      error: new EquipmentBrandFindError()
+    })
   })
 })

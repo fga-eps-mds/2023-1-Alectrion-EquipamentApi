@@ -1,25 +1,41 @@
 import { mock } from 'jest-mock-extended'
-import { EquipmentBrandTypeormRepository } from '../src/db/repositories/equipment-brand/equipment-brand.typeorm-repository'
 import {
-  DeleteDataEquipmentBrand,
-  DeleteEquipmentBrandUseCase
+  DeleteEquipmentBrandUseCase,
+  EquipmentBrandDeleteError
 } from '../src/useCases/delete-equipment-brand/delete-equipment-brand.use-case'
+import { DeleteEquipmentBrandController } from '../src/presentation/controller/delete-equipment-brand.controller'
+import { ok, serverError } from '../src/presentation/helpers'
 
-const equipmentBrandRepositoryMocked = mock<EquipmentBrandTypeormRepository>()
-const deleteEquipmentBrandUseCase = new DeleteEquipmentBrandUseCase(
-  equipmentBrandRepositoryMocked
+const deleteEquipmentBrandUseCase = mock<DeleteEquipmentBrandUseCase>()
+const deleteEquimentBrandController = new DeleteEquipmentBrandController(
+  deleteEquipmentBrandUseCase
 )
 
-const useCaseParam: DeleteDataEquipmentBrand = {
-  id: 2
-}
+describe('Should test DeleteEquipmentBrandController', () => {
+  test('should delete equipment brand with success', async () => {
+    deleteEquipmentBrandUseCase.execute.mockResolvedValue({
+      isSuccess: true
+    })
 
-describe('Should test DeleteEquipmentBrandUSeCase', () => {
-  test('should delete brand', async () => {
-    equipmentBrandRepositoryMocked.delete.mockResolvedValue()
+    const response = await deleteEquimentBrandController.perform({
+      id: 2
+    })
 
-    const result = await deleteEquipmentBrandUseCase.execute(useCaseParam)
+    expect(response).toEqual(ok(response.data))
+    expect(deleteEquipmentBrandUseCase.execute).toHaveBeenCalled()
+  })
 
-    expect(result.isSuccess).toEqual(true)
+  test('should return error when try to delete', async () => {
+    deleteEquipmentBrandUseCase.execute.mockResolvedValue({
+      isSuccess: false,
+      error: new EquipmentBrandDeleteError()
+    })
+
+    const response = await deleteEquimentBrandController.perform({
+      id: 2
+    })
+
+    expect(response).toEqual(serverError(response.data))
+    expect(deleteEquipmentBrandUseCase.execute).toHaveBeenCalled()
   })
 })
