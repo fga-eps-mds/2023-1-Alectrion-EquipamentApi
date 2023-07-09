@@ -2,15 +2,19 @@ import { UseCase, UseCaseReponse } from '../protocol/useCase'
 import { Status } from '../../domain/entities/equipamentEnum/status'
 import { History } from '../../domain/entities/history'
 import { Equipment } from '../../domain/entities/equipment'
-import { BrandRepositoryProtocol } from '../../repository/protocol/brandRepositoryProtocol'
 import { UpdateEquipmentRepository } from '../../repository/equipment/update-equipment'
 import { ListOneEquipmentRepository } from '../../repository/equipment/list-one-equipment'
 import { ScreenType } from '../../domain/entities/equipamentEnum/screenType'
 import { StorageType } from '../../domain/entities/equipamentEnum/storageType'
-import { Type } from '../../domain/entities/equipamentEnum/type'
 import AcquisitionRepositoryProtocol from '../../repository/protocol/acquisitionRepositoryProtocol'
 import { EquipmentAcquisition } from '../../db/entities/equipment-acquisition'
 import { EquipmentBrand } from '../../db/entities/equipment-brand'
+import { EquipmentBrandRepository } from '../../repository/equipment-brand/equipment-brand.repository'
+import {
+  InvalidEquipmentBrand,
+  InvalidEquipmentType
+} from '../createEquipment/createEquipmentUseCase'
+import { EquipmentTypeRepository } from '../../repository/equipment-type/equipment-type.repository'
 
 export type UpdateEquipmentUseCaseData = {
   id: string
@@ -49,24 +53,25 @@ export class UpdateEquipmentUseCase
   constructor(
     private readonly equipmentRepository: ListOneEquipmentRepository,
     private readonly updateEquipmentRepository: UpdateEquipmentRepository,
-    private readonly brandRepository: BrandRepositoryProtocol,
-    private readonly acquisitionRepository: AcquisitionRepositoryProtocol
+    private readonly brandRepository: EquipmentBrandRepository,
+    private readonly acquisitionRepository: AcquisitionRepositoryProtocol,
+    private readonly typeRepository: EquipmentTypeRepository
   ) {}
 
   async execute(
     data: UpdateEquipmentUseCaseData
   ): Promise<UseCaseReponse<Equipment>> {
-    let brand = await this.brandRepository.findOneByName(data.brandName)
+    const brand = await this.brandRepository.findByName(data.brandName)
+    if (!brand) {
+      return {
+        isSuccess: false,
+        error: new InvalidEquipmentBrand()
+      }
+    }
+
     let acquisition = await this.acquisitionRepository.findOneByName(
       data.acquisitionName
     )
-
-    if (!brand) {
-      brand = await this.brandRepository.create({
-        name: data.brandName
-      })
-    }
-
     if (!acquisition) {
       acquisition = await this.acquisitionRepository.create({
         name: data.acquisitionName,
@@ -75,10 +80,18 @@ export class UpdateEquipmentUseCase
       })
     }
 
+    const type = await this.typeRepository.findByName(data.type)
+    if (!type) {
+      return {
+        isSuccess: false,
+        error: new InvalidEquipmentType()
+      }
+    }
+
     await this.updateEquipmentRepository.updateEquipment(data.id, {
       serialNumber: data.serialNumber,
       tippingNumber: data.tippingNumber,
-      type: data.type as Type,
+      type,
       situacao: data.situacao as Status,
       estado: data.estado,
       model: data.model,

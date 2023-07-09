@@ -2,5 +2,5 @@ import { DeleteEquipmentController } from '../../presentation/controller/deleteE
 import { makeDeleteEquipment } from '../useCases/deleteEquipment'
 
 export const makeDeleteEquipmentController = () => {
-    return new DeleteEquipmentController(makeDeleteEquipment())
+  return new DeleteEquipmentController(makeDeleteEquipment())
 }

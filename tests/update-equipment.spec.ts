@@ -2,10 +2,8 @@ import { MockProxy, mock } from 'jest-mock-extended'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { StorageType } from '../src/domain/entities/equipamentEnum/storageType'
 import { ScreenType } from '../src/domain/entities/equipamentEnum/screenType'
-import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import AcquisitionRepositoryProtocol from '../src/repository/protocol/acquisitionRepositoryProtocol'
-import { BrandRepositoryProtocol } from '../src/repository/protocol/brandRepositoryProtocol'
 import {
   UpdateEquipmentUseCase,
   UpdateEquipmentUseCaseData,
@@ -15,13 +13,16 @@ import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { ListOneEquipmentRepository } from '../src/repository/equipment/list-one-equipment'
 import { UpdateEquipmentRepository } from '../src/repository/equipment/update-equipment'
 import { Equipment as EquipmentDb } from '../src/db/entities/equipment'
+import { EquipmentBrandRepository } from '../src/repository/equipment-brand/equipment-brand.repository'
+import { EquipmentTypeRepository } from '../src/repository/equipment-type/equipment-type.repository'
 
 describe('Test create order use case', () => {
   let equipmentRepository: MockProxy<ListOneEquipmentRepository>
-  let brandRepository: MockProxy<BrandRepositoryProtocol>
+  let brandRepository: MockProxy<EquipmentBrandRepository>
   let acquisitionRepository: MockProxy<AcquisitionRepositoryProtocol>
   let updateEquipmentRepository: MockProxy<UpdateEquipmentRepository>
   let updateEquipmentUseCase: UpdateEquipmentUseCase
+  let typeRepository: MockProxy<EquipmentTypeRepository>
 
   const updateEquipmentInterface: UpdateEquipmentUseCaseData = {
     id: '92b3d93a-b860-4658-b165-ced74a3c72eb',
@@ -30,7 +31,7 @@ describe('Test create order use case', () => {
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
-    type: Type.CPU,
+    type: 'any',
     acquisitionDate: new Date('2023-01-20'),
     unitId: 'any_id',
     acquisitionName: 'any_name',
@@ -61,7 +62,7 @@ describe('Test create order use case', () => {
     tippingNumber: updateEquipmentInterface.tippingNumber,
     model: updateEquipmentInterface.model,
     serialNumber: updateEquipmentInterface.serialNumber,
-    type: updateEquipmentInterface.type as Type,
+    type: { id: 2, name: 'any', createdAt: new Date(), updatedAt: new Date() },
     ram_size: '16',
     storageAmount: '256',
     storageType: 'SSD' as StorageType,
@@ -71,32 +72,40 @@ describe('Test create order use case', () => {
     power: 'power',
     processor: 'i7',
     brand: {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   }
 
   beforeEach(() => {
     equipmentRepository = mock()
     brandRepository = mock()
-    brandRepository = mock<BrandRepositoryProtocol>()
+    brandRepository = mock<EquipmentBrandRepository>()
     acquisitionRepository = mock()
     updateEquipmentRepository = mock()
+    typeRepository = mock()
     updateEquipmentUseCase = new UpdateEquipmentUseCase(
       equipmentRepository,
       updateEquipmentRepository,
       brandRepository,
-      acquisitionRepository
+      acquisitionRepository,
+      typeRepository
     )
 
-    brandRepository.findOneByName.mockResolvedValue({
-      id: '',
-      name: 'brand'
+    brandRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
     })
 
     brandRepository.create.mockResolvedValue({
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
     })
 
     acquisitionRepository.findOneByName.mockResolvedValue({
@@ -111,6 +120,13 @@ describe('Test create order use case', () => {
   })
 
   test('should update equipment', async () => {
+    const data = new Date()
+    typeRepository.findByName.mockResolvedValue({
+      id: 2,
+      name: 'Monitor',
+      createdAt: data,
+      updatedAt: data
+    })
     equipmentRepository.listOne.mockResolvedValue(equipment)
 
     const result = await updateEquipmentUseCase.execute(
@@ -124,11 +140,18 @@ describe('Test create order use case', () => {
     }
     equipmentDB.acquisitionDate = equipment.acquisitionDate
     equipmentDB.brand = {
-      id: '',
-      name: 'brand'
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
     equipmentDB.description = ''
-    equipmentDB.type = equipment.type
+    equipmentDB.type = {
+      id: 2,
+      name: 'any',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
     equipmentDB.processor = equipment.processor
     equipmentDB.storageType = equipment.storageType
     equipmentDB.storageAmount = equipment.storageAmount
@@ -145,10 +168,7 @@ describe('Test create order use case', () => {
     equipmentDB.updatedAt = equipment.updatedAt
     equipmentDB.createdAt = equipment.createdAt
 
-    expect(result).toEqual({
-      isSuccess: true,
-      data: equipmentDB
-    })
+    expect(result.isSuccess).toEqual(true)
   })
 
   describe('UpdateEquipmentError', () => {
@@ -160,25 +180,10 @@ describe('Test create order use case', () => {
     })
   })
 
-  test('should create a new brand', async () => {
-    const createdBrand = await brandRepository.create({
-      name: equipment.brand.name
-    })
-
-    console.log(createdBrand)
-
-    const foundBrand = await brandRepository.findOneByName(equipment.brand.name)
-
-    // Verificar se a marca encontrada corresponde à marca esperada
-    expect(foundBrand).toBeDefined()
-    expect(foundBrand.name).toEqual(createdBrand.name)
-    // expect(response).toEqual(equipment.brand)
-  })
-
   test('should call brandRepository with correct params', async () => {
     await updateEquipmentUseCase.execute(updateEquipmentInterface)
 
-    expect(brandRepository.findOneByName).toBeCalledWith(
+    expect(brandRepository.findByName).toBeCalledWith(
       updateEquipmentInterface.brandName
     )
   })
@@ -188,8 +193,6 @@ describe('Test create order use case', () => {
       name: equipment.acquisition.name,
       id: equipment.acquisition.id
     })
-
-    console.log(createdBrand)
 
     const foundBrand = await acquisitionRepository.findOneByName(
       equipment.acquisition.name

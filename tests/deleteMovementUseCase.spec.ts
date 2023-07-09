@@ -3,7 +3,6 @@ import { MockProxy, mock } from 'jest-mock-extended'
 import { Movement } from '../src/domain/entities/movement'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
-import { Type } from '../src/domain/entities/equipamentEnum/type'
 
 import { MovementRepositoryProtocol } from '../src/repository/protocol/movementRepositoryProtocol'
 
@@ -40,7 +39,12 @@ describe('Find movements use case', () => {
             id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
             tippingNumber: '123123',
             serialNumber: '123',
-            type: Type.Nobreak,
+            type: {
+              id: 2,
+              name: 'any',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            },
             situacao: Status.ACTIVE,
             estado: Estado.Novo,
             model: 'Xiaomi XT',
@@ -86,7 +90,12 @@ describe('Find movements use case', () => {
             id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
             tippingNumber: '123123',
             serialNumber: '123',
-            type: Type.Nobreak,
+            type: {
+              id: 2,
+              name: 'any',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            },
             situacao: Status.ACTIVE,
             estado: Estado.Novo,
             model: 'Xiaomi XT',
@@ -153,7 +162,12 @@ describe('Find movements use case', () => {
             id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
             tippingNumber: '123123',
             serialNumber: '123',
-            type: Type.Nobreak,
+            type: {
+              id: 2,
+              name: 'any',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            },
             situacao: Status.ACTIVE,
             estado: Estado.Novo,
             model: 'Xiaomi XT',
@@ -201,7 +215,12 @@ describe('Find movements use case', () => {
             id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
             tippingNumber: '123123',
             serialNumber: '123',
-            type: Type.Nobreak,
+            type: {
+              id: 2,
+              name: 'any',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            },
             situacao: Status.ACTIVE,
             estado: Estado.Novo,
             model: 'Xiaomi XT',
@@ -232,7 +251,12 @@ describe('Find movements use case', () => {
             id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
             tippingNumber: '123123',
             serialNumber: '123',
-            type: Type.Nobreak,
+            type: {
+              id: 2,
+              name: 'any',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            },
             situacao: Status.ACTIVE,
             estado: Estado.Novo,
             model: 'Xiaomi XT',
@@ -280,7 +304,12 @@ describe('Find movements use case', () => {
             id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
             tippingNumber: '123123',
             serialNumber: '123',
-            type: Type.Nobreak,
+            type: {
+              id: 2,
+              name: 'any',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            },
             situacao: Status.ACTIVE,
             estado: Estado.Novo,
             model: 'Xiaomi XT',
@@ -311,7 +340,12 @@ describe('Find movements use case', () => {
             id: 'c266c9d5-4e91-4c2e-9c38-fb8710d7e896',
             tippingNumber: '123123',
             serialNumber: '123',
-            type: Type.Nobreak,
+            type: {
+              id: 2,
+              name: 'any',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            },
             situacao: Status.ACTIVE,
             estado: Estado.Novo,
             model: 'Xiaomi XT',

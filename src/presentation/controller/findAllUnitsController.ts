@@ -1,5 +1,5 @@
 import { Unit } from '../../domain/entities/unit'
-import { FindAllUnitUseCase } from '../../../src/useCases/FindUnit/findAllUnitUseCase'
+import { FindAllUnitUseCase } from '../../useCases/FindUnit/findAllUnitUseCase'
 import { HttpResponse, ok, serverError } from '../helpers'
 import { Controller } from '../protocols/controller'
 

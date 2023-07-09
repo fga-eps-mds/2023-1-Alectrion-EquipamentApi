@@ -2,7 +2,6 @@ import { MockProxy, mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
-import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { History } from '../src/domain/entities/history'
 import { Equipment } from '../src/domain/entities/equipment'
 import { ListOneEquipmentRepository } from '../src/repository/equipment/list-one-equipment'
@@ -37,7 +36,7 @@ describe('Test update order use case', () => {
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
-    type: Type.CPU
+    type: { id: 2, name: 'any', createdAt: new Date(), updatedAt: new Date() }
   }
 
   const data: UpdateOrderServiceUseCaseData = {
@@ -50,18 +49,6 @@ describe('Test update order use case', () => {
     technicianId: '123456',
     technicianName: 'Pessoa',
     status: 'MAINTENANCE' as OSStatus
-  }
-
-  const dataConcluded: UpdateOrderServiceUseCaseData = {
-    id: 2,
-    equipmentId: 'equipment_id',
-    description: 'any_description',
-    seiProcess: '123456789',
-    senderPhone: '61992809831',
-    senderDocument: '12345678910',
-    technicianId: '123456',
-    technicianName: 'Pessoa',
-    status: 'CONCLUDED' as OSStatus
   }
 
   const dataFinished: UpdateOrderServiceUseCaseData = {
