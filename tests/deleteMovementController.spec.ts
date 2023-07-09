@@ -4,7 +4,7 @@ import { NullFieldsError } from '../src/useCases/createMovement/createMovementUs
 import { DeleteMovementController } from '../src/presentation/controller/deleteMovementController'
 
 import { HttpResponse } from '../src/presentation/helpers/http'
-import { ServerError, UnauthorizedError } from '../src/presentation/errors'
+import { ServerError } from '../src/presentation/errors'
 import {
   DeleteMovementUseCase,
   DeleteMovementUseCaseData,

@@ -2,7 +2,6 @@ import { MockProxy, mock } from 'jest-mock-extended'
 import { Estado } from '../src/domain/entities/equipamentEnum/estado'
 import { Status } from '../src/domain/entities/equipamentEnum/status'
 import { Status as OSStatus } from '../src/domain/entities/serviceOrderEnum/status'
-import { Type } from '../src/domain/entities/equipamentEnum/type'
 import { Equipment } from '../src/domain/entities/equipment'
 import { History } from '../src/domain/entities/history'
 import { OrderService } from '../src/domain/entities/order-service'
@@ -39,7 +38,7 @@ describe('Test create order use case', () => {
     tippingNumber: 'any',
     model: 'DELL G15',
     serialNumber: 'any',
-    type: Type.CPU
+    type: { id: 2, name: 'any', createdAt: new Date(), updatedAt: new Date() }
   }
 
   const data: CreateOrderServiceUseCaseData = {
