@@ -363,10 +363,6 @@ export class CreateEquipmentUseCase
         break
 
       default:
-        return {
-          isSuccess: false,
-          error: new EquipmentTypeError()
-        }
     }
     equipment.acquisition = acquisition as unknown as EquipmentAcquisition
     equipment.unit = unit as unknown as Unit

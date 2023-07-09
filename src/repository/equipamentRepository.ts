@@ -116,7 +116,8 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       relations: {
         brand: true,
         unit: true,
-        acquisition: true
+        acquisition: true,
+        type: true
       },
       order: { updatedAt: 'DESC' },
       where: searchConditions,
@@ -133,7 +134,8 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       relations: {
         brand: true,
         acquisition: true,
-        unit: true
+        unit: true,
+        type: true
       },
       where: [{ tippingNumber: id }, { serialNumber: id }]
     })
