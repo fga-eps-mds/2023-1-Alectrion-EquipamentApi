@@ -19,7 +19,6 @@ export class CreateOrderServiceTypeOrmRepository
       description: data.description,
       senderName: data.senderName,
       equipment: data.equipment,
-      receiverName: data.receiverName,
       status: data.status,
       senderPhone: data.senderPhone,
       seiProcess: data.seiProcess,

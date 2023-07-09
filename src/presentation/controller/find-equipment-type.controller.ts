@@ -9,7 +9,7 @@ type HttpRequest = {
   search: string
 }
 
-export class FindEquimentTypeController extends Controller {
+export class FindEquipmentTypeController extends Controller {
   constructor(private readonly equipmentTypeUseCase: FindEquipmentTypeUseCase) {
     super()
   }

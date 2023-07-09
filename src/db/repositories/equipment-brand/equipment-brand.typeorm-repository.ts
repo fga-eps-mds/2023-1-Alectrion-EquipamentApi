@@ -45,7 +45,7 @@ export class EquipmentBrandTypeormRepository
     })
   }
 
-  public async delete(brandId: string): Promise<void> {
+  public async delete(brandId: number): Promise<void> {
     await this.brandRepository.delete(brandId)
   }
 }

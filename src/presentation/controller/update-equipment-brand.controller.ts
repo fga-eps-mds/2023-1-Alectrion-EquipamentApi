@@ -9,7 +9,7 @@ type HttpRequest = {
   name: string
 }
 
-export class UpdateEquimentBrandController extends Controller {
+export class UpdateEquipmentBrandController extends Controller {
   constructor(
     private readonly equipmentBrandUseCase: UpdateEquipmentBrandUseCase
   ) {

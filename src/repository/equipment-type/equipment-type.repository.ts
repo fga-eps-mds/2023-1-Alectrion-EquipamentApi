@@ -5,5 +5,5 @@ export interface EquipmentTypeRepository {
   find(search: string): Promise<EquipmentType[]>
   findByName(name: string): Promise<EquipmentType | undefined>
   update(type: EquipmentType): Promise<void>
-  delete(typeId: string): Promise<void>
+  delete(typeId: number): Promise<void>
 }
