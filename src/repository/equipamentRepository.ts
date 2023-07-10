@@ -58,9 +58,9 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       skip,
       acquisitionYear,
     } = query;
-    console.log(query)
+
     const defaultConditions= {
-      type: type,
+      type: type ? { id: type} : undefined,
       storageType: storageType,
       situacao: situation,
       processor: processador,
@@ -81,17 +81,7 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       defaultConditions.createdAt = LessThanOrEqual(finalDate)
     } 
     
-    console.log(defaultConditions)
     let searchConditions;
-
-    if(initialDate && finalDate) {
-      defaultConditions.createdAt = Between(initialDate, finalDate)
-    } else if (initialDate) {
-      defaultConditions.createdAt = MoreThanOrEqual(initialDate)
-    } else if (finalDate) {
-      defaultConditions.createdAt = LessThanOrEqual(finalDate)
-    } 
-    
     if(typeof search !== 'undefined') {
       searchConditions = [
         {
