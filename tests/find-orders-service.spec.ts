@@ -44,10 +44,10 @@ const orderService: OrderService = {
 }
 
 const request: FindOrderServiceUseCaseData = {
-  type: '',
+  type: 0,
   unit: '',
   date: '',
-  brand: '',
+  brand: 0,
   search: '',
   model: '',
   status: ''

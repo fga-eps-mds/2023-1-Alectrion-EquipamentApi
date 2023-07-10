@@ -14,7 +14,7 @@ export interface GetEquipmentInput {
 
   acquisition?: string
 
-  type?: string
+  type?: number
 
   situacao?: string
 
@@ -22,7 +22,7 @@ export interface GetEquipmentInput {
 
   unit?: string
 
-  brand?: string
+  brand?: number
 
   screenSize?: string
 

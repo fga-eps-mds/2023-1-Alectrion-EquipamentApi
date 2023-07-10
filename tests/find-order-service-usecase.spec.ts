@@ -55,7 +55,7 @@ describe('FindOrderService', () => {
       expectedData
     )
 
-    const query = { type: 'type1', unit: 'unit1' }
+    const query = { type: 2, unit: 'unit1' }
     const result = await findOrderServiceUseCase.execute(query)
 
     expect(
