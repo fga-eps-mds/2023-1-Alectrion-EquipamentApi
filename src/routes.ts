@@ -93,5 +93,15 @@ routes.delete(
   checkAdminAccessToken,
   adapt(makeDeleteEquipmentTypeController())
 )
+routes.delete(
+  '/deleteMovement',
+  checkIfIsQueryUser,
+  adapt(makeDeleteMovementController())
+)
+routes.put(
+  '/updateEquipment',
+  checkIfIsQueryUser,
+  adapt(makeUpdateEquipmentController())
+)
 
 export default routes
