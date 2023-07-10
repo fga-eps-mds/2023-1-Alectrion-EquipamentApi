@@ -1,11 +1,11 @@
 import {
-    PrimaryGeneratedColumn,
-    Column,
-    Entity,
-    ManyToMany,
-    JoinTable,
-    ManyToOne
-  } from 'typeorm'
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  ManyToMany,
+  JoinTable,
+  ManyToOne
+} from 'typeorm'
 import { Equipment } from './equipment'
 import { Unit } from './unit'
 
@@ -27,7 +27,7 @@ export class Movement {
   userId: string
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: Types
   })
   type: Types
@@ -36,7 +36,7 @@ export class Movement {
     nullable: true
   })
   description?: string
-  
+
   @Column()
   inChargeName: string
 

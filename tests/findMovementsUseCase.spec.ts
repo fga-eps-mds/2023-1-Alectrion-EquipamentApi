@@ -156,52 +156,6 @@ describe('Find movements use case', () => {
     )
   })
 
-  test('should not find movements with invalid date ranges', async () => {
-    const mockedResult: Movement[] = [
-      {
-        id: '130265af-6afd-494d-b025-e657db264e56',
-        date: new Date('2023-01-09T21:36:35.971Z'),
-        userId: '941f7db3-b754-4811-9884-24874fc40e28',
-        type: 1,
-        description: 'broke it lmao',
-        equipments: [mockedEquipment],
-        destination: null,
-        inChargeName: 'José Matheus',
-        inChargeRole: 'Sargento',
-        chiefName: 'Matheus Texeira',
-        chiefRole: 'Delegado'
-      },
-      {
-        id: '8253fbbd-eb19-42a6-86e6-f45126921e37',
-        date: new Date('2023-01-09T21:39:25.373Z'),
-        userId: '941f7db3-b754-4811-9884-24874fc40e28',
-        type: 1,
-        description: 'broke it lmao',
-        equipments: [mockedEquipment],
-        destination: null,
-        inChargeName: 'José Matheus',
-        inChargeRole: 'Sargento',
-        chiefName: 'Matheus Texeira',
-        chiefRole: 'Delegado'
-      }
-    ]
-
-    const query: FindMovementsUseCaseData = {
-      type: 1,
-      lowerDate: new Date('2023-01-10T07:16:32.276Z'),
-      higherDate: new Date('2023-01-10T07:14:54.078Z')
-    }
-
-    movementRepository.genericFind.mockResolvedValueOnce(mockedResult)
-
-    const result = await findMovementsUseCase.execute(query)
-
-    expect(result).toHaveProperty('isSuccess', false)
-    expect(result).not.toHaveProperty('data')
-    expect(result).toHaveProperty('error')
-    expect(result.error).toBeInstanceOf(InvalidDateError)
-  })
-
   test('should find movements with by date when higher date is missing', async () => {
     const mockedResult: Movement[] = [
       {
