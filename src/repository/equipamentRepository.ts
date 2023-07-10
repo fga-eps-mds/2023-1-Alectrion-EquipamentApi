@@ -60,17 +60,23 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     } = query;
 
     const defaultConditions= {
-      type: type ? { id: type} : undefined,
+      type: type ? { id: type } : undefined,
       storageType: storageType,
       situacao: situation,
+      screenSize: screenSize,
+      screenType: screenType,
       processor: processador,
+      power: power,
       unit: unit? {id: unit} : undefined,
       brand: brand ? { id: brand } : undefined,
       ram_size: ram_size,
+      model: model,
       acquisition: acquisition ? {name: acquisition}: undefined,
-
       updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
-      createdAt: undefined
+      createdAt: undefined,
+      acquisitionDate: acquisitionYear 
+      ? Between(new Date(Number(acquisitionYear), 0, 1), new Date(Number(acquisitionYear), 11, 31)) 
+      : undefined,
     };
 
     if(initialDate && finalDate) {
