@@ -6,11 +6,11 @@ export type Query = {
   tippingNumber?: string
   serialNumber?: string
   acquisition?: string
-  type?: string
+  type?: number
   unit?: string
   situation?: string
   updatedAt?: Date
-  brand?: string
+  brand?: number
   search?: string
   model?: string
   searchTipping?: string
