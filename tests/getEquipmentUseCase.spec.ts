@@ -67,7 +67,7 @@ describe('Should test get equipment', () => {
 
   it('should find equipmentswith genetic attributes', async () => {
     const queryRequest = {
-      type: 'CPU',
+      type: datatype.number(),
       ram_size: datatype.number().toString(),
       processor: 'i7'
     }
@@ -86,7 +86,7 @@ describe('Should test get equipment', () => {
 
   it('should not find equipment with generic attributes', async () => {
     const queryRequest = {
-      type: datatype.string(),
+      type: datatype.number(),
       ram_size: datatype.number().toString(),
       processor: datatype.string()
     }

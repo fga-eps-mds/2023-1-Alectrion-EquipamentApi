@@ -29,7 +29,7 @@ export class ListOrderServiceRepository
       equipment: {
         unit: unit ? { id: unit } : undefined,
         brand: brand ? { id: brand } : undefined,
-        type,
+        type: type ? { id: type } : undefined,
         model
       }
     }

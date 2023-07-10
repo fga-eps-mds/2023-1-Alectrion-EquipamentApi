@@ -13,10 +13,10 @@ export class NotOSFoundError extends Error {
 }
 
 export interface FindOrderServiceUseCaseData {
-  type?: string
+  type?: number
   unit?: string
   date?: string
-  brand?: string
+  brand?: number
   search?: string
   model?: string
   status?: string
