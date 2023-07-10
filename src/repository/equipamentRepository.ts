@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { MoreThanOrEqual, ILike } from 'typeorm'
+import { MoreThanOrEqual, ILike, LessThanOrEqual, Between } from 'typeorm'
 import { dataSource } from '../db/config'
 import { Equipment } from '../db/entities/equipment'
 import { EquipmentRepositoryProtocol, Query } from './protocol/equipmentRepositoryProtocol'
@@ -34,30 +34,60 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
     })
     return equipment
   }
-
+  
   async genericFind(query: Query): Promise<Equipment[]> {    
     const {
       type,
+      storageType,
+      ram_size,
+      processador,
+      screenSize,
+      screenType,
+      power,
       unit,
       situation,
       updatedAt,
       brand,
+      model,
+      acquisition,
       search,
       searchTipping,
+      initialDate,
+      finalDate,
       take, 
       skip,
+      acquisitionYear,
     } = query;
 
     const defaultConditions= {
-      type: type,
+      type: type ? { id: type } : undefined,
+      storageType: storageType,
       situacao: situation,
+      screenSize: screenSize,
+      screenType: screenType,
+      processor: processador,
+      power: power,
       unit: unit? {id: unit} : undefined,
       brand: brand ? { id: brand } : undefined,
+      ram_size: ram_size,
+      model: model,
+      acquisition: acquisition ? {name: acquisition}: undefined,
       updatedAt: updatedAt ? MoreThanOrEqual(updatedAt) : undefined,
+      createdAt: undefined,
+      acquisitionDate: acquisitionYear 
+      ? Between(new Date(Number(acquisitionYear), 0, 1), new Date(Number(acquisitionYear), 11, 31)) 
+      : undefined,
     };
-  
-    let searchConditions;
 
+    if(initialDate && finalDate) {
+      defaultConditions.createdAt = Between(initialDate, finalDate)
+    } else if (initialDate) {
+      defaultConditions.createdAt = MoreThanOrEqual(initialDate)
+    } else if (finalDate) {
+      defaultConditions.createdAt = LessThanOrEqual(finalDate)
+    } 
+    
+    let searchConditions;
     if(typeof search !== 'undefined') {
       searchConditions = [
         {
@@ -80,9 +110,8 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
         }
       ]
     } else 
-      searchConditions = defaultConditions;
-  
-  
+    searchConditions = defaultConditions;
+    
     const queryResult = await this.equipmentRepository.find({
       relations: {
         brand: true,
@@ -95,11 +124,9 @@ export class EquipmentRepository implements EquipmentRepositoryProtocol {
       take: take,
       skip: skip
     });
-  
     return queryResult;
   }
-    
-
+  
   async findByTippingNumberOrSerialNumber(
     id: string
   ): Promise<Equipment | null> {
